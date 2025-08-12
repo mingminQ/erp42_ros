@@ -11,9 +11,9 @@ If you have any suggestions or issues, please contact me using the information b
 # Package informations
 For more information about the package, please read the README.md at the link below.
 
-- **ERP42 racing ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_racing_ros/tree/humble/src/erp42_msgs)
+- **ERP42 racing ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_msgs)
 
-- **ERP42 racing ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_racing_ros/tree/humble/src/erp42_serial)
+- **ERP42 racing ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_serial)
 
 # Requirements
 - ROS2 Humble
