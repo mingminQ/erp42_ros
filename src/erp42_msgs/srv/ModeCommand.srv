@@ -1,0 +1,15 @@
+# erp42_msgs/srv/ModeCommand.srv
+
+# Control mode (Manual / Auto)
+bool manual_mode
+
+# Emergency stop (ON / OFF)
+bool emergency_stop
+
+# Gear (Drive / Neutral / Reverse)
+uint8 GEAR_DRIVE   = 0
+uint8 GEAR_NEUTRAL = 1
+uint8 GEAR_REVERSE = 2
+uint8 gear
+---
+bool result
