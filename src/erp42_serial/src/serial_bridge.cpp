@@ -271,6 +271,7 @@ void erp42::SerialBridge::initialize_node()
     }
     serial_port_->open_port();
     serial_port_->initialize_port();
+    ERP42_INFO("SerialBridge::initialize_node() serial port %s is opened", port_path_.c_str());
 }
 
 /** @brief Declares and retrieves ROS2 parameters for serial and ERP42 configuration. */
