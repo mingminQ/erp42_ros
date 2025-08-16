@@ -52,22 +52,19 @@ namespace erp42
         ~SerialPort() = default;
 
         /**
-         * @brief Opens the serial port and initializes it.
-         * @return 'true' if the port was opened and initialized successfully; 'false' otherwise.
+         * @brief Opens and initializes the serial port.
+         * @details Attempts to open the port specified by @c port_path_. 
+         * Throws an exception if the path is empty or opening fails.
+         * On success, calls @c initialize_port() to configure the port.
          */
         void open_port();
 
         /**
          * @brief Closes the serial port.
-         * @return 'true' if the port was closed successfully; 'false' otherwise.
+         * @details Closes the file descriptor associated with the serial port.
+         * Throws an exception if the descriptor is invalid or closing fails.
          */
         void close_port();
-
-        /**
-         * @brief Initializes the serial port with 8N1 settings and the configured baud rate.
-         * @return 'true' on successful configuration; 'false' otherwise.
-         */
-        void initialize_port();
 
         /**
          * @brief Receives a packet from the serial port.
@@ -92,6 +89,14 @@ namespace erp42
 
         /** @brief Deleted copy assignment operator to prevent assignment of SerialPort instances. */
         SerialPort& operator=(const SerialPort&) = delete;
+
+        /**
+         * @brief Initializes the serial port with 8N1 format and the configured baud rate.
+         * @details Configures the port using termios with raw mode, 8 data bits, no parity,
+         * and 1 stop bit. Supports baud rates 9600 and 115200. 
+         * Throws an exception if configuration fails or the baud rate is invalid.
+         */
+        void initialize_port();
 
     // "SerialPort" member variables
     private:

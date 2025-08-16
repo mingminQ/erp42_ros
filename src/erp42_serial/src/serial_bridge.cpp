@@ -62,15 +62,15 @@ erp42::SerialBridge::SerialBridge()
 erp42::SerialBridge::~SerialBridge()
 {
     // Close and deallocate serial port
-    if(serial_port_)
+    if(!serial_port_)
     {
-        serial_port_->close_port();
-        serial_port_.reset();
-        ERP42_INFO("SerialBridge::~SerialBridge() Serial port %s is closed", port_path_.c_str());
+        ERP42_ERROR("SerialBridge::~SerialBridge() Serial port %s is deallocated already", 
+            port_path_.c_str());
     }
     else
     {
-        ERP42_ERROR("SerialBridge::~SerialBridge() Serial port %s is deallocated already", port_path_.c_str());
+        serial_port_->close_port();
+        serial_port_.reset();
     }
 }
 
@@ -269,9 +269,10 @@ void erp42::SerialBridge::initialize_node()
     {
         throw Exception("SerialBridge::initialize_node() serial port allocation failed");
     }
-    serial_port_->open_port();
-    serial_port_->initialize_port();
-    ERP42_INFO("SerialBridge::initialize_node() serial port %s is opened", port_path_.c_str());
+    else
+    {
+        serial_port_->open_port();
+    }
 }
 
 /** @brief Declares and retrieves ROS2 parameters for serial and ERP42 configuration. */
@@ -292,5 +293,5 @@ void erp42::SerialBridge::declare_parameters()
     max_steering_rad_ = this->get_parameter("max_steering_deg").as_double() * M_PI / 180.0;
 
     this->declare_parameter<double>("steering_offset_deg", 0.0);
-    steering_offset_rad_ = this->get_parameter("steering_offset_deg").as_double() * M_PI / 180.0;    
+    steering_offset_rad_ = this->get_parameter("steering_offset_deg").as_double() * M_PI / 180.0;
 }

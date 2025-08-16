@@ -46,8 +46,10 @@ erp42::SerialPort::SerialPort(const std::string &port_path, const int &baud_rate
 }
 
 /**
- * @brief Opens the serial port and initializes it.
- * @return 'true' if the port was opened and initialized successfully; 'false' otherwise.
+ * @brief Opens and initializes the serial port.
+ * @details Attempts to open the port specified by @c port_path_. 
+ * Throws an exception if the path is empty or opening fails.
+ * On success, calls @c initialize_port() to configure the port.
  */
 void erp42::SerialPort::open_port()
 {
@@ -63,11 +65,16 @@ void erp42::SerialPort::open_port()
         file_descriptor_ = -1;
         throw Exception("SerialPort::open_port() file descriptor opening error");
     }
+
+    this->initialize_port();
+    ERP42_INFO("SerialPort::open_port() serial port %s has been opened successfully",
+        port_path_);
 }
 
 /**
  * @brief Closes the serial port.
- * @return 'true' if the port was closed successfully; 'false' otherwise.
+ * @details Closes the file descriptor associated with the serial port.
+ * Throws an exception if the descriptor is invalid or closing fails.
  */
 void erp42::SerialPort::close_port()
 {
@@ -82,60 +89,10 @@ void erp42::SerialPort::close_port()
         file_descriptor_ = -1;
         throw Exception("SerialPort::close_port() failed to close file descriptor");
     }
-}
 
-/**
- * @brief Initializes the serial port with 8N1 settings and the configured baud rate.
- * @return 'true' on successful configuration; 'false' otherwise.
- */
-void erp42::SerialPort::initialize_port()
-{
-    struct termios tty;
-    memset(&tty, 0, sizeof(tty));
-    if(tcgetattr(file_descriptor_, &tty) != 0)
-    {
-        file_descriptor_ = -1;
-        throw Exception("SerialPort::initialize_port() tcgetattr failed");
-    }
-
-    tty.c_cflag &= ~PARENB;
-    tty.c_cflag &= ~CSTOPB;
-    tty.c_cflag &= ~CSIZE;
-    tty.c_cflag |=  CS8;
-    tty.c_cflag &= ~CRTSCTS;
-    tty.c_cflag |= CREAD | CLOCAL;
-
-    tty.c_iflag &= ~(IXON   | IXOFF  | IXANY        );
-    tty.c_iflag &= ~(BRKINT | ICRNL  | IXON         );
-    tty.c_lflag &= ~(ECHO   | ICANON | IEXTEN | ISIG);
-
-    tty.c_oflag &= ~OPOST;
-
-    switch (baud_rate_)
-    {
-    case 9600:
-        cfsetispeed(&tty, B9600);
-        cfsetospeed(&tty, B9600);
-        break;
-
-    case 115200:
-        cfsetispeed(&tty, B115200);
-        cfsetospeed(&tty, B115200);
-        break;
-
-    default:
-        file_descriptor_ = -1;
-        throw Exception("SerialPort::initialize_port() invalid baud_rate, use 9600 or 115200");
-    }
-
-    tty.c_cc[VMIN]  = 18;
-    tty.c_cc[VTIME] = 1;
-
-    if((tcsetattr(file_descriptor_, TCSANOW, &tty)) != 0)
-    {
-        file_descriptor_ = -1;
-        throw Exception("SerialPort::initialize_port() tcsetattr failed");
-    }
+    file_descriptor_ = -1;
+    ERP42_INFO("SerialPort::close_port() serial port %s has been closed successfully",
+        port_path_);
 }
 
 /**
@@ -187,4 +144,61 @@ bool erp42::SerialPort::transmit_packet(const unsigned char *tx_packet,
     }
 
     return true;
+}
+
+
+/**
+ * @brief Initializes the serial port with 8N1 format and the configured baud rate.
+ * @details Configures the port using termios with raw mode, 8 data bits, no parity,
+ * and 1 stop bit. Supports baud rates 9600 and 115200. 
+ * Throws an exception if configuration fails or the baud rate is invalid.
+ */
+void erp42::SerialPort::initialize_port()
+{
+    struct termios tty;
+    memset(&tty, 0, sizeof(tty));
+    if(tcgetattr(file_descriptor_, &tty) != 0)
+    {
+        file_descriptor_ = -1;
+        throw Exception("SerialPort::initialize_port() tcgetattr failed");
+    }
+
+    tty.c_cflag &= ~PARENB;
+    tty.c_cflag &= ~CSTOPB;
+    tty.c_cflag &= ~CSIZE;
+    tty.c_cflag |=  CS8;
+    tty.c_cflag &= ~CRTSCTS;
+    tty.c_cflag |= CREAD | CLOCAL;
+
+    tty.c_iflag &= ~(IXON   | IXOFF  | IXANY        );
+    tty.c_iflag &= ~(BRKINT | ICRNL  | IXON         );
+    tty.c_lflag &= ~(ECHO   | ICANON | IEXTEN | ISIG);
+
+    tty.c_oflag &= ~OPOST;
+
+    switch (baud_rate_)
+    {
+    case 9600:
+        cfsetispeed(&tty, B9600);
+        cfsetospeed(&tty, B9600);
+        break;
+
+    case 115200:
+        cfsetispeed(&tty, B115200);
+        cfsetospeed(&tty, B115200);
+        break;
+
+    default:
+        file_descriptor_ = -1;
+        throw Exception("SerialPort::initialize_port() invalid baud_rate, use 9600 or 115200");
+    }
+
+    tty.c_cc[VMIN]  = 18;
+    tty.c_cc[VTIME] = 1;
+
+    if((tcsetattr(file_descriptor_, TCSANOW, &tty)) != 0)
+    {
+        file_descriptor_ = -1;
+        throw Exception("SerialPort::initialize_port() tcsetattr failed");
+    }
 }
