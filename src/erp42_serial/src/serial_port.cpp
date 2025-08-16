@@ -68,7 +68,7 @@ void erp42::SerialPort::open_port()
 
     this->initialize_port();
     ERP42_INFO("SerialPort::open_port() serial port %s has been opened successfully",
-        port_path_);
+        port_path_.c_str());
 }
 
 /**
@@ -92,7 +92,7 @@ void erp42::SerialPort::close_port()
 
     file_descriptor_ = -1;
     ERP42_INFO("SerialPort::close_port() serial port %s has been closed successfully",
-        port_path_);
+        port_path_.c_str());
 }
 
 /**

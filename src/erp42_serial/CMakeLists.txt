@@ -35,6 +35,32 @@ include_directories(
 )
 
 # --------------------------------------------------------------------------------------------------
+# ERP42 racing serial library
+# --------------------------------------------------------------------------------------------------
+add_library(${PROJECT_NAME}
+    src/serial_port.cpp
+)
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+ament_target_dependencies(${PROJECT_NAME}
+    erp42_util
+)
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT export_${PROJECT_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+install(
+    DIRECTORY include/
+    DESTINATION include
+)
+
+# --------------------------------------------------------------------------------------------------
 # ERP42 racing ROS2 serial driver
 # --------------------------------------------------------------------------------------------------
 add_executable(serial_bridge
