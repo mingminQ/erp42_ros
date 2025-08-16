@@ -44,11 +44,11 @@ using std::placeholders::_2;
 
 /**
  * @brief Default class contructor
- * @details Initializes the base Node with name "erp42_racing_serial", 
+ * @details Initializes the base Node with name "erp42_serial", 
  *          resets the heartbeat counter to zero.
  */
 erp42::SerialBridge::SerialBridge()
-  : Node("erp42_racing_serial_bridge"),
+  : Node("erp42_serial_bridge"),
     heartbeat_(0)
 {
     declare_parameters();

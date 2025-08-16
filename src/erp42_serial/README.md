@@ -1,4 +1,4 @@
-# erp42_racing_serial
+# erp42_serial
 ERP42 serial communication package
 
 ## serial_bridge
@@ -7,9 +7,9 @@ ROS2 communication interface and ERP42 PCU serial packet conversion node
 ### Topic / Service Names
 | Communication Interface | Communication Entities | Interface name | Description |
 | --- | --- | --- | --- |
-| Topic | Subscription | **/erp42_racing/control_command** | Control command includes speed, steering, brake |
-| Topic | Publisher | **/erp42_racing/feedback** | Feedback from ERP42 |
-| Servie | Server  | **/erp42_racing/mode_command** | Mode command includes control mode, E-stop, gear |
+| Topic | Subscription | **/erp42/control_command** | Control command includes speed, steering, brake |
+| Topic | Publisher | **/erp42/feedback** | Feedback from ERP42 |
+| Servie | Server  | **/erp42/mode_command** | Mode command includes control mode, E-stop, gear |
 
 ### QoS
 The ModeCommand.srv service is the system default.

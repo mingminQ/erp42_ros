@@ -41,7 +41,7 @@
 namespace erp42
 {
     /**
-     * @brief ROS2 node for serial communication on the ERP42 racing platform.
+     * @brief ROS2 node for serial communication on the ERP42 platform.
      * @details Manages parameter declaration, publishers/subscriptions, and serial port I/O.
      */
     class SerialBridge : public rclcpp::Node
@@ -51,7 +51,7 @@ namespace erp42
 
         /**
          * @brief Default class contructor
-         * @details Initializes the base Node with name "erp42_racing_serial", 
+         * @details Initializes the base Node with name "erp42_serial", 
          *          resets the heartbeat counter to zero.
          */
         SerialBridge();
@@ -113,7 +113,7 @@ namespace erp42
         /** @brief Initializes timers, publishers, subscriptions, and the serial port. */
         void initialize_node();
 
-        /** @brief Declares and retrieves ROS2 parameters for serial and ERP42 racing configuration. */
+        /** @brief Declares and retrieves ROS2 parameters for serial and ERP42 configuration. */
         void declare_parameters();
 
     // "SerialBridge" member variables
@@ -136,7 +136,7 @@ namespace erp42
         std::string port_path_;
         int baud_rate_;
 
-        // ERP42 racing parameters
+        // ERP42 parameters
         double max_speed_;
         double max_steering_rad_;
         double steering_offset_rad_;

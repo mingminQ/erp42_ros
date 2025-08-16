@@ -26,7 +26,7 @@ DEVICES=()
 ERP42="/dev/ttyUSB0"
 if [ -e "$ERP42" ]; then
   DEVICES+=(--device "$ERP42:$ERP42")
-  echo "[ERP42 Racing] ------------------ device mounted"
+  echo "[ERP42] ------------------ device mounted"
 fi
 
 echo -e "\n----------------------------------------------------------------------\n"
