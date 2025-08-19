@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_UTILS_ECXEPTION_H_
-#define ERP42_UTILS_ECXEPTION_H_
+#ifndef ERP42_UTIL_ECXEPTION_HPP_
+#define ERP42_UTIL_ECXEPTION_HPP_
 
 #include <stdexcept>
 #include <string>
@@ -57,4 +57,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif // ERP42_UTILS_ECXEPTION_H_
+#endif // ERP42_UTIL_ECXEPTION_HPP_
