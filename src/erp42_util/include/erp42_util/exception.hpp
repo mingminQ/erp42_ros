@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @file    exception.h
+ * @file    exception.hpp
  * @brief   Exception definition
  * @author  Minkyu Kil
  * @date    2025-07-01

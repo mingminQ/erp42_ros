@@ -22,7 +22,7 @@ float64 speed
 float64 steering
 
 # Braking 
-# ERP42 racing (0 - 100)
+# ERP42 (0 - 150)
 uint8 brake
 
 # Encoder count (-2^31 - 2^31)

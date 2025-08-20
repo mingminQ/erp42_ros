@@ -126,7 +126,7 @@ bool erp42::SerialBridge::receive_feedback()
     steering_raw = 30000 < steering_raw ? steering_raw - 65536 : steering_raw;
     feedback_msg.steering = static_cast<double>(steering_raw) * RX::STEERING_FACTOR;
 
-    // Brake (1-100)
+    // Brake (1-150)
     feedback_msg.brake = rx_packet_[RX::BRAKE];
 
     // Encoder (rad)
@@ -233,8 +233,8 @@ void erp42::SerialBridge::control_command_callback(const erp42_msgs::msg::Contro
     tx_packet_[TX::STEERING_100_1] =  steering_command & 0xff;
     tx_packet_[TX::STEERING_100_0] = (steering_command & 0xff00) >> 8;
 
-    // Brake (0 - 100)
-    uint8_t brake = std::clamp<uint8_t>(msg->brake, 0, 100);
+    // Brake (0 - 150)
+    uint8_t brake = std::clamp<uint8_t>(msg->brake, 0, 150);
     tx_packet_[TX::BRAKE] = brake;
 }
 

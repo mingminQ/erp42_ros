@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @file    erp42_serial_packet.hpp
+ * @file    serial_packet.hpp
  * @brief   ERP42 serial packet byte name wrapper and factors
  * @author  Minkyu Kil
  * @date    2025-06-17
