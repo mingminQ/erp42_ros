@@ -19,7 +19,7 @@ For more information about the package, please read the README.md at the link be
 
 - **ERP42 GUI :** [erp42_gui](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_gui)
 
-# Dependencies
+# Requrements
 - Ubuntu 22.04
 - [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
 - Qt5
