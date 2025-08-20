@@ -4,7 +4,7 @@ ERP42 serial communication package
 ## serial_bridge
 ROS2 communication interface and ERP42 PCU serial packet conversion node 
 
-### How to launch
+### How to execute
 Please enter one of the two commands to execute.  
 ```bash
 $ ros2 launch erp42_serial serial_bridge.launch.py
