@@ -16,7 +16,8 @@ For more information about the package, please read the README.md at the link be
 - **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_serial)
 
 # Requirements
-- ROS2 Humble
+- [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
+
 - Qt5
 ```console
 $ sudo apt-get install -y qtbase5-dev qt5-qmake qtbase5-dev-tools
