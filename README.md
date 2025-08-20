@@ -19,11 +19,12 @@ For more information about the package, please read the README.md at the link be
 
 - **ERP42 GUI :** [erp42_gui](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_gui)
 
-# Requirements
+# Dependencies
+- Ubuntu 22.04
 - [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
-
 - Qt5
-```console
+
+```bash
 $ sudo apt-get install -y qtbase5-dev qt5-qmake qtbase5-dev-tools
 ```
 
