@@ -11,9 +11,13 @@ If you have any suggestions or issues, please contact me using the information b
 # Package informations
 For more information about the package, please read the README.md at the link below.
 
+- **ERP42 ROS2 bringup packages :** [erp42_bringup](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_bringup)
+
 - **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_msgs)
 
 - **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_serial)
+
+- **ERP42 GUI :** [erp42_gui](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_gui)
 
 # Requirements
 - [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
