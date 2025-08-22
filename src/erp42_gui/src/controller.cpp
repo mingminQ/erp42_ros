@@ -47,7 +47,7 @@ using namespace std::chrono_literals;
  */
 erp42::Controller::Controller(QWidget *parent)
   : QDockWidget(parent), 
-    Node("erp42_gui_control")
+    Node("erp42_controller")
 {
     initialize_node();
 }

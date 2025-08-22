@@ -45,7 +45,7 @@ using std::placeholders::_2;
 /**
  * @brief Default class contructor
  * @details Initializes the base Node with name "erp42_serial", 
- *          resets the heartbeat counter to zero.
+ * resets the heartbeat counter to zero.
  */
 erp42::SerialBridge::SerialBridge()
   : Node("erp42_serial_bridge"),
@@ -77,7 +77,7 @@ erp42::SerialBridge::~SerialBridge()
 /**
  * @brief Receives and publishes feedback from the serial port.
  * @details Validates packet structure (STX/ETX), parses raw bytes into a Feedback message, 
- *          and publishes it to the feedback topic.
+ * and publishes it to the feedback topic.
  * @return 'true' if the packet was received, parsed, and published successfully; 'false' otherwise.
  */
 bool erp42::SerialBridge::receive_feedback()
@@ -113,11 +113,11 @@ bool erp42::SerialBridge::receive_feedback()
     feedback_msg.gear = rx_packet_[RX::GEAR];
 
     // Speed (m/s)
-    int rpm_raw = 0;
-    rpm_raw |= static_cast<int>((rx_packet_[RX::SPEED_RPM_0])      & 0xff  );
-    rpm_raw |= static_cast<int>((rx_packet_[RX::SPEED_RPM_1] << 8) & 0xff00);
-    rpm_raw = 30000 < rpm_raw ? rpm_raw - 65536 : rpm_raw;
-    feedback_msg.speed = static_cast<double>(rpm_raw) * RX::SPEED_FACTOR;
+    int speed_raw = 0;
+    speed_raw |= static_cast<int>((rx_packet_[RX::SPEED_RAW_0])      & 0xff  );
+    speed_raw |= static_cast<int>((rx_packet_[RX::SPEED_RAW_1] << 8) & 0xff00);
+    speed_raw  = 30000 < speed_raw ? speed_raw - 65536 : speed_raw;
+    feedback_msg.speed = static_cast<double>(speed_raw) * RX::SPEED_FACTOR;
 
     // Steering (rad)
     int steering_raw = 0;
@@ -135,7 +135,7 @@ bool erp42::SerialBridge::receive_feedback()
     pulse_count |= static_cast<int>((rx_packet_[RX::ENCODER_1] << 8)  & 0xff00    );
     pulse_count |= static_cast<int>((rx_packet_[RX::ENCODER_2] << 16) & 0xff0000  );
     pulse_count |= static_cast<int>((rx_packet_[RX::ENCODER_3] << 24) & 0xff000000);
-    feedback_msg.encoder_count = static_cast<double>(pulse_count);
+    feedback_msg.encoder_count = -1.0 * static_cast<double>(pulse_count);
 
     // Heartbeat
     feedback_msg.heartbeat = rx_packet_[RX::HEARTBEAT];
@@ -218,10 +218,10 @@ void erp42::SerialBridge::mode_command_callback(
 void erp42::SerialBridge::control_command_callback(const erp42_msgs::msg::ControlCommand::SharedPtr msg)
 {
     // Speed (m/s to motor raw command)
-    double speed = msg->speed < 0 ? 0 : msg->speed;
-    speed = max_speed_ < speed ? max_speed_ : speed;
+    double speed_raw = msg->speed < 0 ? 0 : msg->speed;
+    speed_raw = max_speed_ < speed_raw ? max_speed_ : speed_raw;
 
-    uint16_t speed_command = static_cast<uint16_t>(speed * TX::SPEED_FACTOR);
+    uint16_t speed_command = static_cast<uint16_t>(speed_raw * TX::SPEED_FACTOR);
     tx_packet_[TX::SPEED_RAW_1] =  speed_command & 0xff;
     tx_packet_[TX::SPEED_RAW_0] = (speed_command & 0xff00) >> 8;
 

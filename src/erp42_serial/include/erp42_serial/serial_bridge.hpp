@@ -52,7 +52,7 @@ namespace erp42
         /**
          * @brief Default class contructor
          * @details Initializes the base Node with name "erp42_serial", 
-         *          resets the heartbeat counter to zero.
+         * resets the heartbeat counter to zero.
          */
         SerialBridge();
 
@@ -67,7 +67,7 @@ namespace erp42
         /**
          * @brief Receives and publishes feedback from the serial port.
          * @details Validates packet structure (STX/ETX), parses raw bytes into a Feedback message, 
-         *          and publishes it to the feedback topic.
+         * and publishes it to the feedback topic.
          * @return 'true' if the packet was received, parsed, and published successfully; 'false' otherwise.
          */
         bool receive_feedback();

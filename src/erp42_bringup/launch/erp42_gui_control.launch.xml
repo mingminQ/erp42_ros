@@ -12,7 +12,7 @@
     <arg name = "steering_offset_deg" default = "0.00"  />
 
     <!-- GUI controller -->
-    <node pkg = "erp42_gui" exec = "controller" name = "erp42_controller" output = "screen"/>
+    <node pkg = "erp42_gui" exec = "controller" output = "screen"/>
 
     <!-- ERP42 serial driver -->
     <node pkg = "erp42_serial" exec = "serial_bridge" name = "erp42_serial_bridge" output = "screen">

@@ -41,7 +41,7 @@ erp42::Timer::Timer()
 /**
  * @brief Starts the timing interval.
  * @details Records the current time using std::chrono::steady_clock::now() 
- *          and marks the timer as started.
+ * and marks the timer as started.
  */
 void erp42::Timer::start()
 {
@@ -52,7 +52,7 @@ void erp42::Timer::start()
 /**
  * @brief Ends the timing interval and logs the elapsed time.
  * @details Computes elapsed time since the last start() call in microseconds, converts it
- *          to seconds as a double, and logs it with INFO level.
+ * to seconds as a double, and logs it with INFO level.
  */
 void erp42::Timer::end()
 {

@@ -34,7 +34,7 @@ namespace erp42
     /**
      * @brief   Lightweight stopwatch for measuring wall-clock durations.
      * @details Uses std::chrono::steady_clock to measure elapsed time 
-     *          between start() and end()
+     * between start() and end()
      */
     class Timer
     {
@@ -56,14 +56,14 @@ namespace erp42
         /**
          * @brief Starts the timing interval.
          * @details Records the current time using std::chrono::steady_clock::now() 
-         *          and marks the timer as started.
+         * and marks the timer as started.
          */
         void start();
 
         /**
          * @brief Ends the timing interval and logs the elapsed time.
          * @details Computes elapsed time since the last start() call in microseconds, converts it
-         *          to seconds as a double, and logs it with INFO level.
+         * to seconds as a double, and logs it with INFO level.
          */
         void end();
 

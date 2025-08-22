@@ -13,11 +13,11 @@ def generate_launch_description():
 
     # ERP42 parameters
     max_speed           = DeclareLaunchArgument('max_speed'          , default_value = '7.00'  , description = 'Maximum speed (m/s)'         )
-    max_steering_deg    = DeclareLaunchArgument('max_steering_deg'   , default_value = '28.00' , description = 'Maximum steering angle (deg)')
+    max_steering_deg    = DeclareLaunchArgument('max_steering_deg'   , default_value = '25.00' , description = 'Maximum steering angle (deg)')
     steering_offset_deg = DeclareLaunchArgument('steering_offset_deg', default_value = '0.00'  , description = 'Steering offset (deg)'       )
 
     # GUI controller
-    erp42_controller = Node(package = 'erp42_gui', executable = 'controller', name = 'erp42_controller', output = 'screen')
+    erp42_controller = Node(package = 'erp42_gui', executable = 'controller', output = 'screen')
 
     # ERP42 serial driver
     erp42_serial_bridge = Node(package = 'erp42_serial', executable = 'serial_bridge', name = 'erp42_serial_bridge', output = 'screen',

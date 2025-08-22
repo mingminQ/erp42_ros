@@ -71,8 +71,8 @@ namespace erp42
             CONTROL_MODE   = 3,
             EMERGENCY_STOP = 4,
             GEAR           = 5,
-            SPEED_RPM_0    = 6,
-            SPEED_RPM_1    = 7,
+            SPEED_RAW_0    = 6,
+            SPEED_RAW_1    = 7,
             STEERING_100_0 = 8,
             STEERING_100_1 = 9,
             BRAKE          = 10,
@@ -91,7 +91,7 @@ namespace erp42
         static constexpr double SPEED_FACTOR {0.02777777777};
 
         // Raw byte command -> Steering (rad)
-        static constexpr double STEERING_FACTOR {-0.00024582102};
+        static constexpr double STEERING_FACTOR {0.00024582102};
 
     } // namespace RX
 
