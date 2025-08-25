@@ -218,10 +218,10 @@ void erp42::SerialBridge::mode_command_callback(
 void erp42::SerialBridge::control_command_callback(const erp42_msgs::msg::ControlCommand::SharedPtr msg)
 {
     // Speed (m/s to motor raw command)
-    double speed_raw = msg->speed < 0 ? 0 : msg->speed;
-    speed_raw = max_speed_ < speed_raw ? max_speed_ : speed_raw;
+    double speed = msg->speed < 0 ? 0 : msg->speed;
+    speed = max_speed_ < speed ? max_speed_ : speed;
 
-    uint16_t speed_command = static_cast<uint16_t>(speed_raw * TX::SPEED_FACTOR);
+    uint16_t speed_command = static_cast<uint16_t>(speed * TX::SPEED_FACTOR);
     tx_packet_[TX::SPEED_RAW_1] =  speed_command & 0xff;
     tx_packet_[TX::SPEED_RAW_0] = (speed_command & 0xff00) >> 8;
 
