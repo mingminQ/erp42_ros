@@ -20,7 +20,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # --------------------------------------------------------------------------------------------------
-# ...
+# Enable Qt auto-processing and set UIC
 # --------------------------------------------------------------------------------------------------
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
