@@ -25,7 +25,8 @@ For more information about the package, please read the README.md at the link be
 - Qt5
 
 ```markdown
-###Qt5
+### Qt5 설치
+Qt5 개발 도구를 설치합니다:
 ```bash
 $ sudo apt-get install -y qtbase5-dev qt5-qmake qtbase5-dev-tools
 
