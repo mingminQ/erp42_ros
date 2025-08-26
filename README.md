@@ -24,11 +24,10 @@ For more information about the package, please read the README.md at the link be
 - [ROS2 Humble](https://docs.ros.org/en/humble/Installation.html)
 - Qt5
 
-```markdown
-### Qt5 설치
-Qt5 개발 도구를 설치합니다:
+### Qt5
 ```bash
 $ sudo apt-get install -y qtbase5-dev qt5-qmake qtbase5-dev-tools
+```
 
 
 
