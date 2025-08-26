@@ -28,7 +28,7 @@ For more information about the package, please read the README.md at the link be
 ###Qt5
 ```bash
 $ sudo apt-get install -y qtbase5-dev qt5-qmake qtbase5-dev-tools
-```
+
 
 
 # TODO
