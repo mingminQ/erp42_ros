@@ -2,8 +2,6 @@
 ![ROS 2 Humble](https://img.shields.io/badge/ROS%202-Humble-87CEEB?logo=ros)
 ![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?logo=c%2B%2B)
 
-<br/><br/>
-
 # ERP42 ROS2 packages
 If you have any suggestions or issues, please contact me using the information below.  
 
