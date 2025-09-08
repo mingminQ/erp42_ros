@@ -1,0 +1,11 @@
+erp42_serial_bridge:
+  ros__parameters:
+
+    # Serial port settings
+    port_path: "/dev/ttyUSB0"
+    baud_rate: 115200
+
+    # ERP42 parameters
+    max_speed_mps      :  7.00 # m/s
+    max_steering_deg   : 25.00 # deg
+    steering_offset_deg:  0.00 # deg

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+
+    <world name="empty">
+
+        <!-- State services/topics publisher (WorldPlugin) -->
+            <plugin name="gazebo_ros_properties" filename="libgazebo_ros_properties.so">
+            <ros>
+                <namespace>/erp42</namespace>
+            </ros>
+        </plugin>
+
+        <include>
+            <uri>model://ground_plane</uri>
+        </include>
+
+        <include>
+            <uri>model://sun</uri>
+        </include>
+
+        <physics name="default_physics" type="ode">
+            <max_step_size>0.001</max_step_size>
+            <real_time_update_rate>1000</real_time_update_rate>
+        </physics>
+
+    </world>
+
+</sdf>

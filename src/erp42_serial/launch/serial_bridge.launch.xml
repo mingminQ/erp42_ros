@@ -1,0 +1,16 @@
+<!-- serial_bridge.launch.xml -->
+ 
+<launch>
+
+    <!-- Parameters -->
+    <arg name = "parameter_file" default = "$(find-pkg-share erp42_serial)/config/serial_bridge.param.yaml"/>
+
+    <!-- ERP42 serial driver -->
+    <node pkg = "erp42_serial" exec = "serial_bridge" name = "erp42_serial_bridge" output = "screen">
+
+        <!-- Parameters -->
+        <param from="$(var parameter_file)"/>
+
+    </node>
+
+</launch>

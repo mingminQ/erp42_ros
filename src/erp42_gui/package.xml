@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package format="3">
+
+    <!-- Package imformation -->
+    <name>erp42_gui</name>
+    <version>0.0.0</version>
+    <description>ERP42 ROS2 GUI package</description>
+
+    <!-- Maintainer and author -->
+    <maintainer email="mgkilprg@gmail.com">Minkyu Kil</maintainer>
+    <author>Minkyu Kil</author>
+
+    <!-- License information -->
+    <license>Apache-2.0</license>
+
+    <!-- Build tool : ament_cmake -->
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <!-- Dependencies -->
+    <depend>rclcpp    </depend>
+    <depend>erp42_msgs</depend>
+    <depend>erp42_util</depend>
+    <depend>Qt5Core   </depend>
+    <depend>Qt5Widgets</depend>
+
+    <!-- Export build system information -->
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+
+</package>

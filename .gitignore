@@ -1,0 +1,59 @@
+# Build artifacts
+build/
+install/
+log/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+
+# Temporary files
+tmp/
+*.tmp
+*.temp
+*.log
+*.out
+*.pid
+*.lock
+
+# Package manager files
+node_modules/
+.npm/
+
+# ROS specific ignores
+*.bag
+*.db3
+*.mcap
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Core dumps and debugging
+core
+*.core
+*.gdb_history
