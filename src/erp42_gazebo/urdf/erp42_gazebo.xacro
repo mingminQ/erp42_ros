@@ -1,13 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="erp42">
 
-    <!-- ERP42 vehicle descriptions -->
+    <!-- Include files -->
     <xacro:include filename="$(find erp42_description)/urdf/erp42_model.xacro"/>
-
-        <!-- Gazebo control descriptions -->
-        <xacro:include filename="$(find erp42_gazebo)/urdf/erp42_gazebo_control.xacro"/>
-        <xacro:erp42_model/>
-
+    <xacro:include filename="$(find erp42_gazebo)/urdf/erp42_gazebo_control.xacro"/>
+    
+    <!-- ERP42 model description and gazebo control settings -->
+    <xacro:erp42_model/>
     <xacro:erp42_gazebo_control/>
 
 </robot>
