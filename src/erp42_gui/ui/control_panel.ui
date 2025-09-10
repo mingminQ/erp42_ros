@@ -437,7 +437,7 @@
      <rect>
       <x>10</x>
       <y>490</y>
-      <width>160</width>
+      <width>491</width>
       <height>20</height>
      </rect>
     </property>
@@ -445,9 +445,9 @@
      <string>Activate Control Panel</string>
     </property>
    </widget>
+   <zorder>activate_control_panel_checkbox</zorder>
    <zorder>groupBox_8</zorder>
    <zorder>groupBox_4</zorder>
-   <zorder>activate_control_panel_check_box</zorder>
   </widget>
  </widget>
  <resources/>
