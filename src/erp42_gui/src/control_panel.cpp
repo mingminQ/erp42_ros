@@ -294,8 +294,10 @@ void erp42::ControlPanel::initialize_node()
     control_panel_widget_->setupUi(this);
 
     // Mode apply button
-    QObject::connect(control_panel_widget_->apply_mode_button, &QPushButton::clicked, this, 
-        &ControlPanel::send_mode_command);
+    QObject::connect(
+        control_panel_widget_->apply_mode_button, &QPushButton::clicked, this, 
+        &ControlPanel::send_mode_command
+    );
 
     // Bond sliders and spin boxes
     bind_slider_spin_box<QDoubleSpinBox, double>(

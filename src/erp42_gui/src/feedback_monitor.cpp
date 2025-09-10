@@ -29,7 +29,6 @@
 #include "ui_feedback_monitor.h"
 
 #include <QSignalBlocker>
-#include <QSignalBlocker>
 #include <QMessageBox>
 #include <QTimer>
 

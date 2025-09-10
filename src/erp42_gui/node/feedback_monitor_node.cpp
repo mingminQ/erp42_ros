@@ -77,18 +77,18 @@ int main(int argc, char *argv[])
     main_window.show();
 
     // ROS executor
-    rclcpp::executors::SingleThreadedExecutor exececutor;
-    exececutor.add_node(feedback_monitor->get_node_base_interface());
+    rclcpp::executors::SingleThreadedExecutor executor;
+    executor.add_node(feedback_monitor->get_node_base_interface());
     std::thread ros_thread(
-        [&exececutor]() 
+        [&executor]() 
         {
-            exececutor.spin(); 
+            executor.spin(); 
         }
     );
 
     // Exit process
     int exit_code = app.exec();
-    exececutor.cancel();
+    executor.cancel();
     if(ros_thread.joinable())
     {
         ros_thread.join();
