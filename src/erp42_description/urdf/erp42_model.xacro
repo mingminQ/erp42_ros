@@ -12,11 +12,6 @@
         <!-- Constants -->
         <xacro:property name="PI" value="3.14159"/>
 
-        <!-- Base dimensions -->
-        <xacro:property name="base_x_size" value="2.020" />
-        <xacro:property name="base_y_size" value="1.160" />
-        <xacro:property name="base_z_size" value="0.550" />
-
         <!-- Wheel geometry (from 175/60R13) -->
         <xacro:property name="wheel_length" value="0.175" />
         <xacro:property name="wheel_radius" value="0.270" />
@@ -48,6 +43,20 @@
                 <inertia ixx="20.43" ixy="0.584" ixz="-0.191" iyy="54.197" iyz="-0.2449" izz="72.2588"/>
             </inertial>
 
+            <!-- Chassis -->
+            <collision>
+                <origin xyz="0.02 0 0" rpy="0 0 0" />
+                <geometry>
+                    <box size="1.580 0.950 0.316"/>
+                </geometry>
+            </collision>
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find erp42_description)/meshes/erp42_chassis.dae"  scale="0.001 0.001 0.001"/>
+                </geometry>
+            </visual>
+
             <!-- Front bumper -->
             <collision>
                 <origin xyz="${wheelbase/2 + bumper_x_size/2 + 0.290} 0 ${-bumper_z_size/2}" rpy="0 0 0" />
@@ -73,14 +82,6 @@
                 <origin xyz="${-wheelbase/2 - bumper_x_size/2 - 0.250} 0 ${-bumper_z_size/2}" rpy="0 0 ${PI}" />
                 <geometry>
                     <mesh filename="file://$(find erp42_description)/meshes/erp42_bumper.dae"  scale="0.001 0.001 0.001"/>
-                </geometry>
-            </visual>
-
-            <!-- Chassis -->
-            <visual>
-                <origin xyz="0 0 0" rpy="0 0 0" />
-                <geometry>
-                    <mesh filename="file://$(find erp42_description)/meshes/erp42_chassis.dae"  scale="0.001 0.001 0.001"/>
                 </geometry>
             </visual>
 
