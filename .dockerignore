@@ -3,21 +3,6 @@ build/
 install/
 log/
 
-# Git repository
-.git/
-.gitignore
-.gitmodules
-
-# GitHub workflows
-.github/
-
-# Documentation and assets
-README.md
-LICENSE
-*.md
-assets/
-docs/
-
 # IDE and editor files
 .vscode/
 .idea/
@@ -53,12 +38,6 @@ tmp/
 *.out
 *.pid
 *.lock
-
-# Docker related
-docker/
-Dockerfile*
-docker-compose*.yml
-.dockerignore
 
 # Package manager files
 node_modules/
