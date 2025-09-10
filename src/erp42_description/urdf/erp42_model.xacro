@@ -152,7 +152,7 @@
             <dynamics damping="0.1" friction="0.1"/>
         </joint>
 
-        <!-- front_left_steering_hub to front_right_wheel  -->
+        <!-- front_left_steering_hub to front_right_wheel -->
         <joint name="front_left_wheel_joint" type="continuous">
             <origin xyz="0 0 0" rpy="0 0 0" />
             <parent link="front_left_steering_hub"/>
@@ -160,7 +160,7 @@
             <axis xyz="0 1 0"/>
         </joint>
 
-        <!-- front_right_steering_hub to front_right_wheel  -->
+        <!-- front_right_steering_hub to front_right_wheel -->
         <joint name="front_right_wheel_joint" type="continuous">
             <origin xyz="0 0 0" rpy="${PI} 0 0" />
             <parent link="front_right_steering_hub"/>
@@ -168,7 +168,7 @@
             <axis xyz="0 -1 0"/>
         </joint>
 
-        
+        <!-- base_link to rear_left_wheel -->
         <joint name="rear_left_wheel_joint" type="continuous">
             <origin xyz="${-wheelbase/2} ${track/2} 0" rpy="0 0 0" />
             <parent link="base_link"/>

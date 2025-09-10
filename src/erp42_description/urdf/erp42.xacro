@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="erp42">
 
-    <!-- ERP42 model description macro -->
+    <!-- Include files -->
     <xacro:include filename="$(find erp42_description)/urdf/erp42_model.xacro"/>
+
+    <!-- ERP42 model description macro -->
     <xacro:erp42_model/>
 
 </robot>
