@@ -8,7 +8,7 @@ If you have any suggestions or issues, please contact me using the information b
 - **Author**  : Minkyu Kil (Sejong Univ. AIV, Graduation : 2026.02)
 - **Contact** : mgkilprg@gmail.com
 
-<br/><br/>
+<br/>
 
 # Package overview
 For more information about the package, please read the README.md at the link below.
@@ -25,7 +25,7 @@ For more information about the package, please read the README.md at the link be
 
 - **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_serial)
 
-<br/><br/>
+<br/>
 
 # Dependencies
 
