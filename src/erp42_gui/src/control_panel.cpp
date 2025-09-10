@@ -155,6 +155,11 @@ void erp42::ControlPanel::bind_slider_spin_box<QSpinBox, int>(
  */
 void erp42::ControlPanel::send_mode_command()
 {
+    if(!control_panel_widget_->activate_control_panel_checkbox->isChecked())
+    {
+        return;
+    }
+
     if(!mode_command_client_)
     {
         ERP42_ERROR("ControlPanel::send_mode_command() Service client is not initialized.");
@@ -237,6 +242,11 @@ void erp42::ControlPanel::send_mode_command()
  */
 void erp42::ControlPanel::control_command_timer_callback()
 {
+    if(!control_panel_widget_->activate_control_panel_checkbox->isChecked())
+    {
+        return;
+    }
+
     // Speed (m/s)
     control_command_msg_.speed = control_panel_widget_->speed_spin_box->value();
 

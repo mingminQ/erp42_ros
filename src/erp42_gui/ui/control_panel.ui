@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>510</width>
-    <height>510</height>
+    <height>540</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -19,7 +19,7 @@
   <property name="maximumSize">
    <size>
     <width>510</width>
-    <height>510</height>
+    <height>540</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -432,8 +432,22 @@
      </widget>
     </widget>
    </widget>
+   <widget class="QCheckBox" name="activate_control_panel_checkbox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>490</y>
+      <width>160</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Activate Control Panel</string>
+    </property>
+   </widget>
    <zorder>groupBox_8</zorder>
    <zorder>groupBox_4</zorder>
+   <zorder>activate_control_panel_check_box</zorder>
   </widget>
  </widget>
  <resources/>
