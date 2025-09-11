@@ -12,7 +12,7 @@ $ ros2 run erp42_gui feedback_monitor
 
 <div align="center">
 
-  <img src="./assets/feedback_monitor.png" width="100%">
+  <img src="./assets/feedback_monitor.png" width="75%">
   <br/>
   <figcaption>feedback_monitor</figcaption>
 
