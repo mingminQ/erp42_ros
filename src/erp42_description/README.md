@@ -11,6 +11,13 @@ $ ros2 launch erp42_dscription vehicle_description.launch.py
 
 </div>
 
+<div align="center">
+
+  <img src="./assets/transform_tree.png" width="50%">
+  <figcaption>Transforms being broadcast</figcaption>
+
+</div>
+
 All settings are macroized in the **.xacro** file, so you can use them as follows:
 ``` xml
 <!-- Include files -->
