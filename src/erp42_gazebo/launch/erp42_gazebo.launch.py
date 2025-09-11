@@ -25,7 +25,7 @@ def generate_launch_description():
     # Rviz configuration file
     rviz_config_file = DeclareLaunchArgument('rviz_config_file',
         default_value = PathJoinSubstitution([
-            FindPackageShare('erp42_description'), 'rviz', 'vehicle_description.rviz'
+            FindPackageShare('erp42_gazebo'), 'rviz', 'erp42_gazebo.rviz'
         ])
     )
 
