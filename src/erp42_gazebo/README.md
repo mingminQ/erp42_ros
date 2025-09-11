@@ -6,7 +6,7 @@ $ ros2 launch erp42_gazebo erp42_gazebo.launch.py
 
 <div align="center">
 
-  <img src="./assets/erp42_gazebo.png" width="50%">
+  <img src="./assets/erp42_gazebo.png" width="100%">
   <br/>
   <figcaption>ERP42 Gazebo simulation</figcaption>
 
