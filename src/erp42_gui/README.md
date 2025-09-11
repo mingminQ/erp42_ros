@@ -13,6 +13,7 @@ $ ros2 run erp42_gui feedback_monitor
 <div align="center">
 
   <img src="./assets/feedback_monitor.png" width="35%">
+  <br/>
   <figcaption>feedback_monitor</figcaption>
 
 </div>
@@ -28,11 +29,13 @@ $ ros2 run erp42_gui control_panel
 
 <div align="center">
   <img src="./assets/control_panel.png" width="50%">
+  <br/>
   <figcaption>control_panel</figcaption>
 
   <br/>
 
   <img src="./assets/mode_command_error.png">
+  <br/>
   <figcaption>
     This message appears when you click the Apply button if the service server handling **mode_command** is unavailable.
     </br>

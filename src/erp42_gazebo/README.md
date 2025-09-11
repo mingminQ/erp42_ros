@@ -7,6 +7,7 @@ $ ros2 launch erp42_gazebo erp42_gazebo.launch.py
 <div align="center">
 
   <img src="./assets/erp42_gazebo.png" width="50%">
+  <br/>
   <figcaption>ERP42 Gazebo simulation</figcaption>
 
 </div>
@@ -23,6 +24,8 @@ While no separate world file or sensor file is provided, all settings for using 
 <xacro:erp42_model/>
 <xacro:erp42_gazebo_control/>
 ```
+
+<br/>
 
 The world file must contain the following items. Without these, speed and steering angle control will work fine, but the brakes will not function.
 ``` xml
