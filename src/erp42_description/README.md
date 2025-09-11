@@ -22,7 +22,7 @@ $ ros2 launch erp42_dscription vehicle_description.launch.py
 
 </div>
 
-<br/>
+<br/><br/>
 
 All settings are macroized in the **.xacro** file, so you can use them as follows:
 ``` xml
