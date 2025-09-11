@@ -112,7 +112,7 @@ void erp42::GazeboBridge::joint_state_callback(const sensor_msgs::msg::JointStat
 void erp42::GazeboBridge::control_command_callback(const erp42_msgs::msg::ControlCommand::SharedPtr msg)
 {
     speed_command_    = std::clamp(msg->speed, -max_speed_mps_, max_speed_mps_);
-    steering_command_ = std::clamp(msg->steering, -max_steering_rad_, max_steering_rad_) + steering_offset_rad_;
+    steering_command_ = std::clamp(msg->steering + steering_offset_rad_, -max_steering_rad_, max_steering_rad_);
     brake_command_    = msg->brake;
 
     // Emergency stop or Manual mode
@@ -127,6 +127,7 @@ void erp42::GazeboBridge::control_command_callback(const erp42_msgs::msg::Contro
     if(gear_ == erp42_msgs::srv::ModeCommand::Request::GEAR_REVERSE)
     {
         speed_command_ = -speed_command_;
+        steering_command_ = -steering_command_;
     } 
     else if(gear_ == erp42_msgs::srv::ModeCommand::Request::GEAR_NEUTRAL) 
     {
