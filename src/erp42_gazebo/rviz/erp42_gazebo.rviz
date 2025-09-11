@@ -6,7 +6,6 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /RobotModel1
       Splitter Ratio: 0.46889951825141907
     Tree Height: 1272
   - Class: rviz_common/Selection
@@ -79,22 +78,21 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          base_link:
-            chassis:
-              {}
-            front_left_steering_hub:
-              front_left_wheel:
-                {}
-            front_right_steering_hub:
-              front_right_wheel:
-                {}
-            rear_left_wheel:
-              {}
-            rear_right_wheel:
-              {}
         odom:
-          {}
+          base_footprint:
+            base_link:
+              chassis:
+                {}
+              front_left_steering_hub:
+                front_left_wheel:
+                  {}
+              front_right_steering_hub:
+                front_right_wheel:
+                  {}
+              rear_left_wheel:
+                {}
+              rear_right_wheel:
+                {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -182,7 +180,7 @@ Visualization Manager:
           Value: true
         Value: false
       Enabled: true
-      Keep: 100
+      Keep: 1
       Name: Odometry
       Position Tolerance: 0.10000000149011612
       Shape:
@@ -192,7 +190,7 @@ Visualization Manager:
         Color: 255; 25; 0
         Head Length: 0.30000001192092896
         Head Radius: 0.10000000149011612
-        Shaft Length: 1
+        Shaft Length: 1.5
         Shaft Radius: 0.05000000074505806
         Value: Arrow
       Topic:
@@ -206,7 +204,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_footprint
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -249,25 +247,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 7.068334102630615
+      Distance: 10
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.3099229335784912
-        Y: -0.19932547211647034
-        Z: 0.5488417148590088
+        X: 0
+        Y: 0
+        Z: 0
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9547967314720154
-      Target Frame: <Fixed Frame>
+      Pitch: 0.9353981018066406
+      Target Frame: base_footprint
       Value: Orbit (rviz)
-      Yaw: 3.7653985023498535
+      Yaw: 3.700404167175293
     Saved: ~
 Window Geometry:
   Displays:
