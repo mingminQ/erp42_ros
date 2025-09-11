@@ -12,7 +12,7 @@ $ ros2 launch erp42_dscription vehicle_description.launch.py
 
 </div>
 
-<br/>
+<br/><br/>
 
 <div align="center">
 

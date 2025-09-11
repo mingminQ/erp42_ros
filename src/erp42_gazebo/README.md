@@ -12,7 +12,7 @@ $ ros2 launch erp42_gazebo erp42_gazebo.launch.py
 
 </div>
 
-<br/>
+<br/><br/>
 
 While no separate world file or sensor file is provided, all settings for using the ERP42 with Gazebo are macroized in the **.xacro** file, so you can use them as follows:
 ``` xml

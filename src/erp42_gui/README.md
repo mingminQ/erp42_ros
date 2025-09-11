@@ -32,7 +32,7 @@ $ ros2 run erp42_gui control_panel
   <br/>
   <figcaption>control_panel</figcaption>
 
-  <br/>
+  <br/><br/>
 
   <img src="./assets/mode_command_error.png">
   <br/>
