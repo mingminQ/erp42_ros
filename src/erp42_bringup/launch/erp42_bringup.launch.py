@@ -18,8 +18,7 @@ def generate_launch_description():
         ])
     )
 
-    # GUI option : Feedback monitor
-    view_feedback_monitor      = DeclareLaunchArgument('view_feedback_monitor'     , default_value = 'false')
+    # GUI option
     view_control_panel         = DeclareLaunchArgument('view_control_panel'        , default_value = 'false')
 
     # ERP42 descriptions
@@ -47,15 +46,6 @@ def generate_launch_description():
         name       = 'erp42_serial_bridge', 
         output     = 'screen',
         parameters = [{LaunchConfiguration('erp42_bringup_parameter_file')}]
-    )
-
-
-    # Feedback monitor GUI
-    erp42_feedback_monitor = Node(
-        package    = 'erp42_gui', 
-        executable = 'feedback_monitor', 
-        output     = 'screen',
-        condition  = IfCondition(LaunchConfiguration('view_feedback_monitor'))
     )
 
     # Control panel GUI
@@ -99,7 +89,6 @@ def generate_launch_description():
     return LaunchDescription([
 
         erp42_bringup_parameter_file,
-        view_feedback_monitor,
         view_control_panel,
         launch_vehicle_description,
         launch_rviz,
@@ -107,7 +96,6 @@ def generate_launch_description():
         rviz_config_file,
 
         erp42_serial_bridge,
-        erp42_feedback_monitor,
         erp42_control_panel,
         robot_state_publisher,
         joint_state_publisher,
