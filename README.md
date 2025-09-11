@@ -36,16 +36,16 @@ https://docs.ros.org/en/humble/Installation.html
 
 **Qt5**
 ```bash
+# Already included in ros-humble-desktop
 $ sudo apt-get install -y \
-  ...                     \
-  ...                     \
-  ...
+  qtbase5-dev             \
+  qttools5-dev-tools
 ```
 
-**Gazebo Classic**
+**Gazebo**
 ```bash
 $ sudo apt-get install -y \
-  ...                     \
-  ...                     \
-  ...
+  gazebo                  \
+  ros-humble-gazebo-pkgs  \
+  ros-humble-xacro
 ```
