@@ -39,7 +39,7 @@ $ ros2 run erp42_gui control_panel
   <figcaption>
     This message appears when you click the Apply button if the service server handling **mode_command** is unavailable.
     </br>
-    Either **erp42_serial_bridge** or **erp42_gazebo_bridge** must be running.
+    Either erp42_serial_bridge or erp42_gazebo_bridge must be running.
   </figcaption>
 
 </div>
