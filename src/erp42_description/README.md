@@ -6,7 +6,7 @@ $ ros2 launch erp42_dscription vehicle_description.launch.py
 
 <div align="center">
 
-  <img src="./assets/vehicle_description.png" width="50%">
+  <img src="./assets/vehicle_description.png" width="100%">
   <br/>
   <figcaption>ERP42 description in .xacro</figcaption>
 
@@ -16,7 +16,7 @@ $ ros2 launch erp42_dscription vehicle_description.launch.py
 
 <div align="center">
 
-  <img src="./assets/transform_tree.png" width="50%">
+  <img src="./assets/transform_tree.png" width="100%">
   <br/>
   <figcaption>Transforms being broadcast</figcaption>
 
