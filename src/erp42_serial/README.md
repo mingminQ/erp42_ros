@@ -7,9 +7,7 @@ ERP42 serial communication package
 ROS2 communication interface and ERP42 PCU serial packet conversion node 
 
 ```bash
-# ...
 $ ros2 launch erp42_serial serial_bridge.launch.py
-$ ros2 launch erp42_serial serial_bridge.launch.xml
 ```
 
 ### Topic / Service Names
