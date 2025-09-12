@@ -1,5 +1,5 @@
-[![ubuntu22][ubuntu22-badge]][ubuntu22]
-![ROS 2 Humble](https://img.shields.io/badge/ROS%202-Humble-87CEEB?logo=ros)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![ROS](https://img.shields.io/badge/ros-%230A0FF9.svg?style=for-the-badge&logo=ros&logoColor=white)
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
 # ERP42 ROS2 packages
