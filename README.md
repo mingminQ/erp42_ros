@@ -1,8 +1,7 @@
 ![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu_22.04-%E95420?style=flat-square&logo=ubuntu&logoColor=white)
 ![ROS Humble](https://img.shields.io/badge/ROS_Humble-%22314E?style=flat-square&logo=ros&logoColor=white)
-
-![Qt](https://img.shields.io/badge/Qt-%23217346.svg?style=for-the-badge&logo=Qt&logoColor=white)
-![C++](https://img.shields.io/badge/C++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![Qt](https://img.shields.io/badge/Qt-%#41CD52?style=flat-square&logo=Qt&logoColor=white)
+![C++](https://img.shields.io/badge/C++-%#00599C.svg?style=flat-square&logo=cpp&logoColor=white)
 
 # ERP42 ROS2 packages
 If you have any suggestions or issues, please contact me using the information below.  
