@@ -8,7 +8,7 @@
 
     <!-- Maintainer and author -->
     <maintainer email="mgkilprg@gmail.com">Minkyu Kil</maintainer>
-    <author>Minkyu Kil</author>
+    <author email="mgkilprg@gmail.com">Minkyu Kil</author>
 
     <!-- License information -->
     <license>Apache-2.0</license>
