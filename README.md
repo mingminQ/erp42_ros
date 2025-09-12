@@ -1,4 +1,4 @@
-![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-22.04-E95420?logo=ubuntu)
+[![ubuntu22][ubuntu22-badge]][ubuntu22]
 ![ROS 2 Humble](https://img.shields.io/badge/ROS%202-Humble-87CEEB?logo=ros)
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 
