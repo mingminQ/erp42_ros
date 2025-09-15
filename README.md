@@ -4,7 +4,7 @@
 ![C++](https://img.shields.io/badge/C++-%2300599C?style=flat&logo=c%2B%2B&logoColor=white)
 
 
-# ERP42 ROS2 packages
+# ERP42 ROS2 Humble packages
 If you have any suggestions or issues, please contact me using the information below.  
 
 - **Author**  : Minkyu Kil (Sejong Univ. AIV, Graduation : 2026.02)
