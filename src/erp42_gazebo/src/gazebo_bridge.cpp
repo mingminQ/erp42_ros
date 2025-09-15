@@ -167,7 +167,7 @@ void erp42::GazeboBridge::control_command_callback(const erp42_msgs::msg::Contro
  * - request->manual_mode    : true if manual (operator) mode is active.
  * - request->emergency_stop : true to request immediate safe stop.
  * - request->gear           : enum (e.g., GEAR_DRIVE / GEAR_REVERSE / GEAR_NEUTRAL).
- * @param  response Shared pointer to ModeCommand response. Sets response->result to true on accept.
+ * @param  response Shared pointer to ModeCommand response. Sets response->success to true on accept.
  * @details
  * - This callback only *stores* the requested mode/gear into internal state. The actual effects
  *   (e.g., zeroing speed, applying full brake) should be enforced by the control loop that reads
@@ -181,10 +181,10 @@ void erp42::GazeboBridge::mode_command_callback(
     const std::shared_ptr<erp42_msgs::srv::ModeCommand::Request> request,
     std::shared_ptr<erp42_msgs::srv::ModeCommand::Response> response)
 {
-    manual_mode_     = request->manual_mode;
-    emergency_stop_  = request->emergency_stop;
-    gear_            = request->gear;
-    response->result = true;
+    manual_mode_      = request->manual_mode;
+    emergency_stop_   = request->emergency_stop;
+    gear_             = request->gear;
+    response->success = true;
 }
 
 /**

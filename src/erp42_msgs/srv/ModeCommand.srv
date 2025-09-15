@@ -12,4 +12,4 @@ uint8 GEAR_NEUTRAL = 1
 uint8 GEAR_REVERSE = 2
 uint8 gear
 ---
-bool result
+bool success

@@ -204,7 +204,7 @@ void erp42::SerialBridge::mode_command_callback(
     tx_packet_[TX::GEAR] = request->gear;
 
     // Response flag
-    response->result = true;
+    response->success = true;
 }
 
 /**

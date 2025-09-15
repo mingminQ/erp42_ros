@@ -219,7 +219,7 @@ void erp42::ControlPanel::send_mode_command()
         [this](rclcpp::Client<erp42_msgs::srv::ModeCommand>::SharedFuture future)
         {
             auto response = future.get();
-            if(response && response->result == false)
+            if(response && response->success == false)
             {
                 ERP42_ERROR("ControlPanel::send_mode_command() Failed to apply mode.");
                 QMessageBox::warning(this, "ERROR", "Failed to apply mode.");
