@@ -4,23 +4,23 @@
 
         <!-- Friction coefficients -->
         <gazebo reference="front_left_wheel">
-            <mu1>0.8</mu1>
-            <mu2>0.8</mu2>
+            <mu1>0.9</mu1>
+            <mu2>0.9</mu2>
         </gazebo>
 
         <gazebo reference="front_right_wheel">
-            <mu1>0.8</mu1>
-            <mu2>0.8</mu2>
+            <mu1>0.9</mu1>
+            <mu2>0.9</mu2>
         </gazebo>
 
         <gazebo reference="rear_left_wheel">
-            <mu1>0.8</mu1>
-            <mu2>0.8</mu2>
+            <mu1>0.9</mu1>
+            <mu2>0.9</mu2>
         </gazebo>
 
         <gazebo reference="rear_right_wheel">
-            <mu1>0.8</mu1>
-            <mu2>0.8</mu2>
+            <mu1>0.9</mu1>
+            <mu2>0.9</mu2>
         </gazebo>
 
         <!-- Gazebo plugins -->
