@@ -26,7 +26,6 @@
         <!-- Gazebo plugins -->
         <gazebo>
 
-
             <!-- Ackermann drive controller -->
             <plugin name="gazebo_ros_ackermann_drive" filename="libgazebo_ros_ackermann_drive.so">
 
