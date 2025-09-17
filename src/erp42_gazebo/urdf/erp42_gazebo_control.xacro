@@ -84,7 +84,6 @@
                 <publish_odom>true</publish_odom>
                 <publish_odom_tf>true</publish_odom_tf>
                 <odometry_frame>odom</odometry_frame>
-                <publish_wheel_tf>true</publish_wheel_tf>
                 <robot_base_frame>base_footprint</robot_base_frame>
 
             </plugin>
