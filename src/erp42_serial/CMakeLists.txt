@@ -86,7 +86,7 @@ install(
 )
 
 # --------------------------------------------------------------------------------------------------
-# Install header files and launch/config files
+# Install header files and launch and config files
 # --------------------------------------------------------------------------------------------------
 install(
     DIRECTORY include/
@@ -94,7 +94,7 @@ install(
 )
 
 install(
-    DIRECTORY launch
+    DIRECTORY launch config
     DESTINATION share/${PROJECT_NAME}
 )
 
