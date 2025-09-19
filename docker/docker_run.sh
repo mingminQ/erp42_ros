@@ -53,7 +53,6 @@ docker run                                                             \
     "${DEVICES[@]}"                                                    \
     --name=$ContainerName                                              \
     -it                                                                \
-    --rm                                                               \
     --privileged                                                       \
     --network=host                                                     \
     --env ROS_DOMAIN_ID=0                                              \
