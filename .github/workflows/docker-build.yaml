@@ -26,14 +26,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-docker-
 
-    - name: Build Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./docker/Dockerfile
-        tags: erp42-ros:humble
-        cache-from: type=local,src=/tmp/.buildx-cache
-        cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+    - name: Run docker build script with cache
+      run: |
+        chmod +x docker_build.sh
+        export DOCKER_BUILDKIT=1
+        export BUILDX_CACHE_FROM="type=local,src=/tmp/.buildx-cache"
+        export BUILDX_CACHE_TO="type=local,dest=/tmp/.buildx-cache-new,mode=max"
+        ./docker_build.sh
 
     - name: Move cache
       run: |
