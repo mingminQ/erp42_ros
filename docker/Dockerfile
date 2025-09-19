@@ -89,5 +89,7 @@ RUN groupadd -g ${GID} ${USERNAME} \
     && echo 'umask 0002' >> /etc/bash.bashrc
 
 # Source ROS2 and workspace setup files, then launch bash
+RUN echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc
+RUN echo "source /erp42_ros/install/setup.bash" >> /etc/bash.bashrc
 USER ${USERNAME}
-CMD ["bash", "-c", "source /opt/ros/humble/setup.bash && source /erp42_ros/install/setup.bash && bash"]
+CMD ["bash"]
