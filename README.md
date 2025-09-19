@@ -29,25 +29,64 @@ For more information about the package, please read the README.md at the link be
 
 <br/>
 
+# Docker
+For developers who want to develop in a virtual environment.
+
+### Build
+``` bash
+# At your workspace directory  
+
+$ docker build -f docker/Dockerfile -t erp42-ros:humble .
+```
+``` bash
+# If you're using a Korean network, the options below will help build your image faster.
+# Otherwise, remove them.
+
+RUN sed -i \
+    -e 's|http://archive.ubuntu.com/ubuntu|http://mirror.kakao.com/ubuntu|g' \
+    -e 's|http://security.ubuntu.com/ubuntu|http://mirror.kakao.com/ubuntu|g' \
+    /etc/apt/sources.list
+```
+
+### Launch docker container
+``` bash
+# At your workspace directory  
+
+$ . docker/docker_run.sh
+```
+
+### Conatiner Launch Script : Device Mounting
+``` bash
+# ERP42 serial port mounting to docker container (e.g. ERP42_SERIAL_PORT="/dev/ttyUSB0")  
+
+ERP42_SERIAL_PORT="YOUR_DEVICE_PORT"
+```
+
+### Conatiner Launch Script : GPU Options
+``` bash
+# If you have an Nvidia GPU, keep the options below, otherwise remove them.
+
+-e NVIDIA_VISIBLE_DEVICES=all
+-e NVIDIA_DRIVER_CAPABILITIES=all
+--runtime=nvidia 
+--gpus all
+```
+
+<br/>
+
 # Dependencies
 
-**ROS2 Humble**
-```
-https://docs.ros.org/en/humble/Installation.html
-```
-
-**Qt5**
-```bash
-# Already included in ros-humble-desktop
-$ sudo apt-get install -y \
-  qtbase5-dev             \
-  qttools5-dev-tools
+### Automatic Installation
+``` bash
+$ rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
 ```
 
-**Gazebo**
-```bash
-$ sudo apt-get install -y \
-  gazebo                  \
-  ros-humble-gazebo-pkgs  \
-  ros-humble-xacro
+### Manual Installation
+``` bash
+$ sudo apt-get install -y    \
+  qtbase5-dev                \
+  ros-humble-xacro           \
+  gazebo                     \
+  ros-humble-gazebo-ros      \
+  ros-humble-gazebo-ros-pkgs
 ```

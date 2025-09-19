@@ -17,11 +17,10 @@
     <buildtool_depend>ament_cmake</buildtool_depend>
 
     <!-- Dependencies -->
-    <depend>rclcpp    </depend>
-    <depend>erp42_msgs</depend>
-    <depend>erp42_util</depend>
-    <depend>Qt5Core   </depend>
-    <depend>Qt5Widgets</depend>
+    <depend>rclcpp     </depend>
+    <depend>erp42_msgs </depend>
+    <depend>erp42_util </depend>
+    <depend>qtbase5-dev</depend>
 
     <!-- Export build system information -->
     <export>

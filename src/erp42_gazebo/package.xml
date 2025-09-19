@@ -25,6 +25,11 @@
     <depend>erp42_msgs       </depend>
     <depend>erp42_description</depend>
 
+    <!-- Execution dependencies -->
+    <exec_depend>xacro          </exec_depend>
+    <exec_depend>gazebo_ros     </exec_depend>
+    <exec_depend>gazebo_ros_pkgs</exec_depend>
+
     <!-- Export build system information -->
     <export>
         <build_type>ament_cmake</build_type>
