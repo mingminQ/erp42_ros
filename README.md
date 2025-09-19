@@ -36,7 +36,7 @@ For developers who want to develop in a virtual environment.
 ``` bash
 # At your workspace directory  
 
-$ docker build -f docker/Dockerfile -t erp42-ros:humble .
+$ ./docker_build.sh
 ```
 ``` bash
 # If you're using a Korean network, the options below will help build your image faster.
