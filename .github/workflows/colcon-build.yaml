@@ -46,7 +46,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.ccache
-          key: ${{ runner.os }}-ccache-humble-${{ hashFiles('**/package.xml', '**/CMakeLists.txt') }}
+          key: ${{ runner.os }}-ccache-humble-${{ hashFiles('**/package.xml') }}-${{ hashFiles('**/CMakeLists.txt') }}
           restore-keys: |
             ${{ runner.os }}-ccache-humble-
 
