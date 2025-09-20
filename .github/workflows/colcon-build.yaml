@@ -1,0 +1,63 @@
+name: colcon-build
+
+on:
+  push:
+    branches: [ humble ]
+  pull_request:
+    branches: [ humble ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup ROS 2 Humble
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: humble
+
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ccache
+
+      - name: Cache ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-humble-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake', '**/*.cpp', '**/*.c', '**/*.hpp', '**/*.h', '**/package.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-ccache-humble-
+
+      - name: rosdep install
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo rosdep init || true
+          rosdep update
+          rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
+
+      - name: Colcon build (with ccache)
+        shell: bash
+        env:
+          BUILD_TYPE: RelWithDebInfo
+          PARALLEL: ${{ steps.sysinfo.outputs.nproc || 4 }}
+        run: |
+          set -euo pipefail
+          source /opt/ros/humble/setup.bash
+          export CCACHE_DIR="$HOME/.ccache"
+          export CCACHE_COMPRESS=1
+          export CCACHE_MAXSIZE=15G
+          export CCACHE_SLOPPINESS=time_macros
+          echo "[ccache] dir=$CCACHE_DIR" && ccache -s || true
+          colcon build \
+            --symlink-install \
+            --merge-install \
+            --cmake-args \
+              -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+              -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+          echo "[ccache] post-build:" && ccache -s || true
