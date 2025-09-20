@@ -42,7 +42,7 @@ jobs:
             rsync -a "$HOME/.cache/rosenv/var/cache/rosdep/" /var/cache/rosdep/
           fi
 
-      - name: Cache ccache
+      - name: Restore ccache
         uses: actions/cache@v3
         with:
           path: ~/.ccache
