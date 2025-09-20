@@ -9,9 +9,6 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    # Simulation time usage flag
-    use_sim_time = DeclareLaunchArgument('use_sim_time', default_value='false')
-
     # Robot description file
     vehicle_description_file = DeclareLaunchArgument('vehicle_description_file', 
         default_value = PathJoinSubstitution([
@@ -34,7 +31,6 @@ def generate_launch_description():
         output     = 'screen',
         parameters = [{
             'robot_description': Command(['xacro ', LaunchConfiguration('vehicle_description_file')]),
-            'use_sim_time'     : LaunchConfiguration('use_sim_time')
         }]
     )
 
@@ -43,8 +39,7 @@ def generate_launch_description():
         namespace  = '/erp42',
         package    = 'joint_state_publisher', 
         executable = 'joint_state_publisher', 
-        output     = 'screen',
-        parameters = [{'use_sim_time': LaunchConfiguration('use_sim_time')}]
+        output     = 'screen'
     )
 
     # Rviz
@@ -55,11 +50,9 @@ def generate_launch_description():
         name       = 'rviz2',
         output     = 'screen',
         arguments  = ['-d', LaunchConfiguration('rviz_config_file')],
-        parameters = [{'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
 
     return LaunchDescription([
-        use_sim_time,
         vehicle_description_file,
         rviz_config_file,
         robot_state_publisher,
