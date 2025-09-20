@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_SERIAL_SERIAL_PORT_HPP_
-#define ERP42_SERIAL_SERIAL_PORT_HPP_
+#ifndef ERP42_SERIAL__SERIAL_PORT_HPP_
+#define ERP42_SERIAL__SERIAL_PORT_HPP_
 
 #include <string>
 
@@ -114,4 +114,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif // ERP42_SERIAL_SERIAL_PORT_HPP_
+#endif // ERP42_SERIAL__SERIAL_PORT_HPP_

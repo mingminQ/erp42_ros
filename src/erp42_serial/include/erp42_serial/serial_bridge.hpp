@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_SERIAL_SERIAL_BRIDGE_HPP_
-#define ERP42_SERIAL_SERIAL_BRIDGE_HPP_
+#ifndef ERP42_SERIAL__SERIAL_BRIDGE_HPP_
+#define ERP42_SERIAL__SERIAL_BRIDGE_HPP_
 
 #include "erp42_serial/serial_port.hpp"
 #include "erp42_serial/serial_packet.hpp"
@@ -153,4 +153,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif // ERP42_SERIAL_SERIAL_BRIDGE_HPP_
+#endif // ERP42_SERIAL__SERIAL_BRIDGE_HPP_

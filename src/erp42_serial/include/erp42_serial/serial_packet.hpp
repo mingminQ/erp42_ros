@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_SERIAL_SERIAL_PACKET_HPP_
-#define ERP42_SERIAL_SERIAL_PACKET_HPP_
+#ifndef ERP42_SERIAL__SERIAL_PACKET_HPP_
+#define ERP42_SERIAL__SERIAL_PACKET_HPP_
 
 namespace erp42
 {
@@ -97,4 +97,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif // ERP42_SERIAL_SERIAL_PACKET_HPP_
+#endif // ERP42_SERIAL__SERIAL_PACKET_HPP_

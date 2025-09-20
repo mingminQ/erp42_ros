@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_UTIL_LOG_HPP_
-#define ERP42_UTIL_LOG_HPP_
+#ifndef ERP42_UTIL__LOG_HPP_
+#define ERP42_UTIL__LOG_HPP_
 
 #include <string>
 
@@ -191,4 +191,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif // ERP42_UTIL_LOG_HPP_
+#endif // ERP42_UTIL__LOG_HPP_

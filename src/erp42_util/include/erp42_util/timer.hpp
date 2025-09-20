@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_UTIL_TIMER_HPP_
-#define ERP42_UTIL_TIMER_HPP_
+#ifndef ERP42_UTIL__TIMER_HPP_
+#define ERP42_UTIL__TIMER_HPP_
 
 #include <chrono>
 
@@ -80,4 +80,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif // ERP42_UTIL_TIMER_HPP_
+#endif // ERP42_UTIL__TIMER_HPP_

@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_GUI_FEEDBACK_MONITOR_HPP_
-#define ERP42_GUI_FEEDBACK_MONITOR_HPP_
+#ifndef ERP42_GUI__FEEDBACK_MONITOR_HPP_
+#define ERP42_GUI__FEEDBACK_MONITOR_HPP_
 
 #include "erp42_msgs/msg/feedback.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -114,4 +114,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif //ERP42_GUI_FEEDBACK_MONITOR_HPP_
+#endif // ERP42_GUI__FEEDBACK_MONITOR_HPP_

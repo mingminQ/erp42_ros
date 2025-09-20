@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_GAZEBO_GAZEBO_BRIDGE_HPP_
-#define ERP42_GAZEBO_GAZEBO_BRIDGE_HPP_
+#ifndef ERP42_GAZEBO__GAZEBO_BRIDGE_HPP_
+#define ERP42_GAZEBO__GAZEBO_BRIDGE_HPP_
 
 #include "erp42_msgs/msg/control_command.hpp"
 #include "erp42_msgs/msg/feedback.hpp"
@@ -205,4 +205,4 @@ namespace erp42
 
 } // namespace erp42
 
-#endif // ERP42_GAZEBO_GAZEBO_BRIDGE_HPP_
+#endif // ERP42_GAZEBO__GAZEBO_BRIDGE_HPP_
