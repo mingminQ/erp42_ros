@@ -1,8 +1,11 @@
 ![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu_22.04-%23E95420?style=flat&logo=ubuntu&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-%232496ED?style=flat&logo=docker&logoColor=white)
 ![ROS Humble](https://img.shields.io/badge/ROS_Humble-%2322314E?style=flat&logo=ros&logoColor=white)
 ![Qt](https://img.shields.io/badge/Qt-%2341CD52?style=flat&logo=Qt&logoColor=white)
 ![C++](https://img.shields.io/badge/C++-%2300599C?style=flat&logo=c%2B%2B&logoColor=white)
 
+[![docker-build](https://img.shields.io/github/actions/workflow/status/mingminQ/erp42_ros/docker-build.yaml?branch=humble&label=docker-build&style=flat&logo=docker&logoColor=white&labelColor=%232496ED)](https://github.com/mingminQ/erp42_ros/actions/workflows/docker-build.yaml)
+[![colcon-build](https://img.shields.io/github/actions/workflow/status/mingminQ/erp42_ros/colcon-build.yaml?branch=humble&label=colcon-build&style=flat&logo=ros&logoColor=white&labelColor=%2322314E)](https://github.com/mingminQ/erp42_ros/actions/workflows/colcon-build.yaml)
 
 # ERP42 ROS2 Humble packages
 If you have any suggestions or issues, please contact me using the information below.  
