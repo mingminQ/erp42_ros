@@ -9,20 +9,38 @@ on:
 jobs:
   colcon-build:
     runs-on: ubuntu-22.04
+    container:
+      image: osrf/ros:humble-desktop
     timeout-minutes: 60
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup ROS 2 Humble
-        uses: ros-tooling/setup-ros@v0.7
-        with:
-          required-ros-distributions: humble
-
       - name: Install build tools
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ccache
+          apt-get update
+          apt-get install -y ccache rsync
+
+      - name: Restore rosdep snapshot
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/rosenv
+          key: ${{ runner.os }}-rosenv-${{ hashFiles('**/package.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-rosenv-
+
+      - name: Apply rosdep snapshot to system
+        shell: bash
+        run: |
+          set -e
+          mkdir -p "$HOME/.cache/rosenv/etc/ros" "$HOME/.cache/rosenv/var/cache/rosdep"
+          mkdir -p /etc/ros/rosdep/sources.list.d /var/cache/rosdep
+          if [ -d "$HOME/.cache/rosenv/etc/ros" ]; then
+            rsync -a "$HOME/.cache/rosenv/etc/ros/" /etc/ros/
+          fi
+          if [ -d "$HOME/.cache/rosenv/var/cache/rosdep" ]; then
+            rsync -a "$HOME/.cache/rosenv/var/cache/rosdep/" /var/cache/rosdep/
+          fi
 
       - name: Cache ccache
         uses: actions/cache@v3
@@ -36,9 +54,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          sudo rosdep init || true
+          rosdep init || true
           rosdep update
           rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
+
+      - name: Snapshot rosdep back to cache
+        shell: bash
+        run: |
+          set -e
+          mkdir -p "$HOME/.cache/rosenv/etc/ros" "$HOME/.cache/rosenv/var/cache/rosdep"
+          rsync -a /etc/ros/ "$HOME/.cache/rosenv/etc/ros/"
+          rsync -a /var/cache/rosdep/ "$HOME/.cache/rosenv/var/cache/rosdep/"
 
       - name: Colcon build (with ccache)
         shell: bash
@@ -46,15 +72,14 @@ jobs:
           BUILD_TYPE: RelWithDebInfo
         run: |
           set -eo pipefail
-          # Avoid nounset for ROS setup scripts which may reference unset vars
-          set +u
           source /opt/ros/humble/setup.bash
-          set -u || true
           PARALLEL=${PARALLEL:-$(nproc)}
           export CCACHE_DIR="$HOME/.ccache"
           export CCACHE_COMPRESS=1
           export CCACHE_MAXSIZE=15G
           export CCACHE_SLOPPINESS=time_macros
+          export CCACHE_BASEDIR="$GITHUB_WORKSPACE"
+          export CCACHE_NOHASHDIR=1
           echo "[ccache] dir=$CCACHE_DIR" && ccache -s || true
           colcon build \
             --symlink-install \
