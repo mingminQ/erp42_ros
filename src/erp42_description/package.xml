@@ -16,6 +16,9 @@
     <!-- Build tool : ament_cmake -->
     <buildtool_depend>ament_cmake</buildtool_depend>
 
+    <!-- Dependencies -->
+    <exec_depend>joint_state_publisher</exec_depend>
+
     <!-- Export build system information -->
     <export>
         <build_type>ament_cmake</build_type>
