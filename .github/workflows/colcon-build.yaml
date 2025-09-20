@@ -44,10 +44,13 @@ jobs:
         shell: bash
         env:
           BUILD_TYPE: RelWithDebInfo
-          PARALLEL: ${{ steps.sysinfo.outputs.nproc || 4 }}
         run: |
-          set -euo pipefail
+          set -eo pipefail
+          # Avoid nounset for ROS setup scripts which may reference unset vars
+          set +u
           source /opt/ros/humble/setup.bash
+          set -u || true
+          PARALLEL=${PARALLEL:-$(nproc)}
           export CCACHE_DIR="$HOME/.ccache"
           export CCACHE_COMPRESS=1
           export CCACHE_MAXSIZE=15G
@@ -59,5 +62,6 @@ jobs:
             --cmake-args \
               -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
               -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            --parallel-workers ${PARALLEL}
           echo "[ccache] post-build:" && ccache -s || true
