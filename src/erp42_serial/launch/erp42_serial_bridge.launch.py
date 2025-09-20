@@ -1,4 +1,4 @@
-# serial_bridge.launch.py
+# erp42_serial_bridge.launch.py
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
