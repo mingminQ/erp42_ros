@@ -36,7 +36,6 @@ include_directories(
 # --------------------------------------------------------------------------------------------------
 add_library(${PROJECT_NAME}
     src/log.cpp
-    src/timer.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
