@@ -16,16 +16,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install build tools
+      - name: Compute cache key seeds
+        id: compute-hash
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Hash of all package.xml files (paths + contents)
+          rosenv_seed=$( (find . -type f -name 'package.xml' -print0 | sort -z | xargs -0 sha256sum 2>/dev/null || echo 'no-package-xml') | sha256sum | cut -d' ' -f1 )
+          echo "rosenv_seed=$rosenv_seed" >> "$GITHUB_OUTPUT"
+
+      - name: Install tools
         run: |
           apt-get update
-          apt-get install -y ccache rsync
+          apt-get install -y rsync
 
       - name: Restore rosdep snapshot
         uses: actions/cache@v3
         with:
           path: ~/.cache/rosenv
-          key: ${{ runner.os }}-rosenv-${{ hashFiles('**/package.xml') }}
+          key: ${{ runner.os }}-rosenv-${{ steps.compute-hash.outputs.rosenv_seed }}
           restore-keys: |
             ${{ runner.os }}-rosenv-
 
@@ -41,14 +50,6 @@ jobs:
           if [ -d "$HOME/.cache/rosenv/var/cache/rosdep" ]; then
             rsync -a "$HOME/.cache/rosenv/var/cache/rosdep/" /var/cache/rosdep/
           fi
-
-      - name: Restore ccache
-        uses: actions/cache@v3
-        with:
-          path: ~/.ccache
-          key: ${{ runner.os }}-ccache-humble-${{ hashFiles('**/package.xml') }}-${{ hashFiles('**/CMakeLists.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-ccache-humble-
 
       - name: rosdep install
         shell: bash
@@ -66,7 +67,7 @@ jobs:
           rsync -a /etc/ros/ "$HOME/.cache/rosenv/etc/ros/"
           rsync -a /var/cache/rosdep/ "$HOME/.cache/rosenv/var/cache/rosdep/"
 
-      - name: Colcon build (with ccache)
+      - name: Colcon build
         shell: bash
         env:
           BUILD_TYPE: RelWithDebInfo
@@ -74,19 +75,9 @@ jobs:
           set -eo pipefail
           source /opt/ros/humble/setup.bash
           PARALLEL=${PARALLEL:-$(nproc)}
-          export CCACHE_DIR="$HOME/.ccache"
-          export CCACHE_COMPRESS=1
-          export CCACHE_MAXSIZE=15G
-          export CCACHE_SLOPPINESS=time_macros
-          export CCACHE_BASEDIR="$GITHUB_WORKSPACE"
-          export CCACHE_NOHASHDIR=1
-          echo "[ccache] dir=$CCACHE_DIR" && ccache -s || true
           colcon build \
             --symlink-install \
             --merge-install \
             --cmake-args \
               -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-              -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             --parallel-workers ${PARALLEL}
-          echo "[ccache] post-build:" && ccache -s || true
