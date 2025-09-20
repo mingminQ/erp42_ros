@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2025 Minkyu Kil
 # --------------------------------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.22)
 project(erp42_serial)
 
 # --------------------------------------------------------------------------------------------------
