@@ -64,22 +64,7 @@ install(
 # Install launch files, URDF, and world files
 # --------------------------------------------------------------------------------------------------
 install(
-    DIRECTORY launch
-    DESTINATION share/${PROJECT_NAME}/
-)
-
-install(
-    DIRECTORY urdf
-    DESTINATION share/${PROJECT_NAME}/
-)
-
-install(
-    DIRECTORY worlds
-    DESTINATION share/${PROJECT_NAME}/
-)
-
-install(
-    DIRECTORY rviz
+    DIRECTORY launch rviz urdf worlds
     DESTINATION share/${PROJECT_NAME}/
 )
 
