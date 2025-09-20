@@ -86,10 +86,11 @@ $ rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
 
 ### Manual Installation
 ``` bash
-$ sudo apt-get install -y    \
-  qtbase5-dev                \
-  ros-humble-xacro           \
-  gazebo                     \
-  ros-humble-gazebo-ros      \
+$ sudo apt-get install -y          \
+  qtbase5-dev                      \
+  ros-humble-xacro                 \
+  ros-humble-joint-state-publisher \
+  gazebo                           \
+  ros-humble-gazebo-ros            \
   ros-humble-gazebo-ros-pkgs
 ```
