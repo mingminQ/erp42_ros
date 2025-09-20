@@ -1,13 +1,28 @@
 # erp42_bringup.launch.py
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction, LogInfo, Shutdown
 from launch.substitutions import Command, LaunchConfiguration
 from launch.conditions import IfCondition
 from launch_ros.actions import Node
 
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
+
+def check_conflict(context, *args, **kwargs):
+    
+    view_control_panel    = LaunchConfiguration('view_control_panel').perform(context)
+    view_feedback_monitor = LaunchConfiguration('view_feedback_monitor').perform(context)
+
+    if view_control_panel.lower() == 'true' and view_feedback_monitor.lower() == 'true':
+        return [
+            LogInfo(msg="view_control_panel and view_feedback_monitor cannot both be true. "
+                "Since control_panel already includes feedback_monitor, choose only one of them."
+            ),
+            Shutdown()
+        ]
+
+    return []
 
 def generate_launch_description():
     
@@ -19,7 +34,8 @@ def generate_launch_description():
     )
 
     # GUI option
-    view_control_panel         = DeclareLaunchArgument('view_control_panel'        , default_value = 'false')
+    view_control_panel    = DeclareLaunchArgument('view_control_panel'   , default_value = 'false')
+    view_feedback_monitor = DeclareLaunchArgument('view_feedback_monitor', default_value = 'false')
 
     # ERP42 descriptions
     launch_vehicle_description = DeclareLaunchArgument('launch_vehicle_description', default_value = 'false')
@@ -56,6 +72,14 @@ def generate_launch_description():
         condition  = IfCondition(LaunchConfiguration('view_control_panel'))
     )
 
+    # Feedback monitor GUI
+    erp42_feedback_monitor = Node(
+        package    = 'erp42_gui', 
+        executable = 'feedback_monitor', 
+        output     = 'screen',
+        condition  = IfCondition(LaunchConfiguration('view_feedback_monitor'))
+    )
+
     # Robot state publisher node
     robot_state_publisher = Node(
         namespace  = '/erp42',
@@ -90,6 +114,8 @@ def generate_launch_description():
 
         erp42_bringup_parameter_file,
         view_control_panel,
+        view_feedback_monitor,
+        OpaqueFunction(function=check_conflict),
         launch_vehicle_description,
         launch_rviz,
         vehicle_description_file,

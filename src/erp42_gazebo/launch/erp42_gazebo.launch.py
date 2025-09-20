@@ -1,11 +1,27 @@
 # erp42_gazebo.launch.py
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, OpaqueFunction, LogInfo, Shutdown
 from launch.substitutions import Command, PathJoinSubstitution, LaunchConfiguration
+from launch.conditions import IfCondition
 
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+
+def check_conflict(context, *args, **kwargs):
+    
+    view_control_panel    = LaunchConfiguration('view_control_panel').perform(context)
+    view_feedback_monitor = LaunchConfiguration('view_feedback_monitor').perform(context)
+
+    if view_control_panel.lower() == 'true' and view_feedback_monitor.lower() == 'true':
+        return [
+            LogInfo(msg="view_control_panel and view_feedback_monitor cannot both be true. "
+                "Since control_panel already includes feedback_monitor, choose only one of them."
+            ),
+            Shutdown()
+        ]
+
+    return []
 
 def generate_launch_description():
 
@@ -22,6 +38,10 @@ def generate_launch_description():
         default_value = PathJoinSubstitution([FindPackageShare('erp42_gazebo'), 'urdf', 'erp42_gazebo.xacro'])
     )
 
+    # GUI option
+    view_control_panel    = DeclareLaunchArgument('view_control_panel'   , default_value = 'false')
+    view_feedback_monitor = DeclareLaunchArgument('view_feedback_monitor', default_value = 'false')
+
     # Rviz configuration file
     rviz_config_file = DeclareLaunchArgument('rviz_config_file',
         default_value = PathJoinSubstitution([
@@ -30,12 +50,12 @@ def generate_launch_description():
     )
 
     # ERP42 spawn location
-    spawn_x    = DeclareLaunchArgument('spawn_x'    , default_value = '0.0')
-    spawn_y    = DeclareLaunchArgument('spawn_y'    , default_value = '0.0')
-    spawn_z    = DeclareLaunchArgument('spawn_z'    , default_value = '0.0')
-    spawn_roll = DeclareLaunchArgument('spawn_roll' , default_value = '0.0')
-    spawn_pitch= DeclareLaunchArgument('spawn_pitch', default_value = '0.0')
-    spawn_yaw  = DeclareLaunchArgument('spawn_yaw'  , default_value = '0.0')
+    spawn_x     = DeclareLaunchArgument('spawn_x'    , default_value = '0.0')
+    spawn_y     = DeclareLaunchArgument('spawn_y'    , default_value = '0.0')
+    spawn_z     = DeclareLaunchArgument('spawn_z'    , default_value = '0.0')
+    spawn_roll  = DeclareLaunchArgument('spawn_roll' , default_value = '0.0')
+    spawn_pitch = DeclareLaunchArgument('spawn_pitch', default_value = '0.0')
+    spawn_yaw   = DeclareLaunchArgument('spawn_yaw'  , default_value = '0.0')
 
     # Gazebo server
     gazebo_server = ExecuteProcess(
@@ -73,12 +93,20 @@ def generate_launch_description():
         parameters = [{'use_sim_time': LaunchConfiguration('use_sim_time')}]
     )
 
-    # ERP42 control panel
-    control_panel = Node(
-        package    = 'erp42_gui',
-        executable = 'control_panel',
+    # Control panel GUI
+    erp42_control_panel = Node(
+        package    = 'erp42_gui', 
+        executable = 'control_panel', 
         output     = 'screen',
-        parameters = [{'use_sim_time': LaunchConfiguration('use_sim_time')}]
+        condition  = IfCondition(LaunchConfiguration('view_control_panel'))
+    )
+
+    # Feedback monitor GUI
+    erp42_feedback_monitor = Node(
+        package    = 'erp42_gui', 
+        executable = 'feedback_monitor', 
+        output     = 'screen',
+        condition  = IfCondition(LaunchConfiguration('view_feedback_monitor'))
     )
 
     # Spawn ERP42 entity in Gazebo
@@ -114,6 +142,9 @@ def generate_launch_description():
         use_sim_time,
         world_file,
         vehicle_description_file,
+        view_control_panel,
+        view_feedback_monitor,
+        OpaqueFunction(function=check_conflict),
         rviz_config_file,
         spawn_x,
         spawn_y,
@@ -125,7 +156,8 @@ def generate_launch_description():
         gazebo_client,
         robot_state_publisher,
         gazebo_bridge,
-        control_panel,
+        erp42_control_panel,
+        erp42_feedback_monitor,
         spawn_entity,
         rviz
     ])
