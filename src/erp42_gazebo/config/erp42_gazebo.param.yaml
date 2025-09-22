@@ -1,0 +1,17 @@
+# erp42_gazebo.param.yaml
+
+# Global parameters
+/**:
+  ros__parameters:
+
+    # Use simulation time
+    use_sim_time: true
+
+# Parameters for erp42_gazebo_bridge
+erp42_gazebo_bridge:
+  ros__parameters:
+
+    # ERP42 parameters
+    max_speed_mps      :  3.00 # m/s
+    max_steering_deg   : 25.00 # deg
+    steering_offset_deg:  5.00 # deg

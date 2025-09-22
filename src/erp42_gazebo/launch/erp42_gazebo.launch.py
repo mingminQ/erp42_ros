@@ -25,8 +25,12 @@ def check_conflict(context, *args, **kwargs):
 
 def generate_launch_description():
 
-    # Simulation time usage flag
-    use_sim_time = DeclareLaunchArgument('use_sim_time', default_value = 'true')
+    # ERP42 gazebo parameter file
+    erp42_gazebo_parameter_file = DeclareLaunchArgument('erp42_gazebo_parameter_file', 
+        default_value=PathJoinSubstitution([
+            FindPackageShare('erp42_gazebo'), 'config', 'erp42_gazebo.param.yaml'
+        ])
+    )
 
     # World file
     world_file = DeclareLaunchArgument('world_file', 
@@ -79,10 +83,10 @@ def generate_launch_description():
         package    = 'robot_state_publisher',
         executable = 'robot_state_publisher',
         output     = 'screen',
-        parameters = [{
-            'robot_description': Command(['xacro ', LaunchConfiguration('vehicle_description_file')]),
-            'use_sim_time'     : LaunchConfiguration('use_sim_time')
-        }]
+        parameters = [
+            {'robot_description': Command(['xacro ', LaunchConfiguration('vehicle_description_file')])},
+            LaunchConfiguration('erp42_gazebo_parameter_file')
+        ]
     )
 
     # ERP42 Gazebo bridge node
@@ -90,7 +94,7 @@ def generate_launch_description():
         package    = 'erp42_gazebo',
         executable = 'gazebo_bridge',
         output     = 'screen',
-        parameters = [{'use_sim_time': LaunchConfiguration('use_sim_time')}]
+        parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')],
     )
 
     # Control panel GUI
@@ -98,6 +102,7 @@ def generate_launch_description():
         package    = 'erp42_gui', 
         executable = 'control_panel', 
         output     = 'screen',
+        parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')],
         condition  = IfCondition(LaunchConfiguration('view_control_panel'))
     )
 
@@ -106,6 +111,7 @@ def generate_launch_description():
         package    = 'erp42_gui', 
         executable = 'feedback_monitor', 
         output     = 'screen',
+        parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')],
         condition  = IfCondition(LaunchConfiguration('view_feedback_monitor'))
     )
 
@@ -114,7 +120,7 @@ def generate_launch_description():
         package    = "gazebo_ros",
         executable = "spawn_entity.py",
         output     = "screen",
-        parameters = [{"use_sim_time": LaunchConfiguration('use_sim_time')}],
+        parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')],
         arguments  = [
             "-topic" , "/erp42/robot_description",
             "-entity", "erp42",
@@ -135,11 +141,11 @@ def generate_launch_description():
         name       = 'rviz2',
         output     = 'screen',
         arguments  = ['-d', LaunchConfiguration('rviz_config_file')],
-        parameters = [{'use_sim_time': LaunchConfiguration('use_sim_time')}]
+        parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')]
     )
 
     return LaunchDescription([
-        use_sim_time,
+        erp42_gazebo_parameter_file,
         world_file,
         vehicle_description_file,
         view_control_panel,
