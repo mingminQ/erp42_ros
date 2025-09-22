@@ -83,11 +83,22 @@ namespace erp42
         void feedback_callback(const erp42_msgs::msg::Feedback::SharedPtr msg);
 
         /**
-         * @brief Reads parameters from @c erp42_serial_bridge and displays them on the UI.
-         * @details Read the serial bridge parameters. 
-         * If the service is not available within @c 200ms, the method returns without updating.
+         * @brief Selects the target node (either @c erp42_serial_bridge or @c erp42_gazebo_bridge).
+         * @details Checks the ROS 2 node graph for the existence of either node.
+         * If found, sets @c node_name to the found node and returns true.
+         * If neither node is found within @c 5000ms, returns false.
+         * @param[out] node_name Name of the selected target node.
+         * @return True if a target node is found; otherwise false.
          */
-        void read_serial_bridge_parameters();
+        bool select_target_node(std::string &node_name);
+
+        /**
+         * @brief Reads parameters from the target node and displays them on the UI.
+         * @details Selects the target node (either @c erp42_serial_bridge or @c erp42_gazebo_bridge )
+         * and reads its parameters. If the service is not available within @c 1000ms, the method
+         * returns without updating.
+         */
+        void read_vehicle_parameters();
 
         /**
          * @brief Initializes the ROS interfaces and the Qt UI.
