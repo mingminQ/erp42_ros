@@ -87,7 +87,7 @@ void erp42::GazeboBridge::joint_state_callback(const sensor_msgs::msg::JointStat
     // Current steering angle from front left/right wheel steering joints
     double left_wheel_angle  = msg->position[front_left_steering_hub_index];
     double right_wheel_angle = msg->position[front_right_steering_hub_index];
-    current_steering_ = (left_wheel_angle + right_wheel_angle) / 2.0;
+    current_steering_ = (left_wheel_angle + right_wheel_angle) / 2.0 - steering_offset_rad_;
 
     // Current encoder count from left front wheel encoder
     double current_wheel_angle = msg->position[front_left_wheel_index];
