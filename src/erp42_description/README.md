@@ -1,5 +1,5 @@
 # erp42_description
-ERP42 Gazebo simulation package. Uses ERP42 platform-related properties and control plugins to define ERP42 in Gazebo.
+ERP42 description package. Uses ERP42 platform-related properties to define ERP42.
 ``` bash
 $ ros2 launch erp42_dscription vehicle_description.launch.py
 ```
