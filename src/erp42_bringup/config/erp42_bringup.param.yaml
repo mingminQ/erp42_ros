@@ -1,3 +1,5 @@
+# erp42_bringup.param.yaml
+
 erp42_serial_bridge:
   ros__parameters:
 
