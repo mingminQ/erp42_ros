@@ -178,8 +178,9 @@ void erp42::GazeboBridge::control_command_callback(const erp42_msgs::msg::Contro
  * - Keep this callback non-blocking. It runs in an rclcpp executor thread.
  */
 void erp42::GazeboBridge::mode_command_callback(
-    const std::shared_ptr<erp42_msgs::srv::ModeCommand::Request> request,
-    std::shared_ptr<erp42_msgs::srv::ModeCommand::Response> response)
+    const erp42_msgs::srv::ModeCommand::Request::SharedPtr request,
+    erp42_msgs::srv::ModeCommand::Response::SharedPtr response
+)
 {
     manual_mode_      = request->manual_mode;
     emergency_stop_   = request->emergency_stop;

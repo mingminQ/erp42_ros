@@ -191,8 +191,9 @@ void erp42::SerialBridge::timer_callback()
  *   - Sets GEAR field to 'msg.gear'.
  */
 void erp42::SerialBridge::mode_command_callback(
-    const std::shared_ptr<erp42_msgs::srv::ModeCommand::Request> request,
-    std::shared_ptr<erp42_msgs::srv::ModeCommand::Response> response)
+    const erp42_msgs::srv::ModeCommand::Request::SharedPtr request,
+    erp42_msgs::srv::ModeCommand::Response::SharedPtr response
+)
 {
     // Control mode
     tx_packet_[TX::CONTROL_MODE] = !(request->manual_mode);

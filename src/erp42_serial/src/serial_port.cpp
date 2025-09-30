@@ -126,8 +126,9 @@ bool erp42::SerialPort::receive_packet(unsigned char *rx_packet, const unsigned 
  * @param expected_packet_size Number of bytes to transmit.
  * @return 'true' if the data was written successfully; 'false' otherwise.
  */
-bool erp42::SerialPort::transmit_packet(const unsigned char *tx_packet,
-                                               const unsigned int &expected_packet_size) const
+bool erp42::SerialPort::transmit_packet(
+    const unsigned char *tx_packet, const unsigned int &expected_packet_size
+) const
 {
     if(file_descriptor_ < 0)
     {

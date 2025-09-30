@@ -98,8 +98,9 @@ namespace erp42
          *   - Sets GEAR field to 'msg.gear'.
          */
         void mode_command_callback(
-            const std::shared_ptr<erp42_msgs::srv::ModeCommand::Request> request,
-            std::shared_ptr<erp42_msgs::srv::ModeCommand::Response> response);
+            const erp42_msgs::srv::ModeCommand::Request::SharedPtr request,
+            erp42_msgs::srv::ModeCommand::Response::SharedPtr response
+        );
 
         /**
          * @brief Processes incoming control commands and updates the transmit packet.

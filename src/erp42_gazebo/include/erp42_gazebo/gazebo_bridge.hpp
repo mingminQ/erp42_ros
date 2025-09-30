@@ -112,8 +112,9 @@ namespace erp42
          * - Keep this callback non-blocking. It runs in an rclcpp executor thread.
          */
         void mode_command_callback(
-            const std::shared_ptr<erp42_msgs::srv::ModeCommand::Request> request,
-            std::shared_ptr<erp42_msgs::srv::ModeCommand::Response> response);
+            const erp42_msgs::srv::ModeCommand::Request::SharedPtr request,
+            erp42_msgs::srv::ModeCommand::Response::SharedPtr response
+        );
 
         /**
          * @brief Periodic timer callback to publish command and feedback topics.
