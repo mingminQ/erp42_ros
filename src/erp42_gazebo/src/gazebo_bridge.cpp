@@ -28,9 +28,6 @@
 #include "erp42_description/vehicle_parameters.hpp"
 #include "erp42_util/log.hpp"
 
-#include "tf2/utils.hpp"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
-
 #include <functional>
 #include <algorithm>
 #include <chrono>
@@ -229,26 +226,8 @@ void erp42::GazeboBridge::timer_callback()
     odom_msg_.twist.twist.linear.x = current_speed_;
     odom_msg_.twist.twist.angular.z = current_speed_ / WHEELBASE_LENGTH * std::tan(current_steering_);
 
-    // int delta_encoder_count = encoder_count_ - prev_encoder_count_;
-    // double delta_s   = (2.0 * M_PI * WHEEL_RADIUS / ENCODER_CPR) * static_cast<double>(delta_encoder_count);
-    // double delta_psi = (std::tan(current_steering_) / WHEELBASE_LENGTH) * delta_s;
-
-    // double prev_heading = tf2::getYaw(odom_msg_.pose.pose.orientation);
-    // double psi_mid = delta_psi;
-
-    // odom_msg_.pose.pose.position.x += delta_s * std::cos(psi_mid);
-    // odom_msg_.pose.pose.position.y += delta_s * std::sin(psi_mid);
-
-    // tf2::Quaternion quaternion;
-    // double current_heading = prev_heading + delta_psi;
-    // quaternion.setRPY(0.0, 0.0, current_heading);
-    // odom_msg_.pose.pose.orientation = tf2::toMsg(quaternion);
-
     odom_msg_.header.stamp = this->now();
     odom_pub_->publish(odom_msg_);
-
-    // Update previos encoder count
-    prev_encoder_count_ = encoder_count_;
 }
 
 /**

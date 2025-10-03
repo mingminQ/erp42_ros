@@ -208,7 +208,6 @@ namespace erp42
         double  current_speed_               {0.0};
         double  current_steering_            {0.0};
         uint8_t current_brake_                 {0};
-        int     prev_encoder_count_            {0};
         int     encoder_count_                 {0};
         uint8_t heartbeat_                     {0};
 

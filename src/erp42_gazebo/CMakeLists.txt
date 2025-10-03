@@ -29,8 +29,6 @@ find_package(sensor_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(gazebo_msgs REQUIRED)
 find_package(erp42_msgs REQUIRED)
-find_package(tf2 REQUIRED)
-find_package(tf2_geometry_msgs REQUIRED)
 find_package(erp42_util REQUIRED)
 find_package(erp42_description REQUIRED)
 
@@ -49,8 +47,6 @@ ament_target_dependencies(gazebo_bridge
     geometry_msgs
     gazebo_msgs
     erp42_msgs
-    tf2
-    tf2_geometry_msgs
     erp42_util
     erp42_description
 )
