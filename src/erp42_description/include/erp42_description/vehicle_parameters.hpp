@@ -41,9 +41,8 @@ namespace erp42
     static constexpr double WHEEL_WIDTH  {0.175};
 
     // Encoder parameters
-    static constexpr int    ENCODER_PPR_INT {100};
-    static constexpr double ENCODER_PPR_DBL {100.0};
-    static constexpr double ENCODER_CPR     {400.0};
+    static constexpr double ENCODER_PPR {100.0};
+    static constexpr double ENCODER_CPR {400.0};
 
 } // namespace erp42
 
