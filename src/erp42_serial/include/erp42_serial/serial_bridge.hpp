@@ -33,6 +33,8 @@
 #include "erp42_msgs/msg/control_command.hpp"
 #include "erp42_msgs/srv/mode_command.hpp"
 #include "erp42_msgs/msg/feedback.hpp"
+
+#include "nav_msgs/msg/odometry.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 #include <string>
@@ -126,12 +128,20 @@ namespace erp42
 
         // Publishers
         rclcpp::Publisher<erp42_msgs::msg::Feedback>::SharedPtr feedback_pub_;
+        rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
 
         // Subscribers
         rclcpp::Subscription<erp42_msgs::msg::ControlCommand>::SharedPtr control_command_sub_;
 
         // Services
         rclcpp::Service<erp42_msgs::srv::ModeCommand>::SharedPtr mode_command_srv_;
+
+        // Odometry data
+        nav_msgs::msg::Odometry odom_msg_;
+
+        // Fixed frame id
+        std::string odometry_frame_id_;
+        std::string odometry_child_frame_id_;
 
         // Serial port
         std::unique_ptr<SerialPort> serial_port_;

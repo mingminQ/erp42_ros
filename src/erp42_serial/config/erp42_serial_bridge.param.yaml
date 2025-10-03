@@ -3,6 +3,10 @@
 erp42_serial_bridge:
   ros__parameters:
 
+    # Odometry frame id
+    odometry_frame_id      : "odom"
+    odometry_child_frame_id: "base_footprint"
+
     # Serial port settings
     port_path: "/dev/ttyUSB0"
     baud_rate: 115200

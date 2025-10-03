@@ -24,8 +24,10 @@ endif()
 # --------------------------------------------------------------------------------------------------
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(nav_msgs REQUIRED)
 find_package(erp42_msgs REQUIRED)
 find_package(erp42_util REQUIRED)
+find_package(erp42_description REQUIRED)
 
 # --------------------------------------------------------------------------------------------------
 # Include local header files
@@ -70,8 +72,10 @@ add_executable(serial_bridge
 
 ament_target_dependencies(serial_bridge
     rclcpp
+    nav_msgs
     erp42_msgs
     erp42_util
+    erp42_description
 )
 
 target_include_directories(serial_bridge 
