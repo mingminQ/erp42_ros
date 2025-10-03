@@ -28,6 +28,9 @@
 #include "erp42_description/vehicle_parameters.hpp"
 #include "erp42_util/log.hpp"
 
+#include "tf2/utils.hpp"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
+
 #include <functional>
 #include <algorithm>
 #include <chrono>
@@ -95,7 +98,7 @@ void erp42::GazeboBridge::joint_state_callback(const sensor_msgs::msg::JointStat
 
     if(0.0628319 < std::abs(delta_wheel_angle))
     {
-        encoder_count_ += static_cast<int>(delta_wheel_angle / (2.0 * M_PI) * ENCODER_PPR_DBL);
+        encoder_count_ += static_cast<int>(delta_wheel_angle / (2.0 * M_PI) * ENCODER_CPR);
         prev_front_left_wheel_angle_ = current_wheel_angle;
     }
 }
@@ -221,6 +224,31 @@ void erp42::GazeboBridge::timer_callback()
     feedback_msg.heartbeat = heartbeat_++;
 
     feedback_pub_->publish(feedback_msg);
+
+    // Publish odometry
+    odom_msg_.twist.twist.linear.x = current_speed_;
+    odom_msg_.twist.twist.angular.z = current_speed_ / WHEELBASE_LENGTH * std::tan(current_steering_);
+
+    // int delta_encoder_count = encoder_count_ - prev_encoder_count_;
+    // double delta_s   = (2.0 * M_PI * WHEEL_RADIUS / ENCODER_CPR) * static_cast<double>(delta_encoder_count);
+    // double delta_psi = (std::tan(current_steering_) / WHEELBASE_LENGTH) * delta_s;
+
+    // double prev_heading = tf2::getYaw(odom_msg_.pose.pose.orientation);
+    // double psi_mid = delta_psi;
+
+    // odom_msg_.pose.pose.position.x += delta_s * std::cos(psi_mid);
+    // odom_msg_.pose.pose.position.y += delta_s * std::sin(psi_mid);
+
+    // tf2::Quaternion quaternion;
+    // double current_heading = prev_heading + delta_psi;
+    // quaternion.setRPY(0.0, 0.0, current_heading);
+    // odom_msg_.pose.pose.orientation = tf2::toMsg(quaternion);
+
+    odom_msg_.header.stamp = this->now();
+    odom_pub_->publish(odom_msg_);
+
+    // Update previos encoder count
+    prev_encoder_count_ = encoder_count_;
 }
 
 /**
@@ -244,10 +272,13 @@ void erp42::GazeboBridge::initialize_node()
 
     // Publishers
     cmd_vel_pub_ = this->create_publisher<geometry_msgs::msg::Twist>("/erp42/cmd_vel", 10);
+
     feedback_pub_ = this->create_publisher<erp42_msgs::msg::Feedback>(
         "/erp42/feedback",
         rclcpp::QoS(rclcpp::KeepLast(1)).reliable().durability_volatile()
     );
+
+    odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>("/erp42/odometry_wheel", 10);
 
     // Subscribers
     control_command_sub_ = this->create_subscription<erp42_msgs::msg::ControlCommand>(
@@ -271,6 +302,10 @@ void erp42::GazeboBridge::initialize_node()
     joint_properties_client_ = this->create_client<gazebo_msgs::srv::SetJointProperties>(
         "/erp42/set_joint_properties"
     );
+
+    // Initialize odometry data
+    odom_msg_.header.frame_id = odometry_frame_id_;
+    odom_msg_.child_frame_id  = odometry_child_frame_id_;
 }
 
 /**
@@ -284,6 +319,13 @@ void erp42::GazeboBridge::initialize_node()
  */
 void erp42::GazeboBridge::declare_parameters()
 {
+    // Odometry frame id
+    this->declare_parameter<std::string>("odometry_frame_id", "odom");
+    odometry_frame_id_ = this->get_parameter("odometry_frame_id").as_string();
+
+    this->declare_parameter<std::string>("odometry_child_frame_id", "base_footprint");
+    odometry_child_frame_id_ = this->get_parameter("odometry_child_frame_id").as_string();
+
     // ERP42 parameters
     this->declare_parameter("max_speed_mps", 7.0);
     max_speed_mps_ = this->get_parameter("max_speed_mps").as_double();

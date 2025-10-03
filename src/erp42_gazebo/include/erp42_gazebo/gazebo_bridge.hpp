@@ -34,6 +34,7 @@
 #include "gazebo_msgs/srv/set_joint_properties.hpp"
 #include "sensor_msgs/msg/joint_state.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "nav_msgs/msg/odometry.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 #include <vector>
@@ -162,6 +163,7 @@ namespace erp42
         // Publishers
         rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_pub_;
         rclcpp::Publisher<erp42_msgs::msg::Feedback>::SharedPtr feedback_pub_;
+        rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_pub_;
 
         // Subscribers
         rclcpp::Subscription<erp42_msgs::msg::ControlCommand>::SharedPtr control_command_sub_;
@@ -170,6 +172,13 @@ namespace erp42
         // Services
         rclcpp::Service<erp42_msgs::srv::ModeCommand>::SharedPtr mode_command_srv_;
         rclcpp::Client<gazebo_msgs::srv::SetJointProperties>::SharedPtr joint_properties_client_;
+
+        // Odometry frame id
+        std::string odometry_frame_id_;
+        std::string odometry_child_frame_id_;
+
+        // Odometry data
+        nav_msgs::msg::Odometry odom_msg_;
 
         // ERP42 parameters
         double max_speed_mps_;
@@ -199,7 +208,8 @@ namespace erp42
         double  current_speed_               {0.0};
         double  current_steering_            {0.0};
         uint8_t current_brake_                 {0};
-        int encoder_count_                     {0};
+        int     prev_encoder_count_            {0};
+        int     encoder_count_                 {0};
         uint8_t heartbeat_                     {0};
 
     }; // class GazeboBridge

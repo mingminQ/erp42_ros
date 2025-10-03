@@ -11,6 +11,10 @@
 erp42_gazebo_bridge:
   ros__parameters:
 
+    # Odometry frame id
+    odometry_frame_id      : "odom"
+    odometry_child_frame_id: "base_footprint"
+
     # ERP42 parameters
     max_speed_mps      :  7.00 # m/s
     max_steering_deg   : 25.00 # deg

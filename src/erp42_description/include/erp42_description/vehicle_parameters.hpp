@@ -43,6 +43,7 @@ namespace erp42
     // Encoder parameters
     static constexpr int    ENCODER_PPR_INT {100};
     static constexpr double ENCODER_PPR_DBL {100.0};
+    static constexpr double ENCODER_CPR     {400.0};
 
 } // namespace erp42
 
