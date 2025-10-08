@@ -31,6 +31,7 @@ def generate_launch_description():
         output     = 'screen',
         parameters = [{
             'robot_description': Command(['xacro ', LaunchConfiguration('vehicle_description_file')]),
+            'publish_frequency': 100.0
         }]
     )
 

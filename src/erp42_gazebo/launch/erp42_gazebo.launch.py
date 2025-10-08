@@ -83,8 +83,10 @@ def generate_launch_description():
         package    = 'robot_state_publisher',
         executable = 'robot_state_publisher',
         output     = 'screen',
-        parameters = [
-            {'robot_description': Command(['xacro ', LaunchConfiguration('vehicle_description_file')])},
+        parameters = [{
+            'robot_description': Command(['xacro ', LaunchConfiguration('vehicle_description_file')]),
+            'publish_frequency': 100.0
+            },
             LaunchConfiguration('erp42_gazebo_parameter_file')
         ]
     )
