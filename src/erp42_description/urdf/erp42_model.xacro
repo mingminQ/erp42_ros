@@ -31,10 +31,7 @@
         <link name="base_footprint"/>
 
         <!-- Base link -->
-        <link name="base_link"/>
-
-        <!-- Chassis -->
-        <link name="chassis">
+        <link name="base_link">
 
             <!-- Inertia -->
             <inertial>
@@ -123,13 +120,6 @@
             <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0" />
             <parent link="base_footprint" />
             <child link="base_link" />
-        </joint>
-
-        <!-- base_link to chassis -->
-        <joint name="chassis_joint" type="fixed">
-            <origin xyz="0 0 0" rpy="0 0 0" />
-            <parent link="base_link" />
-            <child link="chassis" />
         </joint>
 
         <!-- base_link to front_left_steering_hub -->
