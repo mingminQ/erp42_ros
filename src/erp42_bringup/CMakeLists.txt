@@ -6,33 +6,17 @@ cmake_minimum_required(VERSION 3.22)
 project(erp42_bringup)
 
 # --------------------------------------------------------------------------------------------------
-# Ensure C++17 standard is used if not already set
+# Find required packages
 # --------------------------------------------------------------------------------------------------
-if(NOT CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 17)
-endif()
+find_package(erp42_cmake REQUIRED)
+erp42_package()
 
 # --------------------------------------------------------------------------------------------------
-# Add extra warning flags for GCC and Clang
+# Install package
 # --------------------------------------------------------------------------------------------------
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+ament_auto_package(USE_SCOPED_HEADER_INSTALL_DIR)
 
-# --------------------------------------------------------------------------------------------------
-# Find required ROS2 and message packages
-# --------------------------------------------------------------------------------------------------
-find_package(ament_cmake REQUIRED)
-
-# --------------------------------------------------------------------------------------------------
-# Install launch files and parameter files
-# --------------------------------------------------------------------------------------------------
 install(
-    DIRECTORY launch config
+    DIRECTORY config launch
     DESTINATION share/${PROJECT_NAME}
 )
-
-# --------------------------------------------------------------------------------------------------
-# Register the package with ament
-# --------------------------------------------------------------------------------------------------
-ament_package()
