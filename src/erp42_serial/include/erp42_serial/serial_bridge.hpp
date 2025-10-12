@@ -40,7 +40,7 @@
 #include <string>
 #include <array>
 
-namespace erp42
+namespace erp42::serial
 {
     /**
      * @brief ROS2 node for serial communication on the ERP42 platform.
@@ -56,7 +56,7 @@ namespace erp42
          * @details Initializes the base Node with name "erp42_serial", 
          * resets the heartbeat counter to zero.
          */
-        SerialBridge();
+        explicit SerialBridge(const rclcpp::NodeOptions &options = rclcpp::NodeOptions());
 
         /**
          * @brief Default class destructor
@@ -162,6 +162,6 @@ namespace erp42
 
     }; // class SerialBridge
 
-} // namespace erp42
+} // namespace erp42::serial
 
 #endif // ERP42_SERIAL__SERIAL_BRIDGE_HPP_

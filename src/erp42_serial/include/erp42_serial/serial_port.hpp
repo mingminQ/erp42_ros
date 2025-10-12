@@ -29,7 +29,7 @@
 
 #include <string>
 
-namespace erp42
+namespace erp42::serial
 {
     /**
      * @brief Manages serial port communication.
@@ -112,6 +112,6 @@ namespace erp42
 
     }; // class SerialPort
 
-} // namespace erp42
+} // namespace erp42::serial
 
 #endif // ERP42_SERIAL__SERIAL_PORT_HPP_
