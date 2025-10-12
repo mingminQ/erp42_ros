@@ -6,39 +6,17 @@ cmake_minimum_required(VERSION 3.22)
 project(erp42_description)
 
 # --------------------------------------------------------------------------------------------------
-# Ensure C++17 standard is used if not already set
+# Find required packages
 # --------------------------------------------------------------------------------------------------
-if(NOT CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 17)
-endif()
+find_package(erp42_cmake REQUIRED)
+erp42_package()
 
 # --------------------------------------------------------------------------------------------------
-# Add extra warning flags for GCC and Clang
+# Install package
 # --------------------------------------------------------------------------------------------------
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
-
-# --------------------------------------------------------------------------------------------------
-# Find required ROS2 and message packages
-# --------------------------------------------------------------------------------------------------
-find_package(ament_cmake REQUIRED)
-
-# --------------------------------------------------------------------------------------------------
-# Instal ERP42 description files
-# --------------------------------------------------------------------------------------------------
-install(
-    DIRECTORY include/
-    DESTINATION include
-)
+ament_auto_package(USE_SCOPED_HEADER_INSTALL_DIR)
 
 install(
-    DIRECTORY launch urdf meshes rviz
-    DESTINATION share/${PROJECT_NAME}/
+    DIRECTORY launch meshes rviz urdf
+    DESTINATION share/${PROJECT_NAME}
 )
-
-# --------------------------------------------------------------------------------------------------
-# Register the package with ament
-# --------------------------------------------------------------------------------------------------
-ament_export_include_directories(include)
-ament_package()
