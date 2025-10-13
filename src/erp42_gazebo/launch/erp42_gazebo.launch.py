@@ -99,23 +99,7 @@ def generate_launch_description():
         parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')],
     )
 
-    # Control panel GUI
-    erp42_control_panel = Node(
-        package    = 'erp42_gui', 
-        executable = 'control_panel', 
-        output     = 'screen',
-        parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')],
-        condition  = IfCondition(LaunchConfiguration('view_control_panel'))
-    )
 
-    # Feedback monitor GUI
-    erp42_feedback_monitor = Node(
-        package    = 'erp42_gui', 
-        executable = 'feedback_monitor', 
-        output     = 'screen',
-        parameters = [LaunchConfiguration('erp42_gazebo_parameter_file')],
-        condition  = IfCondition(LaunchConfiguration('view_feedback_monitor'))
-    )
 
     # Spawn ERP42 entity in Gazebo
     spawn_entity = Node(
@@ -164,8 +148,7 @@ def generate_launch_description():
         gazebo_client,
         robot_state_publisher,
         gazebo_bridge,
-        erp42_control_panel,
-        erp42_feedback_monitor,
+
         spawn_entity,
         rviz
     ])

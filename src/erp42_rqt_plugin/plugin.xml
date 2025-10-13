@@ -1,0 +1,33 @@
+<!-- ERP42 control panel -->
+<library path = "erp42_rqt_plugin">
+    <class name = "erp42/rqt_plugin/ControlPanelPlugin" type = "erp42::rqt_plugin::ControlPanelPlugin" base_class_type = "rqt_gui_cpp::Plugin">
+        <description>ERP42 Control Panel</description>
+        <qtgui>
+            <group>
+                <label>ERP42</label>
+                <icon type="theme">folder</icon>
+                <statustip>ERP42 RQT Plugin</statustip>
+            </group>
+            
+            <label>Control Panel</label>
+            <icon type="theme">image-x-generic</icon>
+            <statustip>A GUI plugin for controlling the ERP42 platform.</statustip>
+        </qtgui>
+    </class>
+
+    <!-- ERP42 feedback monitor -->
+    <class name = "erp42/rqt_plugin/FeedbackMonitorPlugin" type = "erp42::rqt_plugin::FeedbackMonitorPlugin" base_class_type = "rqt_gui_cpp::Plugin">
+        <description>ERP42 Feedback Monitor</description>
+        <qtgui>
+            <group>
+                <label>ERP42</label>
+                <icon type="theme">folder</icon>
+                <statustip>ERP42 RQT Plugin</statustip>
+            </group>
+            
+            <label>Feedback Monitor</label>
+            <icon type="theme">image-x-generic</icon>
+            <statustip>A GUI plugin for monitoring feedback from the ERP42 platform.</statustip>
+        </qtgui>
+    </class>
+</library>
