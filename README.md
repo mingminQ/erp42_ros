@@ -24,7 +24,7 @@ For more information about the package, please read the README.md at the link be
 
 - **ERP42 gazebo simulation :** [erp42_gazebo](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_gazebo)
 
-- **ERP42 GUI :** [erp42_gui](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_gui)
+- **ERP42 RQT Plugin :** [erp42_rqt_plugin](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_rqt_plugin)
 
 - **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_msgs)
 
