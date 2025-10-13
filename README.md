@@ -18,8 +18,6 @@ If you have any suggestions or issues, please contact me using the information b
 # Package overview
 For more information about the package, please read the README.md at the link below.
 
-- **ERP42 bringup :** [erp42_bringup](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_bringup)
-
 - **ERP42 description files :** [erp42_description](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_description)
 
 - **ERP42 gazebo simulation :** [erp42_gazebo](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_gazebo)
