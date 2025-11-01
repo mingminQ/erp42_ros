@@ -18,7 +18,7 @@ def generate_launch_description():
     )
 
     # ERP42 serial bridge
-    erp42_serial_bridge = Node(
+    serial_bridge = Node(
         package    = 'erp42_serial', 
         executable = 'serial_bridge', 
         name       = 'serial_bridge', 
@@ -28,5 +28,5 @@ def generate_launch_description():
 
     return LaunchDescription([
         serial_bridge_parameter,
-        erp42_serial_bridge
+        serial_bridge
     ])
