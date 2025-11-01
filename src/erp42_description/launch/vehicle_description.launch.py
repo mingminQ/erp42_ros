@@ -25,7 +25,7 @@ def generate_launch_description():
 
     # Robot state publisher node
     robot_state_publisher = Node(
-        namespace  = '/erp42',
+        namespace  = 'erp42',
         package    = 'robot_state_publisher',
         executable = 'robot_state_publisher',
         output     = 'screen',
@@ -37,7 +37,7 @@ def generate_launch_description():
 
     # Joint state publisher node
     joint_state_publisher = Node(
-        namespace  = '/erp42',
+        namespace  = 'erp42',
         package    = 'joint_state_publisher', 
         executable = 'joint_state_publisher', 
         output     = 'screen'
@@ -45,7 +45,7 @@ def generate_launch_description():
 
     # Rviz
     rviz = Node(
-        namespace  = '/erp42',
+        namespace  = 'erp42',
         package    = 'rviz2',
         executable = 'rviz2',
         name       = 'rviz2',

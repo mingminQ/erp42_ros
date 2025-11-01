@@ -46,7 +46,7 @@ namespace Ui
 
 } // namespace Ui
 
-namespace erp42::rqt_plugin
+namespace erp42_rqt_plugin
 {
     /**
      * @brief ERP42 platform RQT control panel GUI plugin
@@ -187,6 +187,6 @@ namespace erp42::rqt_plugin
     
     }; // class ControlPanelPlugin
 
-} // namespace erp42::rqt_plugin
+} // namespace erp42_rqt_plugin
 
 #endif // ERP42_RQT_PLUGIN__CONTROL_PANEL_PLUGIN_HPP_

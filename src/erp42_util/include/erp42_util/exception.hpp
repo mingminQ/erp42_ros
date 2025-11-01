@@ -30,7 +30,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace erp42
+namespace erp42_util
 {
     /** @brief Exception class inhereted STL runtime_error */
     class Exception : public std::runtime_error
@@ -55,6 +55,6 @@ namespace erp42
 
     }; // class Exception
 
-} // namespace erp42
+} // namespace erp42_util
 
 #endif // ERP42_UTIL__EXCEPTION_HPP_

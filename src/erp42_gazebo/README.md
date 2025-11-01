@@ -1,7 +1,7 @@
 # erp42_gazebo
 ERP42 Gazebo simulation package. Uses ERP42 platform-related properties and control plugins to define ERP42 in Gazebo.
 ``` bash
-$ ros2 launch erp42_gazebo erp42_gazebo.launch.py
+$ ros2 launch erp42_gazebo gazebo.launch.py
 ```
 
 <div align="center">

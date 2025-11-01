@@ -39,7 +39,7 @@ using namespace std::chrono_literals;
  * @brief Constructor for the FeedbackMonitorPlugin class.
  * @details Initializes member variables and sets the plugin's object name.
  */
-erp42::rqt_plugin::FeedbackMonitorPlugin::FeedbackMonitorPlugin()
+erp42_rqt_plugin::FeedbackMonitorPlugin::FeedbackMonitorPlugin()
   : rqt_gui_cpp::Plugin(), feedback_monitor_widget_(nullptr), spin_running_(false)
 {
     setObjectName("FeedbackMonitorPlugin");
@@ -51,7 +51,7 @@ erp42::rqt_plugin::FeedbackMonitorPlugin::FeedbackMonitorPlugin()
  * the @c shutdownPlugin method to clean up resources and stop any
  * running threads before the object is destroyed.
  */
-erp42::rqt_plugin::FeedbackMonitorPlugin::~FeedbackMonitorPlugin()
+erp42_rqt_plugin::FeedbackMonitorPlugin::~FeedbackMonitorPlugin()
 {
     shutdownPlugin();
 }
@@ -63,7 +63,7 @@ erp42::rqt_plugin::FeedbackMonitorPlugin::~FeedbackMonitorPlugin()
  * reads vehicle parameters, and starts a multi-threaded executor in a separate thread.
  * @param context The plugin context provided by the rqt framework.
  */
-void erp42::rqt_plugin::FeedbackMonitorPlugin::initPlugin(qt_gui_cpp::PluginContext &context)
+void erp42_rqt_plugin::FeedbackMonitorPlugin::initPlugin(qt_gui_cpp::PluginContext &context)
 {
     // Initialize ROS2 node
     node_ = std::make_shared<rclcpp::Node>("erp42_feedback_monitor");
@@ -107,7 +107,7 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::initPlugin(qt_gui_cpp::PluginCont
  * @details This method stops the executor thread, shuts down ROS 2 entities,
  * and cleans up the UI components to ensure a graceful shutdown of the plugin.
  */
-void erp42::rqt_plugin::FeedbackMonitorPlugin::shutdownPlugin()
+void erp42_rqt_plugin::FeedbackMonitorPlugin::shutdownPlugin()
 {
     // Thread and executor reset
     spin_running_ = false;
@@ -148,7 +148,7 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::shutdownPlugin()
  * @param plugin_settings Plugin-specific settings.
  * @param instance_settings Instance-specific settings.
  */
-void erp42::rqt_plugin::FeedbackMonitorPlugin::saveSettings(
+void erp42_rqt_plugin::FeedbackMonitorPlugin::saveSettings(
     qt_gui_cpp::Settings &plugin_settings, 
     qt_gui_cpp::Settings &instance_settings
 ) const
@@ -164,7 +164,7 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::saveSettings(
  * @param plugin_settings Plugin-specific settings.
  * @param instance_settings Instance-specific settings.
  */
-void erp42::rqt_plugin::FeedbackMonitorPlugin::restoreSettings(
+void erp42_rqt_plugin::FeedbackMonitorPlugin::restoreSettings(
     const qt_gui_cpp::Settings &plugin_settings, 
     const qt_gui_cpp::Settings &instance_settings
 )
@@ -180,7 +180,7 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::restoreSettings(
  * this method uses @c QMetaObject::invokeMethod with @c Qt::QueuedConnection.
  * @param msg Shared pointer to @c erp42_msgs::msg::Feedback .
  */
-void erp42::rqt_plugin::FeedbackMonitorPlugin::feedback_callback(
+void erp42_rqt_plugin::FeedbackMonitorPlugin::feedback_callback(
     const erp42_msgs::msg::Feedback::SharedPtr msg
 )
 {
@@ -238,14 +238,14 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::feedback_callback(
 }
 
 /**
- * @brief Selects the target node (either @c erp42_serial_bridge or @c erp42_gazebo_bridge).
+ * @brief Selects the target node (either @c serial_bridge or @c gazebo_bridge).
  * @details Checks the ROS 2 node graph for the existence of either node.
  * If found, sets @c node_name to the found node and returns true.
  * If neither node is found within @c 5000ms, returns false.
  * @param[out] node_name Name of the selected target node.
  * @return True if a target node is found; otherwise false.
  */
-bool erp42::rqt_plugin::FeedbackMonitorPlugin::select_target_node(std::string &node_name)
+bool erp42_rqt_plugin::FeedbackMonitorPlugin::select_target_node(std::string &node_name)
 {
     // Timeout and step durations
     std::chrono::milliseconds timeout(5000);
@@ -262,18 +262,18 @@ bool erp42::rqt_plugin::FeedbackMonitorPlugin::select_target_node(std::string &n
         const auto node_names = graph->get_node_names();
 
         // Serial bridge node exists
-        const auto serial_bridge_iter = std::find(node_names.begin(), node_names.end(), "/erp42_serial_bridge");
+        const auto serial_bridge_iter = std::find(node_names.begin(), node_names.end(), "/serial_bridge");
         if(serial_bridge_iter != node_names.end())
         {
-            node_name = "/erp42_serial_bridge";
+            node_name = "/serial_bridge";
             return true;
         }
 
         // Gazebo bridge node exists
-        const auto gazebo_bridge_iter = std::find(node_names.begin(), node_names.end(), "/erp42_gazebo_bridge");
+        const auto gazebo_bridge_iter = std::find(node_names.begin(), node_names.end(), "/gazebo_bridge");
         if(gazebo_bridge_iter != node_names.end())
         {
-            node_name = "/erp42_gazebo_bridge";
+            node_name = "/gazebo_bridge";
             return true;
         }
 
@@ -286,20 +286,18 @@ bool erp42::rqt_plugin::FeedbackMonitorPlugin::select_target_node(std::string &n
 
 /**
  * @brief Reads parameters from the target node and displays them on the UI.
- * @details Selects the target node (either @c erp42_serial_bridge or @c erp42_gazebo_bridge )
+ * @details Selects the target node (either @c serial_bridge or @c gazebo_bridge )
  * and reads its parameters. If the service is not available within @c 1000ms, the method
  * returns without updating.
  */
-void erp42::rqt_plugin::FeedbackMonitorPlugin::read_vehicle_parameters()
+void erp42_rqt_plugin::FeedbackMonitorPlugin::read_vehicle_parameters()
 {
-    // Select target node (erp42_serial_bridge or erp42_gazebo_bridge)
+    // Select target node (serial_bridge or gazebo_bridge)
     std::string node_name;
     if(!select_target_node(node_name))
     {
-        QMessageBox::warning(
-            widget_, 
-            "ERROR", 
-            "FeedbackMonitorPlugin::read_vehicle_parameters Failed to find target node (erp42_serial_bridge or erp42_gazebo_bridge)."
+        QMessageBox::warning(widget_, "ERROR", 
+            "FeedbackMonitorPlugin::read_vehicle_parameters Failed to find target node (serial_bridge or gazebo_bridge)."
         );
         return;
     }
@@ -308,16 +306,14 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::read_vehicle_parameters()
     parameter_client_ = std::make_shared<rclcpp::SyncParametersClient>(node_, node_name);
     if(!parameter_client_->wait_for_service(std::chrono::milliseconds(1000)))
     {
-        QMessageBox::warning(
-            widget_, 
-            "ERROR", 
+        QMessageBox::warning(widget_, "ERROR", 
             "FeedbackMonitorPlugin::read_vehicle_parameters Parameter service not available."
         );
         return;
     }
 
-    // Read erp42_serial_bridge parameters
-    if(node_name == "/erp42_serial_bridge")
+    // Read serial_bridge parameters
+    if(node_name == "/serial_bridge")
     {
         std::string port_path = parameter_client_->get_parameter<std::string>("port_path");
         feedback_monitor_widget_->serial_port_text_box->setPlainText(QString::fromStdString(port_path));
@@ -335,8 +331,8 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::read_vehicle_parameters()
         feedback_monitor_widget_->steering_offset_text_box->setPlainText(QString::number(steering_offset_deg, 'f', 3) + " deg");
     }
 
-    // Read erp42_gazebo_bridge parameters
-    else if(node_name == "/erp42_gazebo_bridge")
+    // Read gazebo_bridge parameters
+    else if(node_name == "/gazebo_bridge")
     {
         double max_speed = parameter_client_->get_parameter<double>("max_speed_mps");
         feedback_monitor_widget_->max_speed_text_box->setPlainText(QString::number(max_speed, 'f', 3) + " m/s");
@@ -350,4 +346,4 @@ void erp42::rqt_plugin::FeedbackMonitorPlugin::read_vehicle_parameters()
 }
 
 #include <pluginlib/class_list_macros.hpp>
-PLUGINLIB_EXPORT_CLASS(erp42::rqt_plugin::FeedbackMonitorPlugin, rqt_gui_cpp::Plugin)
+PLUGINLIB_EXPORT_CLASS(erp42_rqt_plugin::FeedbackMonitorPlugin, rqt_gui_cpp::Plugin)

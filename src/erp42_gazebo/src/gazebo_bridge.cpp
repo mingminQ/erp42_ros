@@ -43,8 +43,8 @@ using namespace std::chrono_literals;
  * - Declares parameters before wiring ROS interfaces so that publishers/subscribers/services
  *   and initial state can use parameterized limits/offsets.
  */
-erp42::gazebo::GazeboBridge::GazeboBridge(const rclcpp::NodeOptions &options)
-  : rclcpp::Node("erp42_gazebo_bridge", options)
+erp42_gazebo::GazeboBridge::GazeboBridge(const rclcpp::NodeOptions &options)
+  : rclcpp::Node("gazebo_bridge", options)
 {
     declare_parameters();
     initialize_node();
@@ -57,7 +57,7 @@ erp42::gazebo::GazeboBridge::GazeboBridge(const rclcpp::NodeOptions &options)
  *   subscriptions, service clients, async callbacks capturing 'this'), ensure they
  *   are cancelled/reset here to avoid use-after-free during shutdown.
  */
-erp42::gazebo::GazeboBridge::~GazeboBridge()
+erp42_gazebo::GazeboBridge::~GazeboBridge()
 {
 }
 
@@ -70,7 +70,7 @@ erp42::gazebo::GazeboBridge::~GazeboBridge()
  *  - Compute steering as the simple mean of left/right steering hub joint angles (Ackermann approx).
  *  - Compute encoder count from front-left wheel angle changes.
  */
-void erp42::gazebo::GazeboBridge::joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr msg)
+void erp42_gazebo::GazeboBridge::joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr msg)
 {
     auto front_left_wheel_iter = std::find(msg->name.begin(), msg->name.end(), "front_left_wheel_joint" );
     int front_left_wheel_index = std::distance(msg->name.begin(), front_left_wheel_iter);
@@ -82,7 +82,7 @@ void erp42::gazebo::GazeboBridge::joint_state_callback(const sensor_msgs::msg::J
     int front_right_steering_hub_index = std::distance(msg->name.begin(), front_right_steering_hub_iter);
 
     // Current speed from left front wheel encoder
-    current_speed_ = msg->velocity[front_left_wheel_index] * WHEEL_RADIUS;
+    current_speed_ = msg->velocity[front_left_wheel_index] * erp42_description::WHEEL_RADIUS;
 
     // Current steering angle from front left/right wheel steering joints
     double left_wheel_angle  = msg->position[front_left_steering_hub_index];
@@ -93,9 +93,9 @@ void erp42::gazebo::GazeboBridge::joint_state_callback(const sensor_msgs::msg::J
     double current_wheel_angle = msg->position[front_left_wheel_index];
     double delta_wheel_angle = std::remainder(current_wheel_angle - prev_front_left_wheel_angle_, 2.0 * M_PI);
 
-    if((2.0 * M_PI / ENCODER_CPR) < std::abs(delta_wheel_angle))
+    if((2.0 * M_PI / erp42_description::ENCODER_CPR) < std::abs(delta_wheel_angle))
     {
-        encoder_count_ += static_cast<int>(delta_wheel_angle / (2.0 * M_PI) * ENCODER_CPR);
+        encoder_count_ += static_cast<int>(delta_wheel_angle / (2.0 * M_PI) * erp42_description::ENCODER_CPR);
         prev_front_left_wheel_angle_ = current_wheel_angle;
     }
 }
@@ -109,7 +109,7 @@ void erp42::gazebo::GazeboBridge::joint_state_callback(const sensor_msgs::msg::J
  * - Applies gear logic (reverse/neutral handling).
  * - Publishes the brake effect to Gazebo by adjusting ODE damping via SetJointProperties service.
  */
-void erp42::gazebo::GazeboBridge::control_command_callback(const erp42_msgs::msg::ControlCommand::SharedPtr msg)
+void erp42_gazebo::GazeboBridge::control_command_callback(const erp42_msgs::msg::ControlCommand::SharedPtr msg)
 {
     speed_command_    = std::clamp(msg->speed, -max_speed_mps_, max_speed_mps_);
     steering_command_ = std::clamp(msg->steering + steering_offset_rad_, -max_steering_rad_, max_steering_rad_);
@@ -177,7 +177,7 @@ void erp42::gazebo::GazeboBridge::control_command_callback(const erp42_msgs::msg
  * - Manual mode can be used to ignore autonomous commands while allowing operator inputs.
  * - Keep this callback non-blocking. It runs in an rclcpp executor thread.
  */
-void erp42::gazebo::GazeboBridge::mode_command_callback(
+void erp42_gazebo::GazeboBridge::mode_command_callback(
     const erp42_msgs::srv::ModeCommand::Request::SharedPtr request,
     erp42_msgs::srv::ModeCommand::Response::SharedPtr response
 )
@@ -196,7 +196,7 @@ void erp42::gazebo::GazeboBridge::mode_command_callback(
  *   - angular.z: steering command [rad]
  * - Publishes ERP42 feedback snapshot (mode flags, current states, encoder, heartbeat).
  */
-void erp42::gazebo::GazeboBridge::timer_callback()
+void erp42_gazebo::GazeboBridge::timer_callback()
 {
     // Publish control command
     geometry_msgs::msg::Twist cmd_vel_msg;
@@ -224,7 +224,8 @@ void erp42::gazebo::GazeboBridge::timer_callback()
 
     // Publish odometry
     odom_msg_.twist.twist.linear.x = current_speed_;
-    odom_msg_.twist.twist.angular.z = current_speed_ / WHEELBASE_LENGTH * std::tan(current_steering_);
+    odom_msg_.twist.twist.angular.z = 
+        current_speed_ / erp42_description::WHEELBASE_LENGTH * std::tan(current_steering_);
 
     odom_msg_.header.stamp = this->now();
     odom_pub_->publish(odom_msg_);
@@ -244,7 +245,7 @@ void erp42::gazebo::GazeboBridge::timer_callback()
  *     /erp42/mode_command        : mode/gear/E-Stop updates
  *     /erp42/set_joint_properties: (client) to tune joint damping (used for brake emulation)
  */
-void erp42::gazebo::GazeboBridge::initialize_node()
+void erp42_gazebo::GazeboBridge::initialize_node()
 {
     // Timer
     timer_ = this->create_wall_timer(20ms, std::bind(&GazeboBridge::timer_callback, this));
@@ -296,7 +297,7 @@ void erp42::gazebo::GazeboBridge::initialize_node()
  *   - steering_offset_deg  (double, deg)  : static steering bias in degrees, default 0.0
  * - Converts degree-based parameters to radians for internal use.
  */
-void erp42::gazebo::GazeboBridge::declare_parameters()
+void erp42_gazebo::GazeboBridge::declare_parameters()
 {
     // Odometry frame id
     this->declare_parameter<std::string>("odometry_frame_id", "odom");
@@ -319,4 +320,4 @@ void erp42::gazebo::GazeboBridge::declare_parameters()
 }
 
 #include <rclcpp_components/register_node_macro.hpp>
-RCLCPP_COMPONENTS_REGISTER_NODE(erp42::gazebo::GazeboBridge)
+RCLCPP_COMPONENTS_REGISTER_NODE(erp42_gazebo::GazeboBridge)

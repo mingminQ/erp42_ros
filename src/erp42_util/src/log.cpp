@@ -33,15 +33,6 @@
 
 namespace // anonymous namespace for internal linkage
 {
-    // ANSI escape codes to set terminal output color
-    #define ANSI_COLOR_RESET   "\x1b[0m"
-    #define ANSI_COLOR_RED     "\x1b[31m"
-    #define ANSI_COLOR_GREEN   "\x1b[32m"
-    #define ANSI_COLOR_BLUE    "\x1b[34m"
-    #define ANSI_COLOR_YELLOW  "\x1b[33m"
-    #define ANSI_COLOR_CYAN    "\x1b[36m"
-    #define ANSI_COLOR_MAGENTA "\x1b[35m"
-
     // Maximum size of formatted log message buffer
     #define MAX_BUFFER_SIZE 1024
 
@@ -68,19 +59,19 @@ namespace // anonymous namespace for internal linkage
         std::mutex sync_lock_;
 
         // Current global log level
-        erp42::log::LogLevel log_level_;
+        erp42_util::LogLevel log_level_;
 
         // Activated handler type
-        erp42::log::LogType log_type_;
+        erp42_util::LogType log_type_;
 
         // Pointer to active handler
-        erp42::log::LogHandler *current_handler_;
+        erp42_util::LogHandler *current_handler_;
 
         // Terminal log handler instance
-        erp42::log::LogHandlerTerminal *terminal_log_handler_;
+        erp42_util::LogHandlerTerminal *terminal_log_handler_;
 
         //  File handler instance, if enabled
-        erp42::log::LogHandlerFile *file_log_handler_;
+        erp42_util::LogHandlerFile *file_log_handler_;
 
         /**
          * @brief Constructs LogManager with default settings
@@ -90,14 +81,14 @@ namespace // anonymous namespace for internal linkage
         LogManager()
         {
             // Default log level : Information
-            log_level_ = erp42::log::LogLevel::INFO;
+            log_level_ = erp42_util::LogLevel::INFO;
 
             // File log handler is not activated at default
-            terminal_log_handler_ = new erp42::log::LogHandlerTerminal();
+            terminal_log_handler_ = new erp42_util::LogHandlerTerminal();
             file_log_handler_     = nullptr;
 
             // Default log handler is terminal log handler
-            log_type_        = erp42::log::LogType::TERMINAL;
+            log_type_        = erp42_util::LogType::TERMINAL;
             current_handler_ = terminal_log_handler_;
         }
 
@@ -133,8 +124,6 @@ namespace // anonymous namespace for internal linkage
 
 } // namespace annonymous
 
-// "erp42::log::LogHandlerTerminal" source
-
 /**
  * @brief Prints a log message to the terminal
  * @param file_name Name of the source file
@@ -142,13 +131,13 @@ namespace // anonymous namespace for internal linkage
  * @param log_level Severity level
  * @param msg Formatted log message
  */
-void erp42::log::LogHandlerTerminal::print_log(const char *file_name, int line_number, LogLevel log_level, const std::string &msg)
+void erp42_util::LogHandlerTerminal::print_log(const char *file_name, int line_number, LogLevel log_level, const std::string &msg)
 {
     // Linux system only
     // bool isTTY(isatty(fileno(stderr)) != 0);
     bool isTTY = true;
 
-    if(erp42::log::LogLevel::WARNING <= log_level)
+    if(erp42_util::LogLevel::WARNING <= log_level)
     {
         if(isTTY)
         {
@@ -158,7 +147,7 @@ void erp42::log::LogHandlerTerminal::print_log(const char *file_name, int line_n
             std::cerr.flush();
         }
     }
-    else // log_level <= erp42::log::LogLevel::INFO
+    else // log_level <= erp42_util::LogLevel::INFO
     {
         if(isTTY)
         {
@@ -174,7 +163,7 @@ void erp42::log::LogHandlerTerminal::print_log(const char *file_name, int line_n
  * @brief Constructor for file log handler
  * @param file_name Path to the log file
  */
-erp42::log::LogHandlerFile::LogHandlerFile(const char *file_name)
+erp42_util::LogHandlerFile::LogHandlerFile(const char *file_name)
 {
     file_ = fopen(file_name, "a");
     if(file_ == nullptr)
@@ -184,7 +173,7 @@ erp42::log::LogHandlerFile::LogHandlerFile(const char *file_name)
 }
 
 /** @brief Destructor that closes the log file */
-erp42::log::LogHandlerFile::~LogHandlerFile()
+erp42_util::LogHandlerFile::~LogHandlerFile()
 {
     if(file_ != nullptr)
     {
@@ -202,11 +191,11 @@ erp42::log::LogHandlerFile::~LogHandlerFile()
  * @param log_level Severity level
  * @param msg Formatted log message
  */
-void erp42::log::LogHandlerFile::print_log(const char *file_name, int line_number, LogLevel log_level, const std::string &msg)
+void erp42_util::LogHandlerFile::print_log(const char *file_name, int line_number, LogLevel log_level, const std::string &msg)
 {
     if(file_ != nullptr)
     {
-        if(erp42::log::LogLevel::WARNING <= log_level)
+        if(erp42_util::LogLevel::WARNING <= log_level)
         {
             fprintf(file_, "%s%s", log_header[log_level], msg.c_str());
             fprintf(file_, " at line %d in %s\n", line_number, file_name);
@@ -223,7 +212,7 @@ void erp42::log::LogHandlerFile::print_log(const char *file_name, int line_numbe
  * @brief Sets the global log level
  * @param log_level Desired minimum severity level for logging
  */
-void erp42::log::set_log_level(LogLevel log_level)
+void erp42_util::set_log_level(LogLevel log_level)
 {
     GET_LOG_MANAGER;
     log_manager->log_level_ = log_level;
@@ -233,7 +222,7 @@ void erp42::log::set_log_level(LogLevel log_level)
  * @brief Retrieves the current global log level
  * @return Current minimum severity level for logging
  */
-erp42::log::LogLevel erp42::log::get_log_level()
+erp42_util::LogLevel erp42_util::get_log_level()
 {
     GET_LOG_MANAGER;
     return log_manager->log_level_;
@@ -243,7 +232,7 @@ erp42::log::LogLevel erp42::log::get_log_level()
  * @brief Enables file output handler for logging
  * @param file_name Path to the log file
  */
-void erp42::log::activate_log_file(const std::string &file_name)
+void erp42_util::activate_log_file(const std::string &file_name)
 {
     GET_LOG_MANAGER;
     if(log_manager->file_log_handler_ == nullptr)
@@ -257,7 +246,7 @@ void erp42::log::activate_log_file(const std::string &file_name)
 }
 
 /** @brief Disables the file output handler and releases resources */
-void erp42::log::deactivate_log_file()
+void erp42_util::deactivate_log_file()
 {
     GET_LOG_MANAGER;
     if(log_manager->file_log_handler_ == nullptr)
@@ -275,7 +264,7 @@ void erp42::log::deactivate_log_file()
  * @brief Sets the active log handler type
  * @param log_type LogType::TERMINAL or LogType::FILE
  */
-void erp42::log::set_log_type(LogType log_type)
+void erp42_util::set_log_type(LogType log_type)
 {
     GET_LOG_MANAGER;
     if(log_type != log_manager->log_type_)
@@ -292,7 +281,7 @@ void erp42::log::set_log_type(LogType log_type)
                 log_manager->current_handler_ = log_manager->file_log_handler_;
             }
         }
-        else // log_type == erp42::log::TERMINAL_HANDLER
+        else // log_type == erp42_util::TERMINAL_HANDLER
         {
             log_manager->log_type_ = LogType::TERMINAL;
             log_manager->current_handler_ = log_manager->terminal_log_handler_;
@@ -304,7 +293,7 @@ void erp42::log::set_log_type(LogType log_type)
  * @brief Retrieves the active log handler type
  * @return Currently configured LogType
  */
-erp42::log::LogType erp42::log::get_log_type()
+erp42_util::LogType erp42_util::get_log_type()
 {
     GET_LOG_MANAGER;
     return log_manager->log_type_;
@@ -320,7 +309,7 @@ erp42::log::LogType erp42::log::get_log_type()
  * @param msg Format string for the log message
  * @param ... Additional arguments for formatting
  */
-void erp42::log::print_log(const char *file_name, int line_number, LogLevel log_level, const char *msg, ...)
+void erp42_util::print_log(const char *file_name, int line_number, LogLevel log_level, const char *msg, ...)
 {
     GET_LOG_MANAGER;
     if(log_manager->current_handler_ != nullptr && log_manager->log_level_ <= log_level)

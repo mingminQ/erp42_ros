@@ -1,4 +1,4 @@
-# erp42_gazebo.param.yaml
+# gazebo.param.yaml
 
 # Global parameters
 /**:
@@ -7,8 +7,8 @@
     # Use simulation time
     use_sim_time: true
 
-# Parameters for erp42_gazebo_bridge
-erp42_gazebo_bridge:
+# Parameters for gazebo_bridge
+gazebo_bridge:
   ros__parameters:
 
     # Odometry frame id

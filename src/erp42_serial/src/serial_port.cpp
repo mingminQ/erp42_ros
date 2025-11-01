@@ -38,7 +38,7 @@
  * @param port_path Filesystem path to the serial device (e.g., "/dev/ttyUSB0").
  * @param baud_rate Communication speed in bits per second (e.g., 115200).
  */
-erp42::serial::SerialPort::SerialPort(const std::string &port_path, const int &baud_rate)
+erp42_serial::SerialPort::SerialPort(const std::string &port_path, const int &baud_rate)
   : port_path_(port_path),
     baud_rate_(baud_rate),
     file_descriptor_(-1)
@@ -51,19 +51,19 @@ erp42::serial::SerialPort::SerialPort(const std::string &port_path, const int &b
  * Throws an exception if the path is empty or opening fails.
  * On success, calls @c initialize_port() to configure the port.
  */
-void erp42::serial::SerialPort::open_port()
+void erp42_serial::SerialPort::open_port()
 {
     if(port_path_.empty())
     {
         file_descriptor_ = -1;
-        throw Exception("SerialPort::open_port() Port path is empty.");
+        throw erp42_util::Exception("SerialPort::open_port() Port path is empty.");
     }
 
     file_descriptor_ = open(port_path_.c_str(), O_RDWR | O_NOCTTY);
     if(file_descriptor_ == -1)
     {
         file_descriptor_ = -1;
-        throw Exception("SerialPort::open_port() File descriptor opening error.");
+        throw erp42_util::Exception("SerialPort::open_port() File descriptor opening error.");
     }
 
     this->initialize_port();
@@ -76,18 +76,18 @@ void erp42::serial::SerialPort::open_port()
  * @details Closes the file descriptor associated with the serial port.
  * Throws an exception if the descriptor is invalid or closing fails.
  */
-void erp42::serial::SerialPort::close_port()
+void erp42_serial::SerialPort::close_port()
 {
     if (file_descriptor_ < 0) 
     {
         file_descriptor_ = -1;
-        throw Exception("SerialPort::close_port() Invalid file descriptor.");
+        throw erp42_util::Exception("SerialPort::close_port() Invalid file descriptor.");
     }
 
     if (close(file_descriptor_) != 0) 
     {
         file_descriptor_ = -1;
-        throw Exception("SerialPort::close_port() Failed to close file descriptor.");
+        throw erp42_util::Exception("SerialPort::close_port() Failed to close file descriptor.");
     }
 
     file_descriptor_ = -1;
@@ -101,7 +101,7 @@ void erp42::serial::SerialPort::close_port()
  * @param expected_packet_size Number of bytes expected to read.
  * @return 'true' if the received packet size matches 'expected_packet_size'; 'false' otherwise.
  */
-bool erp42::serial::SerialPort::receive_packet(unsigned char *rx_packet, const unsigned int &expected_packet_size) const
+bool erp42_serial::SerialPort::receive_packet(unsigned char *rx_packet, const unsigned int &expected_packet_size) const
 {
     if(file_descriptor_ < 0)
     {
@@ -126,7 +126,7 @@ bool erp42::serial::SerialPort::receive_packet(unsigned char *rx_packet, const u
  * @param expected_packet_size Number of bytes to transmit.
  * @return 'true' if the data was written successfully; 'false' otherwise.
  */
-bool erp42::serial::SerialPort::transmit_packet(
+bool erp42_serial::SerialPort::transmit_packet(
     const unsigned char *tx_packet, const unsigned int &expected_packet_size
 ) const
 {
@@ -154,14 +154,14 @@ bool erp42::serial::SerialPort::transmit_packet(
  * and 1 stop bit. Supports baud rates 9600 and 115200. 
  * Throws an exception if configuration fails or the baud rate is invalid.
  */
-void erp42::serial::SerialPort::initialize_port()
+void erp42_serial::SerialPort::initialize_port()
 {
     struct termios tty;
     memset(&tty, 0, sizeof(tty));
     if(tcgetattr(file_descriptor_, &tty) != 0)
     {
         file_descriptor_ = -1;
-        throw Exception("SerialPort::initialize_port() tcgetattr failed.");
+        throw erp42_util::Exception("SerialPort::initialize_port() tcgetattr failed.");
     }
 
     tty.c_cflag &= ~PARENB;
@@ -191,7 +191,7 @@ void erp42::serial::SerialPort::initialize_port()
 
     default:
         file_descriptor_ = -1;
-        throw Exception("SerialPort::initialize_port() Invalid baud_rate, use 9600 or 115200.");
+        throw erp42_util::Exception("SerialPort::initialize_port() Invalid baud_rate, use 9600 or 115200.");
     }
 
     tty.c_cc[VMIN]  = 18;
@@ -200,6 +200,6 @@ void erp42::serial::SerialPort::initialize_port()
     if((tcsetattr(file_descriptor_, TCSANOW, &tty)) != 0)
     {
         file_descriptor_ = -1;
-        throw Exception("SerialPort::initialize_port() tcsetattr failed.");
+        throw erp42_util::Exception("SerialPort::initialize_port() tcsetattr failed.");
     }
 }

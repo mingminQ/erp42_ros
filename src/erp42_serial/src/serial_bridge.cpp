@@ -48,8 +48,8 @@ using std::placeholders::_2;
  * @details Initializes the base Node with name "erp42_serial", 
  * resets the heartbeat counter to zero.
  */
-erp42::serial::SerialBridge::SerialBridge(const rclcpp::NodeOptions &options)
-  : Node("erp42_serial_bridge", options),
+erp42_serial::SerialBridge::SerialBridge(const rclcpp::NodeOptions &options)
+  : Node("serial_bridge", options),
     heartbeat_(0)
 {
     declare_parameters();
@@ -60,7 +60,7 @@ erp42::serial::SerialBridge::SerialBridge(const rclcpp::NodeOptions &options)
  * @brief Default class destructor
  * @details Destroys the SerialBridge node, closing and deallocating the serial port.
  */
-erp42::serial::SerialBridge::~SerialBridge()
+erp42_serial::SerialBridge::~SerialBridge()
 {
     // Close and deallocate serial port
     if(!serial_port_)
@@ -81,7 +81,7 @@ erp42::serial::SerialBridge::~SerialBridge()
  * and publishes it to the feedback topic.
  * @return 'true' if the packet was received, parsed, and published successfully; 'false' otherwise.
  */
-bool erp42::serial::SerialBridge::receive_feedback()
+bool erp42_serial::SerialBridge::receive_feedback()
 {
     // Failed to receive packet
     if(!serial_port_->receive_packet(rx_packet_.data(), RX::PACKET_SIZE))
@@ -143,7 +143,8 @@ bool erp42::serial::SerialBridge::receive_feedback()
 
     // Compute odometry
     odom_msg_.twist.twist.linear.x = feedback_msg.speed;
-    odom_msg_.twist.twist.angular.z = feedback_msg.speed / WHEELBASE_LENGTH * std::tan(feedback_msg.steering);
+    odom_msg_.twist.twist.angular.z = 
+        feedback_msg.speed / erp42_description::WHEELBASE_LENGTH * std::tan(feedback_msg.steering);
     odom_msg_.header.stamp = this->now();
 
     // Publish feedback message
@@ -163,7 +164,7 @@ bool erp42::serial::SerialBridge::receive_feedback()
  *   - Sends the packet via 'serial_port_->transmit_packet()'.  
  * @return 'true' if the packet was transmitted successfully; 'false' otherwise.
  */
-bool erp42::serial::SerialBridge::transmit_command()
+bool erp42_serial::SerialBridge::transmit_command()
 {
     // Set packet protocols
     tx_packet_[TX::STX_S] = 0x53;
@@ -183,7 +184,7 @@ bool erp42::serial::SerialBridge::transmit_command()
  * @brief Periodic timer callback for serial communication.
  * @details Calls 'receive_feedback()', 'transmit_command()', and increments the heartbeat counter.
  */
-void erp42::serial::SerialBridge::timer_callback()
+void erp42_serial::SerialBridge::timer_callback()
 {
     transmit_command();
     receive_feedback();
@@ -199,7 +200,7 @@ void erp42::serial::SerialBridge::timer_callback()
  *   - Sets EMERGENCY_STOP flag based on 'msg.emergency_stop'.  
  *   - Sets GEAR field to 'msg.gear'.
  */
-void erp42::serial::SerialBridge::mode_command_callback(
+void erp42_serial::SerialBridge::mode_command_callback(
     const erp42_msgs::srv::ModeCommand::Request::SharedPtr request,
     erp42_msgs::srv::ModeCommand::Response::SharedPtr response
 )
@@ -225,7 +226,7 @@ void erp42::serial::SerialBridge::mode_command_callback(
  *   - Adjusts steering by offset, clamps to ±max_steering_rad_, and converts to raw units.  
  *   - Inserts brake value directly into the packet.
  */
-void erp42::serial::SerialBridge::control_command_callback(const erp42_msgs::msg::ControlCommand::SharedPtr msg)
+void erp42_serial::SerialBridge::control_command_callback(const erp42_msgs::msg::ControlCommand::SharedPtr msg)
 {
     // Speed (m/s to motor raw command)
     double speed = msg->speed < 0 ? 0 : msg->speed;
@@ -249,7 +250,7 @@ void erp42::serial::SerialBridge::control_command_callback(const erp42_msgs::msg
 }
 
 /** @brief Initializes timers, publishers, subscriptions, and the serial port. */
-void erp42::serial::SerialBridge::initialize_node()
+void erp42_serial::SerialBridge::initialize_node()
 {
     // Timer
     timer_ = this->create_wall_timer(20ms, std::bind(&SerialBridge::timer_callback, this));
@@ -279,7 +280,7 @@ void erp42::serial::SerialBridge::initialize_node()
     serial_port_ = std::make_unique<SerialPort>(port_path_, baud_rate_);
     if(!serial_port_)
     {
-        throw Exception("SerialBridge::initialize_node() Serial port allocation failed.");
+        throw erp42_util::Exception("SerialBridge::initialize_node() Serial port allocation failed.");
     }
     else
     {
@@ -293,7 +294,7 @@ void erp42::serial::SerialBridge::initialize_node()
 }
 
 /** @brief Declares and retrieves ROS2 parameters for serial and ERP42 configuration. */
-void erp42::serial::SerialBridge::declare_parameters()
+void erp42_serial::SerialBridge::declare_parameters()
 {
     // Odometry frame id
     this->declare_parameter<std::string>("odometry_frame_id", "odom");
@@ -321,4 +322,4 @@ void erp42::serial::SerialBridge::declare_parameters()
 }
 
 #include <rclcpp_components/register_node_macro.hpp>
-RCLCPP_COMPONENTS_REGISTER_NODE(erp42::serial::SerialBridge)
+RCLCPP_COMPONENTS_REGISTER_NODE(erp42_serial::SerialBridge)

@@ -19,7 +19,7 @@ ament_auto_add_library(${PROJECT_NAME} SHARED
 )
 
 rclcpp_components_register_node(${PROJECT_NAME}
-    PLUGIN "erp42::gazebo::GazeboBridge"
+    PLUGIN "erp42_gazebo::GazeboBridge"
     EXECUTABLE gazebo_bridge_composable
 )
 

@@ -39,7 +39,7 @@ using namespace std::chrono_literals;
  * @brief Constructor for the ControlPanelPlugin class.
  * @details Initializes member variables and sets the plugin's object name.
  */
-erp42::rqt_plugin::ControlPanelPlugin::ControlPanelPlugin()
+erp42_rqt_plugin::ControlPanelPlugin::ControlPanelPlugin()
   : rqt_gui_cpp::Plugin(), control_panel_widget_(nullptr), spin_running_(false)
 {
     setObjectName("ControlPanelPlugin");
@@ -51,7 +51,7 @@ erp42::rqt_plugin::ControlPanelPlugin::ControlPanelPlugin()
  * the @c shutdownPlugin method to clean up resources and stop any
  * running threads before the object is destroyed.
  */
-erp42::rqt_plugin::ControlPanelPlugin::~ControlPanelPlugin()
+erp42_rqt_plugin::ControlPanelPlugin::~ControlPanelPlugin()
 {
     shutdownPlugin();
 }
@@ -64,7 +64,7 @@ erp42::rqt_plugin::ControlPanelPlugin::~ControlPanelPlugin()
  * in a separate thread to handle ROS 2 communication.
  * @param context The plugin context provided by the rqt framework.
  */
-void erp42::rqt_plugin::ControlPanelPlugin::initPlugin(qt_gui_cpp::PluginContext &context)
+void erp42_rqt_plugin::ControlPanelPlugin::initPlugin(qt_gui_cpp::PluginContext &context)
 {
     // Initialize ROS2 node
     node_ = std::make_shared<rclcpp::Node>("erp42_control_panel");
@@ -139,7 +139,7 @@ void erp42::rqt_plugin::ControlPanelPlugin::initPlugin(qt_gui_cpp::PluginContext
  * service clients, and the ROS 2 node, hides the UI widget, and deallocates
  * the UI helper object to ensure a clean shutdown of the plugin.
  */
-void erp42::rqt_plugin::ControlPanelPlugin::shutdownPlugin()
+void erp42_rqt_plugin::ControlPanelPlugin::shutdownPlugin()
 {
     // Thread and executor reset
     spin_running_ = false;
@@ -180,7 +180,7 @@ void erp42::rqt_plugin::ControlPanelPlugin::shutdownPlugin()
  * @param plugin_settings Plugin settings provided by the framework
  * @param instance_settings Instance settings provided by the framework
  */
-void erp42::rqt_plugin::ControlPanelPlugin::saveSettings(
+void erp42_rqt_plugin::ControlPanelPlugin::saveSettings(
     qt_gui_cpp::Settings & plugin_settings, 
     qt_gui_cpp::Settings & instance_settings
 ) const
@@ -196,7 +196,7 @@ void erp42::rqt_plugin::ControlPanelPlugin::saveSettings(
  * @param plugin_settings Plugin-specific settings.
  * @param instance_settings Instance-specific settings.
  */
-void erp42::rqt_plugin::ControlPanelPlugin::restoreSettings(
+void erp42_rqt_plugin::ControlPanelPlugin::restoreSettings(
     const qt_gui_cpp::Settings & plugin_settings, 
     const qt_gui_cpp::Settings & instance_settings
 )
@@ -213,7 +213,7 @@ void erp42::rqt_plugin::ControlPanelPlugin::restoreSettings(
  *  - Populates manual/auto, E-Stop, and gear fields based on current UI state.
  *  - Shows a warning dialog on common errors (uninitialized client, service unavailable, apply failure).
  */
-void erp42::rqt_plugin::ControlPanelPlugin::on_apply_mode_command()
+void erp42_rqt_plugin::ControlPanelPlugin::on_apply_mode_command()
 {
     if(!mode_command_client_)
     {
@@ -294,7 +294,7 @@ void erp42::rqt_plugin::ControlPanelPlugin::on_apply_mode_command()
  * @param upper_bound Maximum value shown in the spin box.
  * @param step Increment used for both the slider step and the spin box single step.
  */
-void erp42::rqt_plugin::ControlPanelPlugin::bind_slider_spin_box(
+void erp42_rqt_plugin::ControlPanelPlugin::bind_slider_spin_box(
     QSlider *slider, QDoubleSpinBox *spin_box, double lower_bound, double upper_bound, double step
 )
 {
@@ -337,7 +337,7 @@ void erp42::rqt_plugin::ControlPanelPlugin::bind_slider_spin_box(
  * @param upper_bound Maximum value shown in the spin box.
  * @param step Increment used for both the slider step and the spin box single step.
  */
-void erp42::rqt_plugin::ControlPanelPlugin::bind_slider_spin_box(
+void erp42_rqt_plugin::ControlPanelPlugin::bind_slider_spin_box(
     QSlider *slider, QSpinBox *spin_box, int lower_bound, int upper_bound, int step
 )
 {
@@ -376,7 +376,7 @@ void erp42::rqt_plugin::ControlPanelPlugin::bind_slider_spin_box(
  *  - Publishes speed [m/s], steering [rad], and brake [0..150] at the timer rate.
  *  - Steering entered in degrees is converted to radians before publishing.
  */
-void erp42::rqt_plugin::ControlPanelPlugin::control_command_timer_callback()
+void erp42_rqt_plugin::ControlPanelPlugin::control_command_timer_callback()
 {
     if(!control_panel_widget_->activate_control_command_checkbox->isChecked())
     {
@@ -396,4 +396,4 @@ void erp42::rqt_plugin::ControlPanelPlugin::control_command_timer_callback()
 }
 
 #include <pluginlib/class_list_macros.hpp>
-PLUGINLIB_EXPORT_CLASS(erp42::rqt_plugin::ControlPanelPlugin, rqt_gui_cpp::Plugin)
+PLUGINLIB_EXPORT_CLASS(erp42_rqt_plugin::ControlPanelPlugin, rqt_gui_cpp::Plugin)

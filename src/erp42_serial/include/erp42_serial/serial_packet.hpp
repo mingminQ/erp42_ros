@@ -27,7 +27,7 @@
 #ifndef ERP42_SERIAL__SERIAL_PACKET_HPP_
 #define ERP42_SERIAL__SERIAL_PACKET_HPP_
 
-namespace erp42::serial
+namespace erp42_serial
 {
     // ERP42 serial tx packet index mapping
     namespace TX
@@ -95,6 +95,6 @@ namespace erp42::serial
     // Raw byte command -> Steering (rad)
     static constexpr double BYTE2RAD {0.00024582102};
 
-} // namespace erp42::serial
+} // namespace erp42_serial
 
 #endif // ERP42_SERIAL__SERIAL_PACKET_HPP_

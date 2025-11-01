@@ -6,7 +6,7 @@
         <!-- State services/topics publisher (WorldPlugin) -->
         <plugin name="gazebo_ros_properties" filename="libgazebo_ros_properties.so">
             <ros>
-                <namespace>/erp42</namespace>
+                <namespace>erp42</namespace>
             </ros>
         </plugin>
 

@@ -31,7 +31,7 @@
 
                 <!-- ROS parameters -->
                 <ros>
-                    <namespace>/erp42</namespace>
+                    <namespace>erp42</namespace>
                 </ros>
 
                 <!-- Update rate -->
@@ -52,7 +52,7 @@
 
                 <!-- ROS parameters -->
                 <ros>
-                    <namespace>/erp42</namespace>
+                    <namespace>erp42</namespace>
                     <remapping>cmd_vel:=cmd_vel</remapping>
                     <remapping>odom:=odometry_ground_truth</remapping>
                 </ros>

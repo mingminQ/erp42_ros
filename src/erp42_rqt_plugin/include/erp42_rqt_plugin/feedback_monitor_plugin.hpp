@@ -42,7 +42,7 @@ namespace Ui
 
 } // namespace Ui
 
-namespace erp42::rqt_plugin
+namespace erp42_rqt_plugin
 {
     class FeedbackMonitorPlugin : public rqt_gui_cpp::Plugin
     {
@@ -116,7 +116,7 @@ namespace erp42::rqt_plugin
         void feedback_callback(const erp42_msgs::msg::Feedback::SharedPtr msg);
 
         /**
-         * @brief Selects the target node (either @c erp42_serial_bridge or @c erp42_gazebo_bridge).
+         * @brief Selects the target node (either @c erp42_serial_bridge or @c gazebo_bridge).
          * @details Checks the ROS 2 node graph for the existence of either node.
          * If found, sets @c node_name to the found node and returns true.
          * If neither node is found within @c 5000ms, returns false.
@@ -127,7 +127,7 @@ namespace erp42::rqt_plugin
 
         /**
          * @brief Reads parameters from the target node and displays them on the UI.
-         * @details Selects the target node (either @c erp42_serial_bridge or @c erp42_gazebo_bridge )
+         * @details Selects the target node (either @c erp42_serial_bridge or @c gazebo_bridge )
          * and reads its parameters. If the service is not available within @c 1000ms, the method
          * returns without updating.
          */
@@ -156,6 +156,6 @@ namespace erp42::rqt_plugin
 
     }; // class FeedbackMonitorPlugin
 
-} // namespace erp42::rqt_plugin
+} // namespace erp42_rqt_plugin
 
 #endif // ERP42_RQT_PLUGIN__FEEDBACK_MONITOR_PLUGIN_HPP_

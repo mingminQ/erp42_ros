@@ -40,7 +40,7 @@
 #include <string>
 #include <array>
 
-namespace erp42::serial
+namespace erp42_serial
 {
     /**
      * @brief ROS2 node for serial communication on the ERP42 platform.
@@ -162,6 +162,6 @@ namespace erp42::serial
 
     }; // class SerialBridge
 
-} // namespace erp42::serial
+} // namespace erp42_serial
 
 #endif // ERP42_SERIAL__SERIAL_BRIDGE_HPP_

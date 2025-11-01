@@ -40,7 +40,7 @@
 #include <vector>
 #include <string>
 
-namespace erp42::gazebo
+namespace erp42_gazebo
 {
     /**
      * @brief ROS2 Gazebo bridge for ERP42 commands and feedback.
@@ -213,6 +213,6 @@ namespace erp42::gazebo
 
     }; // class GazeboBridge
 
-} // namespace erp42::gazebo
+} // namespace erp42_gazebo
 
 #endif // ERP42_GAZEBO__GAZEBO_BRIDGE_HPP_
