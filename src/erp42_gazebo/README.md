@@ -17,12 +17,10 @@ $ ros2 launch erp42_gazebo gazebo.launch.py
 While no separate world file or sensor file is provided, all settings for using the ERP42 with Gazebo are macroized in the **.xacro** file, so you can use them as follows:
 ``` xml
 <!-- Include files -->
-<xacro:include filename="$(find erp42_description)/urdf/erp42_model.xacro"/>
 <xacro:include filename="$(find erp42_gazebo)/urdf/erp42_gazebo_control.xacro"/>
 
 <!-- ERP42 model description and gazebo control settings -->
-<xacro:erp42_model/>
-<xacro:erp42_gazebo_control/>
+<xacro:erp42_gazebo_control publish_odometry = "true"/>
 ```
 
 <br/>

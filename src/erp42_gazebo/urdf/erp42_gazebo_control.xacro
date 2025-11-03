@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:macro name="erp42_gazebo_control" params="">
+    <xacro:macro name="erp42_gazebo_control" params="publish_odometry">
+
+        <!-- ERP42 Model file -->
+        <xacro:include filename="$(find erp42_description)/urdf/erp42_model.xacro"/>
+        <xacro:erp42_model/>
 
         <!-- Friction coefficients -->
         <gazebo reference="front_left_wheel">
@@ -81,8 +85,8 @@
                 <linear_velocity_i_range>0 0</linear_velocity_i_range>
 
                 <!-- Odometry parameters -->
-                <publish_odom>true</publish_odom>
-                <publish_odom_tf>true</publish_odom_tf>
+                <publish_odom>${publish_odometry}</publish_odom>
+                <publish_odom_tf>${publish_odometry}</publish_odom_tf>
                 <odometry_frame>odom</odometry_frame>
                 <robot_base_frame>base_footprint</robot_base_frame>
 
