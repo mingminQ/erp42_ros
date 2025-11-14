@@ -163,6 +163,7 @@ void erp42_serial::SerialPort::initialize_port()
         file_descriptor_ = -1;
         throw erp42_util::Exception("SerialPort::initialize_port() tcgetattr failed.");
     }
+    tcflush(file_descriptor_, TCIFLUSH);
 
     tty.c_cflag &= ~PARENB;
     tty.c_cflag &= ~CSTOPB;
