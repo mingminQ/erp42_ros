@@ -22,8 +22,7 @@
     <build_export_depend>ros_environment</build_export_depend>
 
     <!-- Test dependencies -->
-    <test_depend>ament_lint_auto     </test_depend>
-    <test_depend>autoware_lint_common</test_depend>
+    <test_depend>ament_lint_auto</test_depend>
 
     <!-- Export build system information -->
     <export>
