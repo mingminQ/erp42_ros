@@ -15,6 +15,14 @@ If you have any suggestions or issues, please contact me using the information b
 
 <br/>
 
+# Dependencies
+
+``` bash
+$ rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
+```
+
+<br/>
+
 # Package overview
 For more information about the package, please read the README.md at the link below.
 
@@ -74,21 +82,3 @@ ERP42_SERIAL_PORT="YOUR_DEVICE_PORT"
 ```
 
 <br/>
-
-# Dependencies
-
-### Automatic Installation
-``` bash
-$ rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
-```
-
-### Manual Installation
-``` bash
-$ sudo apt-get install -y          \
-  qtbase5-dev                      \
-  ros-humble-xacro                 \
-  ros-humble-joint-state-publisher \
-  gazebo                           \
-  ros-humble-gazebo-ros            \
-  ros-humble-gazebo-ros-pkgs
-```
