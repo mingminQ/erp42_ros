@@ -26,8 +26,6 @@
 
 #include "erp42_serial/serial_bridge.hpp"
 #include "erp42_serial/serial_packet.hpp"
-
-#include "erp42_description/vehicle_parameters.hpp"
 #include "erp42_util/exception.hpp"
 #include "erp42_util/log.hpp"
 
@@ -62,6 +60,10 @@ erp42_serial::SerialBridge::SerialBridge(const rclcpp::NodeOptions &options)
  */
 erp42_serial::SerialBridge::~SerialBridge()
 {
+    // Stop serial port timer
+    timer_->cancel();
+    timer_.reset();
+
     // Close and deallocate serial port
     if(!serial_port_)
     {
@@ -141,17 +143,8 @@ bool erp42_serial::SerialBridge::receive_feedback()
     // Heartbeat
     feedback_msg.heartbeat = rx_packet_[RX::HEARTBEAT];
 
-    // Compute odometry
-    odom_msg_.twist.twist.linear.x = feedback_msg.speed;
-    odom_msg_.twist.twist.angular.z = 
-        feedback_msg.speed / erp42_description::WHEELBASE_LENGTH * std::tan(feedback_msg.steering);
-    odom_msg_.header.stamp = this->now();
-
     // Publish feedback message
     feedback_pub_->publish(feedback_msg);
-
-    // Publish odometry
-    odom_pub_->publish(odom_msg_);
     
     return true;
 }
@@ -252,16 +245,11 @@ void erp42_serial::SerialBridge::control_command_callback(const erp42_msgs::msg:
 /** @brief Initializes timers, publishers, subscriptions, and the serial port. */
 void erp42_serial::SerialBridge::initialize_node()
 {
-    // Timer
-    timer_ = this->create_wall_timer(20ms, std::bind(&SerialBridge::timer_callback, this));
-
     // Publishers
     feedback_pub_ = this->create_publisher<erp42_msgs::msg::Feedback>(
         "/erp42/feedback",
         rclcpp::QoS(rclcpp::KeepLast(1)).reliable().durability_volatile()
     );
-
-    odom_pub_ = this->create_publisher<nav_msgs::msg::Odometry>("/erp42/odometry_wheel", 10);
 
     // Subscribers
     control_command_sub_ = this->create_subscription<erp42_msgs::msg::ControlCommand>(
@@ -287,22 +275,13 @@ void erp42_serial::SerialBridge::initialize_node()
         serial_port_->open_port();
     }
 
-    // Initialize odometry data
-    // @ TODO Covariance
-    odom_msg_.header.frame_id = odometry_frame_id_;
-    odom_msg_.child_frame_id  = odometry_child_frame_id_;
+    // Timer
+    timer_ = this->create_wall_timer(20ms, std::bind(&SerialBridge::timer_callback, this));
 }
 
 /** @brief Declares and retrieves ROS2 parameters for serial and ERP42 configuration. */
 void erp42_serial::SerialBridge::declare_parameters()
 {
-    // Odometry frame id
-    this->declare_parameter<std::string>("odometry_frame_id", "odom");
-    odometry_frame_id_ = this->get_parameter("odometry_frame_id").as_string();
-
-    this->declare_parameter<std::string>("odometry_child_frame_id", "base_footprint");
-    odometry_child_frame_id_ = this->get_parameter("odometry_child_frame_id").as_string();
-
     // Serial port
     this->declare_parameter<std::string>("port_path", "/dev/ttyUSB0");
     port_path_ = this->get_parameter("port_path").as_string();

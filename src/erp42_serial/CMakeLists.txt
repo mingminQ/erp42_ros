@@ -21,15 +21,7 @@ ament_auto_add_library(${PROJECT_NAME} SHARED
 
 rclcpp_components_register_node(${PROJECT_NAME}
     PLUGIN "erp42_serial::SerialBridge"
-    EXECUTABLE serial_bridge_composable
-)
-
-ament_auto_add_executable(serial_bridge
-    node/serial_bridge_node.cpp
-)
-
-target_link_libraries(serial_bridge
-    ${PROJECT_NAME}
+    EXECUTABLE serial_bridge
 )
 
 # --------------------------------------------------------------------------------------------------

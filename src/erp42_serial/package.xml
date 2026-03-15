@@ -19,11 +19,8 @@
     <!-- Dependencies -->
     <depend>rclcpp_components</depend>
     <depend>rclcpp           </depend>
-    <depend>nav_msgs         </depend>
-    
     <depend>erp42_msgs       </depend>
     <depend>erp42_util       </depend>
-    <depend>erp42_description</depend>
 
     <!-- Export build system information -->
     <export>
