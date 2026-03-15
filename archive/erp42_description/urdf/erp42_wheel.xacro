@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="erp42_wheel">
+    <xacro:macro name="erp42_wheel" params="link_name">
+        
+        <link name="${link_name}">
+
+            <!-- Inertia -->
+            <inertial>
+                <mass value="7.0" />
+                <origin xyz="0 0 0" />
+                <inertia ixx="0.145425" ixy="0.0" ixz="0.0" iyy="0.25515" iyz="0.0" izz="0.145425" />
+            </inertial>
+
+            <!-- Collision -->
+            <collision>
+                <origin xyz="0 0 0" rpy="${-PI/2} 0 0" />
+                <geometry>
+                    <cylinder length="${wheel_length}" radius="${wheel_radius}" />
+                </geometry>
+            </collision>
+
+            <!-- Mesh files -->
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find erp42_description)/meshes/erp42_tire.dae" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </visual>
+
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="file://$(find erp42_description)/meshes/erp42_rim.dae"  scale="0.001 0.001 0.001"/>
+                </geometry>
+            </visual>
+        
+        </link>
+
+    </xacro:macro>
+</robot>
