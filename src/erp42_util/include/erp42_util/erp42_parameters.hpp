@@ -24,8 +24,8 @@
  * -------------------------------------------------------------------------------------------------
  */
 
-#ifndef ERP42_DESCRIPTION__VEHICLE_PARAMETERS_HPP_
-#define ERP42_DESCRIPTION__VEHICLE_PARAMETERS_HPP_
+#ifndef ERP42_UTIL__ERP42_PARAMETERS_HPP_
+#define ERP42_UTIL__ERP42_PARAMETERS_HPP_
 
 namespace erp42_util
 {
@@ -47,4 +47,4 @@ namespace erp42_util
 
 } // namespace erp42_util
 
-#endif // ERP42_DESCRIPTION__VEHICLE_PARAMETERS_HPP_
+#endif // ERP42_UTIL__ERP42_PARAMETERS_HPP_
