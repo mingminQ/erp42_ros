@@ -1,13 +1,13 @@
 ![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu_22.04-%23E95420?style=flat&logo=ubuntu&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-%232496ED?style=flat&logo=docker&logoColor=white)
-![ROS Humble](https://img.shields.io/badge/ROS_Humble-%2322314E?style=flat&logo=ros&logoColor=white)
+![ROS Jazzy](https://img.shields.io/badge/ROS_Jazzy-%2322314E?style=flat&logo=ros&logoColor=white)
 ![Qt](https://img.shields.io/badge/Qt-%2341CD52?style=flat&logo=Qt&logoColor=white)
 ![C++](https://img.shields.io/badge/C++-%2300599C?style=flat&logo=c%2B%2B&logoColor=white)
 
-[![docker-build](https://img.shields.io/github/actions/workflow/status/mingminQ/erp42_ros/docker-build.yaml?branch=humble&label=docker-build&style=flat&logo=docker&logoColor=white&labelColor=%23181717)](https://github.com/mingminQ/erp42_ros/actions/workflows/docker-build.yaml)
-[![colcon-build](https://img.shields.io/github/actions/workflow/status/mingminQ/erp42_ros/colcon-build.yaml?branch=humble&label=colcon-build&style=flat&logo=ros&logoColor=white&labelColor=%23181717)](https://github.com/mingminQ/erp42_ros/actions/workflows/colcon-build.yaml)
+[![docker-build](https://img.shields.io/github/actions/workflow/status/mingminQ/erp42_ros/docker-build.yaml?branch=jazzy&label=docker-build&style=flat&logo=docker&logoColor=white&labelColor=%23181717)](https://github.com/mingminQ/erp42_ros/actions/workflows/docker-build.yaml)
+[![colcon-build](https://img.shields.io/github/actions/workflow/status/mingminQ/erp42_ros/colcon-build.yaml?branch=jazzy&label=colcon-build&style=flat&logo=ros&logoColor=white&labelColor=%23181717)](https://github.com/mingminQ/erp42_ros/actions/workflows/colcon-build.yaml)
 
-# ERP42 ROS2 Humble packages
+# ERP42 ROS2 Jazzy packages
 If you have any suggestions or issues, please contact me using the information below.  
 
 - **Author**  : Minkyu Kil (Sejong Univ. AIV, Graduation : 2026.02)
@@ -29,13 +29,13 @@ $ rosdep install --rosdistro <YOUR-ROS-DISTRO> --from-paths src --ignore-src -r 
 If you want to use **Gazebo Classic**, replace **erp42_gazebo** and **erp42_description** in the **archive** folder with **erp42_gazebo_sim**.  
 For more information about the package, please read the README.md at the link below.
 
-- **ERP42 gazebo simulation :** [erp42_gazebo_sim](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_gazebo_sim)
+- **ERP42 gazebo simulation :** [erp42_gazebo_sim](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_gazebo_sim)
 
-- **ERP42 RQT Plugin :** [erp42_rqt_plugin](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_rqt_plugin)
+- **ERP42 RQT Plugin :** [erp42_rqt_plugin](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_rqt_plugin)
 
-- **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_msgs)
+- **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_msgs)
 
-- **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_serial)
+- **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_serial)
 
 <br/>
 
