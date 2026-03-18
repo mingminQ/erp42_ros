@@ -55,7 +55,7 @@ $ ./docker_build.sh
 RUN sed -i \
     -e 's|http://archive.ubuntu.com/ubuntu|http://mirror.kakao.com/ubuntu|g' \
     -e 's|http://security.ubuntu.com/ubuntu|http://mirror.kakao.com/ubuntu|g' \
-    /etc/apt/sources.list
+    /etc/apt/sources.list.d/ubuntu.sources
 ```
 
 ### Launch docker container
