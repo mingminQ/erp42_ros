@@ -76,7 +76,6 @@ ERP42_SERIAL_PORT="YOUR_DEVICE_PORT"
 
 -e NVIDIA_VISIBLE_DEVICES=all
 -e NVIDIA_DRIVER_CAPABILITIES=all
---runtime=nvidia 
 --gpus all
 ```
 
