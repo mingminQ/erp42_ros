@@ -25,6 +25,7 @@
  */
 
 #include "erp42_rqt_plugin/feedback_monitor_plugin.hpp"
+#include "erp42_util/log.hpp"
 #include "ui_feedback_monitor.h"
 
 #include <QSignalBlocker>
@@ -123,7 +124,6 @@ void erp42_rqt_plugin::FeedbackMonitorPlugin::shutdownPlugin()
 
     // Shut down ROS2 entities
     feedback_sub_.reset();
-    parameter_client_.reset();
     node_.reset();
 
     // Hide widget
@@ -238,111 +238,80 @@ void erp42_rqt_plugin::FeedbackMonitorPlugin::feedback_callback(
 }
 
 /**
- * @brief Selects the target node (either @c serial_bridge or @c gazebo_bridge).
- * @details Checks the ROS 2 node graph for the existence of either node.
- * If found, sets @c node_name to the found node and returns true.
- * If neither node is found within @c 5000ms, returns false.
- * @param[out] node_name Name of the selected target node.
- * @return True if a target node is found; otherwise false.
- */
-bool erp42_rqt_plugin::FeedbackMonitorPlugin::select_target_node(std::string &node_name)
-{
-    // Timeout and step durations
-    std::chrono::milliseconds timeout(5000);
-    std::chrono::milliseconds step(100);
-
-    // Node graph interface and event
-    auto graph = node_->get_node_graph_interface();
-    auto event = graph->get_graph_event();
-
-    auto starting_time = std::chrono::steady_clock::now();
-    while(rclcpp::ok() && ((std::chrono::steady_clock::now() - starting_time) < timeout))
-    {
-        // Get node names
-        const auto node_names = graph->get_node_names();
-
-        // Serial bridge node exists
-        const auto serial_bridge_iter = std::find(node_names.begin(), node_names.end(), "/serial_bridge");
-        if(serial_bridge_iter != node_names.end())
-        {
-            node_name = "/serial_bridge";
-            return true;
-        }
-
-        // Gazebo bridge node exists
-        const auto gazebo_bridge_iter = std::find(node_names.begin(), node_names.end(), "/gazebo_bridge");
-        if(gazebo_bridge_iter != node_names.end())
-        {
-            node_name = "/gazebo_bridge";
-            return true;
-        }
-
-        // Wait for graph change
-        graph->wait_for_graph_change(event, step);
-    }
-
-    return false;
-}
-
-/**
- * @brief Reads parameters from the target node and displays them on the UI.
- * @details Selects the target node (either @c serial_bridge or @c gazebo_bridge )
- * and reads its parameters. If the service is not available within @c 1000ms, the method
- * returns without updating.
+ * @brief Reads vehicle parameters from the ROS 2 parameter server and updates the UI.
+ * @details This method attempts to read parameters from either the "serial_bridge" or
+ * "erp42_gazebo_control" node, depending on which one is available.
+ * If neither node is found, it logs a warning and returns. 
+ * If parameters are successfully read, it updates the corresponding 
+ * text boxes in the UI with the parameter values.
  */
 void erp42_rqt_plugin::FeedbackMonitorPlugin::read_vehicle_parameters()
 {
-    // Select target node (serial_bridge or gazebo_bridge)
-    std::string node_name;
-    if(!select_target_node(node_name))
+    bool serial_bridge_parameter_found  = false;
+    bool gazebo_control_parameter_found = false;
+
+    std::shared_ptr<rclcpp::SyncParametersClient> serial_bridge_parameter_client =
+    std::make_shared<rclcpp::SyncParametersClient>(node_, "serial_bridge");
+
+    std::shared_ptr<rclcpp::SyncParametersClient> gazebo_control_parameter_client =
+    std::make_shared<rclcpp::SyncParametersClient>(node_, "erp42_gazebo_control");
+
+    if(serial_bridge_parameter_client->wait_for_service(250ms))
     {
-        QMessageBox::warning(widget_, "ERROR", 
-            "FeedbackMonitorPlugin::read_vehicle_parameters Failed to find target node (serial_bridge or gazebo_bridge)."
+        serial_bridge_parameter_found = true;
+    }
+    if(gazebo_control_parameter_client->wait_for_service(250ms))
+    {
+        gazebo_control_parameter_found = true;
+    }
+
+    std::shared_ptr<rclcpp::SyncParametersClient> parameter_client;
+    if(serial_bridge_parameter_found)
+    {
+        parameter_client = serial_bridge_parameter_client;
+    }
+    else if(gazebo_control_parameter_found)
+    {
+        parameter_client = gazebo_control_parameter_client;
+    }
+    else
+    {
+        ERP42_WARN(
+            "Failed to read vehicle parameters. "
+            "Plugin expects 'serial_bridge' or 'erp42_gazebo_control' node."
         );
         return;
     }
 
-    // Parameter client
-    parameter_client_ = std::make_shared<rclcpp::SyncParametersClient>(node_, node_name);
-    if(!parameter_client_->wait_for_service(std::chrono::milliseconds(1000)))
-    {
-        QMessageBox::warning(widget_, "ERROR", 
-            "FeedbackMonitorPlugin::read_vehicle_parameters Parameter service not available."
-        );
-        return;
-    }
+    feedback_monitor_widget_->serial_port_text_box->setPlainText(
+        QString::fromStdString(
+            parameter_client->get_parameter<std::string>("port_path")
+        )
+    );
 
-    // Read serial_bridge parameters
-    if(node_name == "/serial_bridge")
-    {
-        std::string port_path = parameter_client_->get_parameter<std::string>("port_path");
-        feedback_monitor_widget_->serial_port_text_box->setPlainText(QString::fromStdString(port_path));
+    feedback_monitor_widget_->baud_rate_text_box->setPlainText(
+        QString::number(
+            parameter_client->get_parameter<int>("baud_rate")
+        )
+    );
 
-        int baud_rate = parameter_client_->get_parameter<int>("baud_rate");
-        feedback_monitor_widget_->baud_rate_text_box->setPlainText(QString::number(baud_rate));
+    feedback_monitor_widget_->max_speed_text_box->setPlainText(
+        QString::number(
+            parameter_client->get_parameter<double>("max_speed_mps"), 'f', 3
+        ) + " m/s"
+    );
 
-        double max_speed = parameter_client_->get_parameter<double>("max_speed_mps");
-        feedback_monitor_widget_->max_speed_text_box->setPlainText(QString::number(max_speed, 'f', 3) + " m/s");
+    feedback_monitor_widget_->max_steering_text_box->setPlainText(
+        QString::number(
+            parameter_client->get_parameter<double>("max_steering_deg"), 'f', 3
+        ) + " deg"
+    );
 
-        double max_steering_deg = parameter_client_->get_parameter<double>("max_steering_deg");
-        feedback_monitor_widget_->max_steering_text_box->setPlainText(QString::number(max_steering_deg, 'f', 3) + " deg");
-
-        double steering_offset_deg = parameter_client_->get_parameter<double>("steering_offset_deg");
-        feedback_monitor_widget_->steering_offset_text_box->setPlainText(QString::number(steering_offset_deg, 'f', 3) + " deg");
-    }
-
-    // Read gazebo_bridge parameters
-    else if(node_name == "/gazebo_bridge")
-    {
-        double max_speed = parameter_client_->get_parameter<double>("max_speed_mps");
-        feedback_monitor_widget_->max_speed_text_box->setPlainText(QString::number(max_speed, 'f', 3) + " m/s");
-
-        double max_steering_deg = parameter_client_->get_parameter<double>("max_steering_deg");
-        feedback_monitor_widget_->max_steering_text_box->setPlainText(QString::number(max_steering_deg, 'f', 3) + " deg");
-
-        double steering_offset_deg = parameter_client_->get_parameter<double>("steering_offset_deg");
-        feedback_monitor_widget_->steering_offset_text_box->setPlainText(QString::number(steering_offset_deg, 'f', 3) + " deg");
-    }
+    feedback_monitor_widget_->steering_offset_text_box->setPlainText(
+        QString::number(
+            parameter_client->get_parameter<double>("steering_offset_deg"), 'f', 3
+        ) + " deg"
+    );
 }
 
 #include <pluginlib/class_list_macros.hpp>

@@ -85,17 +85,20 @@ void erp42_rqt_plugin::ControlPanelPlugin::initPlugin(qt_gui_cpp::PluginContext 
     );
 
     bind_slider_spin_box(
-        control_panel_widget_->speed_slider, control_panel_widget_->speed_spin_box,
+        control_panel_widget_->speed_slider, 
+        control_panel_widget_->speed_spin_box,
         0.0, 7.0, 0.1
     );
 
     bind_slider_spin_box(
-        control_panel_widget_->steering_slider, control_panel_widget_->steering_spin_box,
+        control_panel_widget_->steering_slider, 
+        control_panel_widget_->steering_spin_box,
          -28.0, 28.0, 1.0
     );
 
     bind_slider_spin_box(
-        control_panel_widget_->brake_slider, control_panel_widget_->brake_spin_box, 
+        control_panel_widget_->brake_slider, 
+        control_panel_widget_->brake_spin_box, 
         0, 150, 10
     );
 
@@ -211,19 +214,24 @@ void erp42_rqt_plugin::ControlPanelPlugin::restoreSettings(
  *  - Verifies the client is initialized and the service is available (wait up to 200 ms).
  *  - Disables the "Apply" button while the request is in flight to prevent duplicate sends.
  *  - Populates manual/auto, E-Stop, and gear fields based on current UI state.
- *  - Shows a warning dialog on common errors (uninitialized client, service unavailable, apply failure).
+ *  - Shows a warning dialog on common errors.
  */
 void erp42_rqt_plugin::ControlPanelPlugin::on_apply_mode_command()
 {
     if(!mode_command_client_)
     {
-        QMessageBox::warning(widget_, "ERROR", "Service client is not initialized.");
+        QMessageBox::warning(
+            widget_, "ERROR", "Service client is not initialized."
+        );
         return;
     }
 
     if(!mode_command_client_->wait_for_service(200ms))
     {
-        QMessageBox::warning(widget_, "ERROR", "\"/erp42/mode_command\" service is not available.");
+        QMessageBox::warning(
+            widget_, 
+            "ERROR", "\"/erp42/mode_command\" service is not available."
+        );
         return;
     }
 
@@ -231,7 +239,8 @@ void erp42_rqt_plugin::ControlPanelPlugin::on_apply_mode_command()
     control_panel_widget_->apply_mode_button->setEnabled(false);
 
     // Mode command
-    auto mode_command_request = std::make_shared<erp42_msgs::srv::ModeCommand::Request>();
+    auto mode_command_request = 
+    std::make_shared<erp42_msgs::srv::ModeCommand::Request>();
 
     // Control mode
     if (control_panel_widget_->auto_mode_button->isChecked())
@@ -256,15 +265,18 @@ void erp42_rqt_plugin::ControlPanelPlugin::on_apply_mode_command()
     // Gear
     if(control_panel_widget_->drive_button->isChecked())
     {
-        mode_command_request->gear = erp42_msgs::srv::ModeCommand::Request::GEAR_DRIVE;
+        mode_command_request->gear = 
+        erp42_msgs::srv::ModeCommand::Request::GEAR_DRIVE;
     }
     else if(control_panel_widget_->neutral_button->isChecked())
     {
-        mode_command_request->gear = erp42_msgs::srv::ModeCommand::Request::GEAR_NEUTRAL;
+        mode_command_request->gear = 
+        erp42_msgs::srv::ModeCommand::Request::GEAR_NEUTRAL;
     }
     else if(control_panel_widget_->reverse_button->isChecked())
     {
-        mode_command_request->gear = erp42_msgs::srv::ModeCommand::Request::GEAR_REVERSE;
+        mode_command_request->gear = 
+        erp42_msgs::srv::ModeCommand::Request::GEAR_REVERSE;
     }
 
     // Send mode command
@@ -295,7 +307,11 @@ void erp42_rqt_plugin::ControlPanelPlugin::on_apply_mode_command()
  * @param step Increment used for both the slider step and the spin box single step.
  */
 void erp42_rqt_plugin::ControlPanelPlugin::bind_slider_spin_box(
-    QSlider *slider, QDoubleSpinBox *spin_box, double lower_bound, double upper_bound, double step
+    QSlider *slider, 
+    QDoubleSpinBox *spin_box, 
+    double lower_bound, 
+    double upper_bound, 
+    double step
 )
 {
     // Slider settings

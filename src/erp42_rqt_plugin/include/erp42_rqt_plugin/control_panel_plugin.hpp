@@ -36,7 +36,6 @@
 #include <QSpinBox>
 #include <QSlider>
 #include <QWidget>
-
 #include <thread>
 
 namespace Ui
@@ -53,7 +52,8 @@ namespace erp42_rqt_plugin
      * @details
      *  - Publishes ControlCommand messages at 50 Hz when activated.
      *  - Sends ModeCommand requests via service when "Apply Mode" button is clicked.
-     *  - UI elements include speed, steering, brake controls, mode selection, E-Stop, and gear selection.
+     *  - UI elements include speed, steering, brake controls,
+     *    mode selection, E-Stop, and gear selection.
      */
     class ControlPanelPlugin : public rqt_gui_cpp::Plugin
     {
@@ -102,7 +102,8 @@ namespace erp42_rqt_plugin
          * @param instance_settings Instance settings provided by the framework
          */
         void saveSettings(
-            qt_gui_cpp::Settings &plugin_settings, qt_gui_cpp::Settings &instance_settings
+            qt_gui_cpp::Settings &plugin_settings, 
+            qt_gui_cpp::Settings &instance_settings
         ) const override;
 
         /**
@@ -113,7 +114,8 @@ namespace erp42_rqt_plugin
          * @param instance_settings Instance-specific settings.
          */
         void restoreSettings(
-            const qt_gui_cpp::Settings &plugin_settings, const qt_gui_cpp::Settings &instance_settings
+            const qt_gui_cpp::Settings &plugin_settings, 
+            const qt_gui_cpp::Settings &instance_settings
         ) override;
 
     private Q_SLOTS:
@@ -124,7 +126,7 @@ namespace erp42_rqt_plugin
          *  - Verifies the client is initialized and the service is available (wait up to 200 ms).
          *  - Disables the "Apply" button while the request is in flight to prevent duplicate sends.
          *  - Populates manual/auto, E-Stop, and gear fields based on current UI state.
-         *  - Shows a warning dialog on common errors (uninitialized client, service unavailable, apply failure).
+         *  - Shows a warning dialog on common errors.
          */
         void on_apply_mode_command();
 
@@ -137,7 +139,11 @@ namespace erp42_rqt_plugin
          *  - Steering entered in degrees is converted to radians before publishing.
          */
         void bind_slider_spin_box(
-            QSlider *slider, QSpinBox *spin_box, int lower_bound, int upper_bound, int step
+            QSlider *slider, 
+            QSpinBox *spin_box, 
+            int lower_bound, 
+            int upper_bound, 
+            int step
         );
 
         /**
@@ -147,7 +153,11 @@ namespace erp42_rqt_plugin
          *  - Steering entered in degrees is converted to radians before publishing.
          */
         void bind_slider_spin_box(
-            QSlider *slider, QDoubleSpinBox *spin_box, double lower_bound, double upper_bound, double step
+            QSlider *slider, 
+            QDoubleSpinBox *spin_box, 
+            double lower_bound, 
+            double upper_bound, 
+            double step
         );
 
         /**

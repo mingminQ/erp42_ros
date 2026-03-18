@@ -116,20 +116,12 @@ namespace erp42_rqt_plugin
         void feedback_callback(const erp42_msgs::msg::Feedback::SharedPtr msg);
 
         /**
-         * @brief Selects the target node (either @c erp42_serial_bridge or @c gazebo_bridge).
-         * @details Checks the ROS 2 node graph for the existence of either node.
-         * If found, sets @c node_name to the found node and returns true.
-         * If neither node is found within @c 5000ms, returns false.
-         * @param[out] node_name Name of the selected target node.
-         * @return True if a target node is found; otherwise false.
-         */
-        bool select_target_node(std::string &node_name);
-
-        /**
-         * @brief Reads parameters from the target node and displays them on the UI.
-         * @details Selects the target node (either @c erp42_serial_bridge or @c gazebo_bridge )
-         * and reads its parameters. If the service is not available within @c 1000ms, the method
-         * returns without updating.
+         * @brief Reads vehicle parameters from the ROS 2 parameter server and updates the UI.
+         * @details This method attempts to read parameters from either the "serial_bridge" or
+         * "erp42_gazebo_control" node, depending on which one is available.
+         * If neither node is found, it logs a warning and returns. 
+         * If parameters are successfully read, it updates the corresponding 
+         * text boxes in the UI with the parameter values.
          */
         void read_vehicle_parameters();
 
@@ -145,9 +137,6 @@ namespace erp42_rqt_plugin
 
         // Subscribers
         rclcpp::Subscription<erp42_msgs::msg::Feedback>::SharedPtr feedback_sub_;
-
-        // Parameter clients
-        std::shared_ptr<rclcpp::SyncParametersClient> parameter_client_;
 
         // Executors
         rclcpp::executors::MultiThreadedExecutor::SharedPtr executor_;
