@@ -2,9 +2,9 @@ name: docker-build
 
 on:
   push:
-    branches: [ humble ]
+    branches: [ humble-classic ]
   pull_request:
-    branches: [ humble ]
+    branches: [ humble-classic ]
 
 jobs:
   docker-build:
