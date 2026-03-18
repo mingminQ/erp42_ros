@@ -16,6 +16,18 @@ $ ros2 launch erp42_gazebo_sim gazebo_sim.launch.py
 
 ## liberp42_control.so
 If you use the **erp42_description.xacro** macro, you can use pre-set values, and they can be used as follows.
+``` xml
+<!-- Include files -->
+<xacro:include filename="$(find erp42_gazebo_sim)/urdf/erp42_description.xacro"/>
+
+<!-- ERP42 model description and gazebo control settings -->
+<xacro:erp42_description 
+    base_link = "erp42"
+    publish_odometry = "true"
+/>
+```
+
+</br>
 
 **liberp42_control.so** is a plugin that enables the simulation of the ERP42 platform using the same interface as **serial_bridge**.
 ```xml
@@ -56,19 +68,6 @@ If you use the **erp42_description.xacro** macro, you can use pre-set values, an
     ...
 
 </gazebo>
-```
-
-
-While no separate world file or sensor file is provided, all settings for using the ERP42 with Gazebo are macroized in the **.xacro** file, so you can use them as follows:
-``` xml
-<!-- Include files -->
-<xacro:include filename="$(find erp42_gazebo_sim)/urdf/erp42_description.xacro"/>
-
-<!-- ERP42 model description and gazebo control settings -->
-<xacro:erp42_description 
-    base_link = "erp42"
-    publish_odometry = "true"
-/>
 ```
 
 <br/><br/>
