@@ -29,13 +29,13 @@ $ rosdep install --rosdistro <YOUR-ROS-DISTRO> --from-paths src --ignore-src -r 
 If you want to use **Gazebo Classic**, replace **erp42_gazebo** and **erp42_description** in the **archive** folder with **erp42_gazebo_sim**.  
 For more information about the package, please read the README.md at the link below.
 
-- **ERP42 gazebo simulation :** [erp42_gazebo_sim](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_gazebo_sim)
+- **ERP42 gazebo simulation :** [erp42_gazebo_sim](https://github.com/mingminQ/erp42_ros/tree/jazzy-harmonic/src/erp42_gazebo_sim)
 
-- **ERP42 RQT Plugin :** [erp42_rqt_plugin](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_rqt_plugin)
+- **ERP42 RQT Plugin :** [erp42_rqt_plugin](https://github.com/mingminQ/erp42_ros/tree/jazzy-harmonic/src/erp42_rqt_plugin)
 
-- **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_msgs)
+- **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/jazzy-harmonic/src/erp42_msgs)
 
-- **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/jazzy/src/erp42_serial)
+- **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/jazzy-harmonic/src/erp42_serial)
 
 <br/>
 
