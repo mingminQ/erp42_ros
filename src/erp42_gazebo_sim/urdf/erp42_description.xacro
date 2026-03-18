@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- ERP42 description macro -->
+    <xacro:macro 
+        name   = "erp42_description" 
+        params = "base_link publish_odometry"
+    >
+
+        <!-- ERP42 wheel macros -->
+        <xacro:include filename = "$(find erp42_gazebo_sim)/urdf/erp42_chassis.xacro"/>
+        <xacro:include filename = "$(find erp42_gazebo_sim)/urdf/erp42_front_wheel.xacro"/>
+        <xacro:include filename = "$(find erp42_gazebo_sim)/urdf/erp42_rear_wheel.xacro"/>
+
+        <!-- ERP42 vehicle geometry -->
+        <xacro:property name = "front_wheel_radius" value = "0.270"/>
+        <xacro:property name = "rear_wheel_radius"  value = "0.270"/>
+
+        <xacro:property name = "wheelbase"   value = "1.040"/>
+        <xacro:property name = "front_tread" value = "0.985"/>
+        <xacro:property name = "rear_tread"  value = "0.985"/>
+
+        <!-- Chassis : base link -->
+        <xacro:erp42_chassis chassis_link = "${base_link}"/>
+
+        <!-- Front left wheel -->
+        <xacro:erp42_front_wheel
+            parent_link = "${base_link}"
+            wheel_link  = "front_left_wheel"
+            reflection  = "1"
+            wheelbase   = "${wheelbase}"
+            tread       = "${front_tread}"
+        />
+
+        <!-- Front right wheel -->
+        <xacro:erp42_front_wheel
+            parent_link = "${base_link}"
+            wheel_link  = "front_right_wheel"
+            reflection  = "-1"
+            wheelbase   = "${wheelbase}"
+            tread       = "${front_tread}"
+        />
+
+        <!-- Rear left wheel -->
+        <xacro:erp42_rear_wheel
+            parent_link = "${base_link}"
+            wheel_link  = "rear_left_wheel"
+            reflection  = "1"
+            wheelbase   = "${wheelbase}"
+            tread       = "${rear_tread}"
+        />
+
+        <!-- Rear right wheel -->
+        <xacro:erp42_rear_wheel
+            parent_link = "${base_link}"
+            wheel_link  = "rear_right_wheel"
+            reflection  = "-1"
+            wheelbase   = "${wheelbase}"
+            tread       = "${rear_tread}"
+        />
+
+        <gazebo>
+            
+            <plugin name="gz::sim::systems::JointStatePublisher" filename="gz-sim-joint-state-publisher-system">
+                
+                <!-- Update rate -->
+                <update_rate>100.0</update_rate>
+
+                <!-- Joint names -->
+                <joint_name>front_left_wheel_steer_joint</joint_name>
+                <joint_name>front_right_wheel_steer_joint</joint_name>
+                <joint_name>front_left_wheel_joint</joint_name>
+                <joint_name>front_right_wheel_joint</joint_name>
+                <joint_name>rear_left_wheel_joint</joint_name>
+                <joint_name>rear_right_wheel_joint</joint_name>
+
+            </plugin>
+
+            <plugin name="gz::sim::systems::ERP42Control" filename="liberp42_control.so">
+
+                <left_steer_joint>front_left_wheel_steer_joint</left_steer_joint>
+                <right_steer_joint>front_right_wheel_steer_joint</right_steer_joint>
+                <front_left_joint>front_left_wheel_joint</front_left_joint>
+                <front_right_joint>front_right_wheel_joint</front_right_joint>
+                <rear_left_joint>rear_left_wheel_joint</rear_left_joint>
+                <rear_right_joint>rear_right_wheel_joint</rear_right_joint>
+
+                <wheel_base>${wheelbase}</wheel_base>
+                <kingpin_width>${front_tread}</kingpin_width>
+                <front_wheel_tread>${front_tread}</front_wheel_tread>
+                <rear_wheel_tread>${rear_tread}</rear_wheel_tread>
+                <front_wheel_radius>${front_wheel_radius}</front_wheel_radius>
+                <rear_wheel_radius>${rear_wheel_radius}</rear_wheel_radius>
+
+                <steer_limit>${radians(25)}</steer_limit>
+                <steer_p_gain>10.0</steer_p_gain>
+                <velocity_limit>7.0</velocity_limit>
+                <acceleration_limit>2.5</acceleration_limit>
+                <brake_deceleration>15.0</brake_deceleration>
+                
+                <publish_odometry>${publish_odometry}</publish_odometry>
+                <odometry_frequency>100.0</odometry_frequency>
+                <odometry_topic>odometry_ground_truth</odometry_topic>
+                <odometry_frame>odom</odometry_frame>
+                <child_frame>${base_link}_footprint</child_frame>
+
+            </plugin>
+
+        </gazebo>
+
+    </xacro:macro>
+
+</robot>

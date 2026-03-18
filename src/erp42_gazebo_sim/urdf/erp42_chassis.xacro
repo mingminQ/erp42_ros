@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- ERP42 chassis macro -->
+    <xacro:macro name = "erp42_chassis" params = "chassis_link">
+
+        <!-- Chassis geometry properties -->
+        <xacro:property name = "length" value = "2.020"/>
+        <xacro:property name = "width"  value = "1.160"/>
+        <xacro:property name = "height" value = "0.550"/>
+
+        <!-- Chassis inerial properties -->
+        <xacro:property name = "mass" value = "200"/>
+        <xacro:property name = "ixx"  value = "${1/12 * mass * (width  * width  + height * height)}"/>
+        <xacro:property name = "iyy"  value = "${1/12 * mass * (length * length + height * height)}"/>
+        <xacro:property name = "izz"  value =" ${1/12 * mass * (length * length + width  * width )}"/>
+
+        <!-- External properties -->
+        <xacro:property name = "wheel_radius" value = "0.270"/>
+
+        <!--Base footprint -->
+        <link name = "${chassis_link}_footprint"/>
+
+        <!-- Base link -->
+        <link name = "${chassis_link}">
+
+            <!-- Chassis visual mesh -->
+            <visual>
+
+                <!-- Visual origin -->
+                <origin xyz = "0 0 0" rpy = "0 0 0"/>
+
+                <!-- External mesh -->
+                <geometry>
+                    <mesh filename = "file://$(find erp42_gazebo_sim)/meshes/erp42_chassis.dae"/>
+                </geometry>
+                
+            </visual>
+
+            <!-- Collision -->
+            <collision>
+
+                <!-- Collision origin -->
+                <origin xyz = "0 0 0" rpy = "0 0 0"/>
+
+                <!-- External mesh -->
+                <geometry>
+                    <mesh filename = "file://$(find erp42_gazebo_sim)/meshes/erp42_chassis.stl"/>
+                </geometry>
+
+            </collision>
+
+            <!-- Inertial -->
+            <inertial>
+
+                <!-- Inertial origin -->
+                <origin xyz = "0.02 0 0" rpy = "0 0 0"/>
+
+                <!-- Mass -->
+                <mass value = "${mass}"/>
+
+                <!-- Inertia -->
+                <inertia ixx = "${ixx}" iyy = "${iyy}" izz = "${izz}" ixy = "0" ixz = "0" iyz = "0"/>
+
+            </inertial>
+
+        </link>
+
+        <!-- Chassis joint -->
+        <joint name = "${chassis_link}_joint" type = "fixed">
+
+            <!-- Joint frame ID -->
+            <parent link = "${chassis_link}_footprint"/>
+            <child  link = "${chassis_link}"/>
+
+            <!-- Origin -->
+            <origin xyz = "0 0 ${wheel_radius}" rpy = "0 0 0"/>
+
+        </joint>
+
+    </xacro:macro>
+
+</robot>

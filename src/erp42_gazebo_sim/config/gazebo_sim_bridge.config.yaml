@@ -1,0 +1,13 @@
+# gazebo_sim_bridge.config.yaml
+
+# Transforms
+- ros_topic_name: "/tf"
+  ros_type_name : "tf2_msgs/msg/TFMessage"
+  gz_topic_name : "/model/erp42/tf"
+  gz_type_name  : "gz.msgs.Pose_V"
+
+# Joint state topic
+- ros_topic_name: "/joint_states"
+  ros_type_name : "sensor_msgs/msg/JointState"
+  gz_topic_name : "/world/empty/model/erp42/joint_state"
+  gz_type_name  : "gz.msgs.Model"

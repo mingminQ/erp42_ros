@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- ERP42 rear wheel macro -->
+    <xacro:macro 
+        name = "erp42_rear_wheel" 
+        params = "parent_link wheel_link reflection wheelbase tread"
+    >
+    
+        <!-- Wheel properties -->
+        <xacro:property name = "mass"   value = "17"    />
+        <xacro:property name = "radius" value = "0.270"/>
+        <xacro:property name = "width"  value = "0.175"/>
+
+        <xacro:property name  = "ixx" value = "${1/12 * mass * ( 3 * radius * radius + width * width)}"/>
+        <xacro:property name  = "iyy" value = "${1/12 * mass * ( 3 * radius * radius + width * width)}"/>
+        <xacro:property name  = "izz" value = "${1/2  * mass * radius * radius}"/>
+
+        <!-- Wheel link -->
+        <link name = "${wheel_link}">
+
+            <!-- Wheel visual mesh -->
+            <visual>
+
+                <!-- Visual origin -->
+                <origin xyz="0 0 0" rpy="${-reflection * pi/2} 0 0"/>
+
+                <!-- External mesh -->
+                <geometry>
+                    <mesh filename = "file://$(find erp42_gazebo_sim)/meshes/erp42_wheel.dae"/>
+                </geometry>
+                
+            </visual>
+
+            <!-- Collision shape -->
+            <collision>
+
+                <!-- Collision origin -->
+                <origin xyz = "0 0 0" rpy = "${-reflection * pi/2} 0 0"/>
+
+                <!-- Cylinder mesh -->
+                <geometry>
+                    <cylinder radius = "${radius}" length = "${width}"/>
+                </geometry>
+
+            </collision>
+
+            <!-- Inertial -->
+            <inertial>
+
+                <!-- Inertia origin -->
+                <origin xyz = "0 0 0" rpy = "${-reflection * pi/2} 0 0"/>
+
+                <!-- Mass -->
+                <mass value="${mass}"/>
+
+                <!-- Inertia -->
+                <inertia ixx = "${ixx}" iyy = "${iyy}" izz = "${izz}" ixy = "0" ixz = "0" iyz = "0"/>
+
+            </inertial>
+
+        </link>
+
+        <!-- Wheel joint -->
+        <joint name = "${wheel_link}_joint" type = "continuous">
+            
+            <!-- Joint frames -->
+            <parent link = "${parent_link}"/>
+            <child  link = "${wheel_link}" />
+
+            <!-- Origin -->
+            <origin xyz = "${-wheelbase/2} ${reflection * tread/2} 0" rpy = "0 0 0"/>
+
+            <!-- Rotation axis -->
+            <axis xyz = "0 1 0"/>
+
+            <!-- Limits -->
+            <limit effort = "10000.0" velocity = "${7.0 / radius}"/>
+
+        </joint>
+
+        <!-- Friction settings -->
+        <gazebo reference="${wheel_link}">
+            <mu1>0.9</mu1>
+            <mu2>0.9</mu2>
+        </gazebo>
+
+    </xacro:macro>
+
+</robot>

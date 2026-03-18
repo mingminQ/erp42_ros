@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="erp42">
+
+    <!-- Include files -->
+    <xacro:include filename="$(find erp42_gazebo_sim)/urdf/erp42_description.xacro"/>
+
+    <!-- ERP42 -->
+    <xacro:erp42_description 
+        base_link = "erp42"
+        publish_odometry = "true"
+    />
+
+</robot>
