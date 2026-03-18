@@ -19,7 +19,7 @@ If you have any suggestions or issues, please contact me using the information b
 This package tested on ROS2 **Humble** and **Jazzy** and targets **Gazebo Harmonic**.
 
 ``` bash
-$ rosdep install --rosdistro <YOUR-ROS-DISTRO> --from-paths src --ignore-src -r -y
+$ rosdep install --rosdistro jazzy --from-paths src --ignore-src -r -y
 ```
 
 <br/>
@@ -62,7 +62,7 @@ RUN sed -i \
 ``` bash
 # At your workspace directory  
 
-$ . docker/docker_run.sh
+$ ./docker/docker_run.sh
 ```
 
 ### Conatiner Launch Script : Device Mounting
@@ -78,7 +78,6 @@ ERP42_SERIAL_PORT="YOUR_DEVICE_PORT"
 
 -e NVIDIA_VISIBLE_DEVICES=all
 -e NVIDIA_DRIVER_CAPABILITIES=all
---runtime=nvidia 
 --gpus all
 ```
 
