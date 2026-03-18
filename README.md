@@ -16,25 +16,26 @@ If you have any suggestions or issues, please contact me using the information b
 <br/>
 
 # Dependencies
+This package tested on ROS2 **Humble** and **Jazzy** and targets **Gazebo Harmonic**.
 
 ``` bash
-$ rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
+$ rosdep install --rosdistro <YOUR-ROS-DISTRO> --from-paths src --ignore-src -r -y
 ```
 
 <br/>
 
 # Package overview
+**erp42_gazebo** and **erp42_description** are no longer used due to EOL.  
+If you want to use **Gazebo Classic**, replace **erp42_gazebo** and **erp42_description** in the **archive** folder with **erp42_gazebo_sim**.  
 For more information about the package, please read the README.md at the link below.
 
-- **ERP42 description files :** [erp42_description](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_description)
+- **ERP42 gazebo simulation :** [erp42_gazebo_sim](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_gazebo_sim)
 
-- **ERP42 gazebo simulation :** [erp42_gazebo](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_gazebo)
+- **ERP42 RQT Plugin :** [erp42_rqt_plugin](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_rqt_plugin)
 
-- **ERP42 RQT Plugin :** [erp42_rqt_plugin](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_rqt_plugin)
+- **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_msgs)
 
-- **ERP42 ROS2 communication interfaces :** [erp42_msgs](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_msgs)
-
-- **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/humble/src/erp42_serial)
+- **ERP42 ROS2 serial driver :** [erp42_serial](https://github.com/mingminQ/erp42_ros/tree/main/src/erp42_serial)
 
 <br/>
 
