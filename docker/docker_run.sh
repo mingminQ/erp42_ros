@@ -56,12 +56,10 @@ docker run                                                             \
     --privileged                                                       \
     --network=host                                                     \
     --env ROS_DOMAIN_ID=0                                              \
-    --env ROS_LOCALHOST_ONLY=0                                         \
     --env="DISPLAY=$DISPLAY"                                           \
     --env="QT_X11_NO_MITSHM=1"                                         \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw"                        \
     -e NVIDIA_VISIBLE_DEVICES=all                                      \
     -e NVIDIA_DRIVER_CAPABILITIES=all                                  \
-    --runtime=nvidia                                                   \
     --gpus all                                                         \
     erp42-ros:humble

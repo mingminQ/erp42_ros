@@ -2,9 +2,9 @@ name: colcon-build
 
 on:
   push:
-    branches: [ humble ]
+    branches: [ humble-harmonic ]
   pull_request:
-    branches: [ humble ]
+    branches: [ humble-harmonic ]
 
 jobs:
   colcon-build:
@@ -57,7 +57,7 @@ jobs:
           curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
           apt-get update
-          apt-get install gz-harmonic
+          apt-get install gz-harmonic -y
 
       - name: rosdep install
         shell: bash
