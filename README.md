@@ -25,8 +25,6 @@ $ rosdep install --rosdistro jazzy --from-paths src --ignore-src -r -y
 <br/>
 
 # Package overview
-**erp42_gazebo** and **erp42_description** are no longer used due to EOL.  
-If you want to use **Gazebo Classic**, replace **erp42_gazebo** and **erp42_description** in the **archive** folder with **erp42_gazebo_sim**.  
 For more information about the package, please read the README.md at the link below.
 
 - **ERP42 gazebo simulation :** [erp42_gazebo_sim](https://github.com/mingminQ/erp42_ros/tree/jazzy-harmonic/src/erp42_gazebo_sim)
