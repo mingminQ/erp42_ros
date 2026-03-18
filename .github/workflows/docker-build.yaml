@@ -2,9 +2,9 @@ name: docker-build
 
 on:
   push:
-    branches: [ jazzy ]
+    branches: [ jazzy-harmonic ]
   pull_request:
-    branches: [ jazzy ]
+    branches: [ jazzy-harmonic ]
 
 jobs:
   docker-build:

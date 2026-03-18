@@ -2,9 +2,9 @@ name: colcon-build
 
 on:
   push:
-    branches: [ jazzy ]
+    branches: [ jazzy-harmonic ]
   pull_request:
-    branches: [ jazzy ]
+    branches: [ jazzy-harmonic ]
 
 jobs:
   colcon-build:
