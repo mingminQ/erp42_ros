@@ -21,15 +21,15 @@ If the **Activate Control Panel** checkbox is not checked, no mode input or cont
   <figcaption>
     This message appears when you click the Apply button if the service server handling **mode_command** is unavailable.
     </br>
-    Either erp42_serial_bridge or erp42_gazebo_bridge must be running.
+    Either serial_bridge or erp42_gazebo_control must be running.
   </figcaption>
 </div>
 
 <br/><br/>
 
 ## Feedback Monitor
-Reads the parameters of **erp42_serial_bridge** or **erp42_gazebo_control** and displays the feedback data currently being issued from the vehicle.
+Reads the parameters of **serial_bridge** or **erp42_gazebo_control** and displays the feedback data currently being issued from the vehicle.
 
-If the **erp42_serial_bridge** or **erp42_gazebo_control** node is not running, the following terminal log is displayed.
+If the **serial_bridge** or **erp42_gazebo_control** node is not running, the following terminal log is displayed.
 
 <span style="color: yellow;">**[ERP42 Warning]: Failed to read vehicle parameters. Plugin expects 'serial_bridge' or 'erp42_gazebo_control' node. at line 279 in /home/mingq/workspace/ros2/erp42_ros/src/erp42_rqt_plugin/src/feedback_monitor_plugin.cpp**</span>
