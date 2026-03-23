@@ -123,8 +123,8 @@
             <limit 
                 lower    = "${-1.2 * radians(25)}"
                 upper    = "${ 1.2 * radians(25)}"
-                effort   = "1000"
-                velocity = "1.0"
+                velocity = "${radians(25)}"
+                effort   = "1000000.0"
             />
 
         </joint>
@@ -143,7 +143,7 @@
             <axis xyz = "0 1 0"/>
 
             <!-- Limits -->
-            <limit effort = "10000.0" velocity = "${7.0 / radius}"/>
+            <limit effort = "1000000.0" velocity = "${7.0 / radius}"/>
 
         </joint>
 

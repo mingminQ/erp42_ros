@@ -75,7 +75,7 @@
             <axis xyz = "0 1 0"/>
 
             <!-- Limits -->
-            <limit effort = "10000.0" velocity = "${7.0 / radius}"/>
+            <limit effort = "1000000.0" velocity = "${7.0 / radius}"/>
 
         </joint>
 
