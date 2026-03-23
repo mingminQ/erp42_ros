@@ -16,11 +16,11 @@ erp42_package()
 # --------------------------------------------------------------------------------------------------
 # ERP42 control plugin (Gazebo gz-sim system plugin with direct ROS 2 interface)
 # --------------------------------------------------------------------------------------------------
-ament_auto_add_library(erp42_control SHARED
-    plugins/erp42_control.cpp
+ament_auto_add_library(erp42_gazebo_control SHARED
+    plugins/erp42_gazebo_control.cpp
 )
 
-target_link_libraries(erp42_control
+target_link_libraries(erp42_gazebo_control
     gz-sim8::gz-sim8
     gz-plugin2::register
 )
