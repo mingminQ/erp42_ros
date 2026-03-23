@@ -125,7 +125,7 @@ RUN set -eux; \
 # --------------------------------------------------------------------------------------------------
 WORKDIR /home/${USERNAME}/erp42_ros
 COPY . .
-RUN rosdep init && rosdep update
+RUN rosdep init && rosdep update && apt-get update
 RUN rosdep install --rosdistro humble --from-paths src --ignore-src -r -y
 RUN bash -lc "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
