@@ -190,10 +190,10 @@ public:
     double steeringPGain{10.0};
 
     // Max steering angle : used to clamp target steering
-    double steeringLimit{40.0 * M_PI / 180.0};
+    double steeringLimit{25.0 * M_PI / 180.0};
 
     // Max vehicle velocity : used to clamp target velocity
-    double velocityLimit{50.0};
+    double velocityLimit{7.0};
 
     // Max vehicle acceleration : used to velocity limiter
     double accelerationLimit{2.5};
