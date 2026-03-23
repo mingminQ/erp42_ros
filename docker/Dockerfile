@@ -124,7 +124,7 @@ RUN set -eux; \
 # --------------------------------------------------------------------------------------------------
 WORKDIR /home/${USERNAME}/erp42_ros
 COPY . .
-RUN rosdep init && rosdep update
+RUN rosdep init && rosdep update && apt-get update
 RUN rosdep install --rosdistro jazzy --from-paths src --ignore-src -r -y
 RUN bash -lc "source /opt/ros/jazzy/setup.bash && colcon build --symlink-install"
 
