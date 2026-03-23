@@ -14,7 +14,7 @@ $ ros2 launch erp42_gazebo_sim gazebo_sim.launch.py
 
 <br/><br/>
 
-## liberp42_control.so
+## liberp42_gazebo_control.so
 If you use the **erp42_description.xacro** macro, you can use pre-set values, and they can be used as follows.
 ``` xml
 <!-- Include files -->
@@ -29,13 +29,13 @@ If you use the **erp42_description.xacro** macro, you can use pre-set values, an
 
 </br>
 
-**liberp42_control.so** is a plugin that enables the simulation of the ERP42 platform using the same interface as **serial_bridge**.
+**liberp42_gazebo_control.so** is a plugin that enables the simulation of the ERP42 platform using the same interface as **serial_bridge**.
 ```xml
 <gazebo>
     
     ...
 
-    <plugin name="gz::sim::systems::ERP42Control" filename="liberp42_control.so">
+    <plugin name="gz::sim::systems::ERP42Control" filename="liberp42_gazebo_control.so">
 
         <left_steering_joint>     : Left steer joint name
         <right_steering_joint>    : Right steer joint name
@@ -93,7 +93,7 @@ The ModeCommand.srv service QoS profile is the system default.
 | Durability  | **Volatile**   |
 
 ### Parameters
-You can set the parameters below, but they are already included in the **liberp42_control.so** plugin.  
+You can set the parameters below, but they are already included in the **liberp42_gazebo_control.so** plugin.  
 Also, things like **steering_offset_deg** are not very useful because this is a simulation.
 | Parameter Name          | Unit | Description                                                                                           |
 | ----------------------- | ---- | ----------------------------------------------------------------------------------------------------- |
