@@ -61,7 +61,10 @@
 
         <gazebo>
             
-            <plugin name="gz::sim::systems::JointStatePublisher" filename="gz-sim-joint-state-publisher-system">
+            <plugin 
+                name="gz::sim::systems::JointStatePublisher" 
+                filename="gz-sim-joint-state-publisher-system"
+            >
                 
                 <!-- Update rate -->
                 <update_rate>100.0</update_rate>
@@ -76,14 +79,17 @@
 
             </plugin>
 
-            <plugin name="gz::sim::systems::ERP42Control" filename="liberp42_control.so">
+            <plugin 
+                name="gz::sim::systems::ERP42GazeboControl" 
+                filename="liberp42_gazebo_control.so"
+            >
 
-                <left_steer_joint>front_left_wheel_steer_joint</left_steer_joint>
-                <right_steer_joint>front_right_wheel_steer_joint</right_steer_joint>
-                <front_left_joint>front_left_wheel_joint</front_left_joint>
-                <front_right_joint>front_right_wheel_joint</front_right_joint>
-                <rear_left_joint>rear_left_wheel_joint</rear_left_joint>
-                <rear_right_joint>rear_right_wheel_joint</rear_right_joint>
+                <left_steering_joint>front_left_wheel_steer_joint</left_steering_joint>
+                <right_steering_joint>front_right_wheel_steer_joint</right_steering_joint>
+                <front_left_wheel_joint>front_left_wheel_joint</front_left_wheel_joint>
+                <front_right_wheel_joint>front_right_wheel_joint</front_right_wheel_joint>
+                <rear_left_wheel_joint>rear_left_wheel_joint</rear_left_wheel_joint>
+                <rear_right_wheel_joint>rear_right_wheel_joint</rear_right_wheel_joint>
 
                 <wheel_base>${wheelbase}</wheel_base>
                 <kingpin_width>${front_tread}</kingpin_width>
@@ -92,11 +98,11 @@
                 <front_wheel_radius>${front_wheel_radius}</front_wheel_radius>
                 <rear_wheel_radius>${rear_wheel_radius}</rear_wheel_radius>
 
-                <steer_limit>${radians(25)}</steer_limit>
-                <steer_p_gain>10.0</steer_p_gain>
+                <steering_p_gain>10.0</steering_p_gain>
+                <steering_limit>${radians(25)}</steering_limit>
                 <velocity_limit>7.0</velocity_limit>
                 <acceleration_limit>2.5</acceleration_limit>
-                <brake_deceleration>15.0</brake_deceleration>
+                <brake_deceleration>10.0</brake_deceleration>
                 
                 <publish_odometry>${publish_odometry}</publish_odometry>
                 <odometry_frequency>100.0</odometry_frequency>
