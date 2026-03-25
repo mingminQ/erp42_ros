@@ -98,7 +98,7 @@
                 <front_wheel_radius>${front_wheel_radius}</front_wheel_radius>
                 <rear_wheel_radius>${rear_wheel_radius}</rear_wheel_radius>
 
-                <steering_p_gain>10.0</steering_p_gain>
+                <steering_p_gain>100.0</steering_p_gain>
                 <steering_limit>${radians(25)}</steering_limit>
                 <velocity_limit>7.0</velocity_limit>
                 <acceleration_limit>2.5</acceleration_limit>
