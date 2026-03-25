@@ -150,11 +150,11 @@ public:
     // Gazebo sim model canonical link
     Link canonicalLink {kNullEntity};
 
-    // Steering limiter : used to compute steering velocity command
-    std::unique_ptr<math::SpeedLimiter> steeringLimiter;
+    // Angular velocity limiter : used to compute steering velocity command
+    std::unique_ptr<math::SpeedLimiter> angularVelocityLimiter;
 
     // Velocity limter : used to compute driving velocity command
-    std::unique_ptr<math::SpeedLimiter> velocityLimiter;
+    std::unique_ptr<math::SpeedLimiter> linearVelocityLimiter;
 
     // Brake limter : used to compute braking velocity command
     std::unique_ptr<math::SpeedLimiter> brakeLimiter;
@@ -220,12 +220,12 @@ public:
     std::uint8_t targetBrake{150};
 
     // Velcoity command history
-    double lastVelocityCommand0{0.0};
-    double lastVelocityCommand1{0.0};
+    double lastLinearVelocityCommand0{0.0};
+    double lastLinearVelocityCommand1{0.0};
 
     // Steering command history
-    double lastSteeringCommand0{0.0};
-    double lastSteeringCommand1{0.0};
+    double lastAngularVelocityCommand0{0.0};
+    double lastAngularVelocityCommand1{0.0};
 
     // Encoder angle history
     double prevEncoderAngle{0.0};
@@ -439,16 +439,16 @@ void ERP42GazeboControl::Configure(
     ).first;
 
     // Initialize steering limiters
-    this->dataPtr->steeringLimiter = std::make_unique<math::SpeedLimiter>();
-    this->dataPtr->steeringLimiter->SetMaxVelocity( 1.0 * this->dataPtr->steeringLimit);
-    this->dataPtr->steeringLimiter->SetMinVelocity(-1.0 * this->dataPtr->steeringLimit);
+    this->dataPtr->angularVelocityLimiter = std::make_unique<math::SpeedLimiter>();
+    this->dataPtr->angularVelocityLimiter->SetMaxVelocity( 1.0 * this->dataPtr->velocityLimit);
+    this->dataPtr->angularVelocityLimiter->SetMinVelocity(-1.0 * this->dataPtr->velocityLimit);
 
     // Initialize steering limiter
-    this->dataPtr->velocityLimiter = std::make_unique<math::SpeedLimiter>();
-    this->dataPtr->velocityLimiter->SetMaxVelocity( 1.0 * this->dataPtr->velocityLimit);
-    this->dataPtr->velocityLimiter->SetMinVelocity(-1.0 * this->dataPtr->velocityLimit);
-    this->dataPtr->velocityLimiter->SetMaxAcceleration( 1.0 * this->dataPtr->accelerationLimit);
-    this->dataPtr->velocityLimiter->SetMinAcceleration(-1.0 * this->dataPtr->accelerationLimit);
+    this->dataPtr->linearVelocityLimiter = std::make_unique<math::SpeedLimiter>();
+    this->dataPtr->linearVelocityLimiter->SetMaxVelocity( 1.0 * this->dataPtr->velocityLimit);
+    this->dataPtr->linearVelocityLimiter->SetMinVelocity(-1.0 * this->dataPtr->velocityLimit);
+    this->dataPtr->linearVelocityLimiter->SetMaxAcceleration( 1.0 * this->dataPtr->accelerationLimit);
+    this->dataPtr->linearVelocityLimiter->SetMinAcceleration(-1.0 * this->dataPtr->accelerationLimit);
 
     // Initialize brake limiter : used to UpdateControl, limiter set by braking ratio
     this->dataPtr->brakeLimiter = std::make_unique<math::SpeedLimiter>();
@@ -912,173 +912,161 @@ void ERP42GazeboControlPrivate::UpdateControl(
 
     // Retrieve the desired gear mode states and control commands,
     // while holding the mutex to ensure thread safety.
-    double velocity, steering, brakeRatio;
+    double linearVelocity, steering, brakeRatio;
     {
         // Lock the mutex to protect against data
         std::lock_guard<std::mutex> lock(this->mutex);
 
         // Read target control commands
-        velocity   = this->targetVelocity;
-        steering   = this->targetSteering;
-        brakeRatio = static_cast<double>(this->targetBrake) / 150.0;
+        linearVelocity = this->targetVelocity;
+        steering       = this->targetSteering;
+        brakeRatio     = static_cast<double>(this->targetBrake) / 150.0;
 
         // Overrides control commands by safety mode commands
         if(this->emergencyStop || this->manualMode)
         {
-            velocity   = 0.0;
-            steering   = 0.0;
-            brakeRatio = 1.0;
+            linearVelocity = 0.0;
+            steering       = 0.0;
+            brakeRatio     = 1.0;
         }
 
         // Overrides control commands
         switch(this->gear)
         {
         case 0: // GEAR_DRIVE
-            velocity = std::abs(velocity);
+            linearVelocity = std::abs(linearVelocity);
             break;
 
         case 2: // GEAR_REVERSE
-            velocity = -1.0 * std::abs(velocity);
+            linearVelocity = -1.0 * std::abs(linearVelocity);
             break;
             
         default: // GEAR_NEUTRAL or invalid gear
-            velocity   = 0.0;
-            brakeRatio = 1.0;
+            linearVelocity = 0.0;
+            brakeRatio     = 1.0;
         }
     }
 
-    // If brake is applied, use the brake limiter to decelerate the vehicle smoothly,
-    // otherwise use the velocity limiter to apply acceleration limits.
+    // Apply brake limiter if brake ratio is above threshold, 
+    // otherwise apply normal speed limiter.
     if(0.1 < brakeRatio)
     {
-        // Set the brake limiter's acceleration limits based on the brake scale 
-        // and defined brake deceleration, allowing for smooth deceleration 
-        // when braking is applied.
         this->brakeLimiter->SetMaxAcceleration( 1.0 * brakeRatio * this->brakeDeceleration);
         this->brakeLimiter->SetMinAcceleration(-1.0 * brakeRatio * this->brakeDeceleration);
 
-        // When braking, we want to decelerate the vehicle smoothly to a stop,
-        // so we set the target velocity to zero and let the brake limiter handle the deceleration.
-        velocity = 0.0;
+        linearVelocity = 0.0;
 
-        // Use the brake limiter to compute the new velocity command, 
-        // ensuring that the vehicle decelerates smoothly
         this->brakeLimiter->Limit(
-            velocity, 
-            this->lastVelocityCommand0,
-            this->lastVelocityCommand1, 
+            linearVelocity, 
+            this->lastLinearVelocityCommand0,
+            this->lastLinearVelocityCommand1, 
             _info.dt
         );
     }
     else
     {
-        // When not braking, we want to apply the velocity command with acceleration limits,
-        // so we use the velocity limiter to compute the new velocity command.
-        this->velocityLimiter->Limit(
-            velocity, 
-            this->lastVelocityCommand0,
-            this->lastVelocityCommand1, 
+        this->linearVelocityLimiter->Limit(
+            linearVelocity, 
+            this->lastLinearVelocityCommand0,
+            this->lastLinearVelocityCommand1, 
             _info.dt
         );
     }
 
-    // Apply the steering limiter to compute the new steering command,
-    // ensuring that the steering changes smoothly.
-    this->steeringLimiter->Limit(
-        steering, 
-        this->lastSteeringCommand0, 
-        this->lastSteeringCommand1, 
+    // Update velocity command history for the linear velocity limiter.
+    this->lastLinearVelocityCommand1 = this->lastLinearVelocityCommand0;
+    this->lastLinearVelocityCommand0 = linearVelocity;
+
+    // Compute the desired angular velocity based on the linear velocity and steering angle,
+    // and apply the angular velocity limiter to ensure it stays within limits.
+    double angularVelocity = linearVelocity * std::tan(steering) / this->wheelBase;
+
+    this->angularVelocityLimiter->Limit(
+        angularVelocity, 
+        this->lastAngularVelocityCommand0,
+        this->lastAngularVelocityCommand1,
         _info.dt
     );
 
-    // Update the history of velocity and steering commands for use in the limiters.
-    this->lastVelocityCommand1 = this->lastVelocityCommand0;
-    this->lastVelocityCommand0 = velocity;
-    this->lastSteeringCommand1 = this->lastSteeringCommand0;
-    this->lastSteeringCommand0 = steering;
+    this->lastAngularVelocityCommand1 = this->lastAngularVelocityCommand0;
+    this->lastAngularVelocityCommand0 = angularVelocity;
 
-    // Apply steering limits to ensure the steering angle
-    // does not exceed the maximum allowed value.
-    steering = std::clamp(steering, -1.0 * this->steeringLimit, 1.0 * this->steeringLimit);
-
-    // Retrieve the current joint positions for the left and right steering joints 
-    // to compute the steering errors.
-    const auto steeringPositionLeft = _ecm.Component<components::JointPosition>(
-        joints[LEFT_STEERING]
-    );
-
-    const auto steeringPositionRight = _ecm.Component<components::JointPosition>(
-        joints[RIGHT_STEERING]
-    );
-
-    if(!steeringPositionLeft || !steeringPositionRight)
-    {
-        return;
-    }
-
-    // If the steering command is very small (close to zero), 
-    // we can skip the Ackermann steering calculations and 
-    // directly set the steering joint velocities to move towards zero steering angle.
-    if(std::abs(steering) < 1e-4)
-    {
-        const double targetSteeringLeft  = 0.0;
-        const double targetSteeringRight = 0.0;
-
-        const double steeringErrorLeft  = targetSteeringLeft  - steeringPositionLeft->Data()[0];
-        const double steeringErrorRight = targetSteeringRight - steeringPositionRight->Data()[0];
-
-        // Steering velocity
-        this->jointVelocities[LEFT_STEERING]  = this->steeringPGain * steeringErrorLeft;
-        this->jointVelocities[RIGHT_STEERING] = this->steeringPGain * steeringErrorRight;
-
-        // Wheel velocity
-        this->jointVelocities[FRONT_LEFT]  = velocity / this->frontWheelRadius;
-        this->jointVelocities[FRONT_RIGHT] = velocity / this->frontWheelRadius;
-        this->jointVelocities[REAR_LEFT]   = velocity / this->rearWheelRadius;
-        this->jointVelocities[REAR_RIGHT]  = velocity / this->rearWheelRadius;
-
-        return;
-    }
-
-    // Compute the tangent of the steering angle for use in the Ackermann steering calculations.
-    const double tanSteering      = std::tan(steering);
-    const double turningRadius    = this->wheelBase / tanSteering;
-    const double kingpinWidthHalf = 0.5 * this->kingpinWidth;
+    // Compute the turning radius based on the linear and angular velocities,
+    // and apply Ackermann steering geometry to compute the target steering angles.
+    const double minTurningRadius = this->wheelBase / std::sin(this->steeringLimit);
+    double turningRadius = linearVelocity / angularVelocity;
     
-    const double targetSteeringLeft  = std::atan(
-        tanSteering / (1.0 - kingpinWidthHalf / turningRadius)
-    );
+    // Apply steering limits to the turning radius to ensure 
+    // it does not exceed the physical capabilities of the vehicle.
+    if(0.0 < std::abs(linearVelocity))
+    {
+        if((0.0 <= turningRadius) && (turningRadius < minTurningRadius))
+        {
+            turningRadius = minTurningRadius;
+        }
+        if((turningRadius <= 0.0) && (-minTurningRadius < turningRadius))
+        {
+            turningRadius = -minTurningRadius;
+        }
+    }
+    else if(0.001 <= std::abs(angularVelocity))
+    {
+        turningRadius = (angularVelocity / std::abs(angularVelocity)) * minTurningRadius;
+    }
+    if(std::abs(angularVelocity) < 0.001)
+    {
+        turningRadius = 1000000000.0;
+    }
 
-    const double targetSteeringRight = std::atan(
-        tanSteering / (1.0 + kingpinWidthHalf / turningRadius)
+    // Compute the target steering angles for the left and right wheels 
+    // using Ackermann steering geometry, based on the turning radius.
+    const double leftSteeringTarget  = std::atan(
+        this->wheelBase / (turningRadius - (this->kingpinWidth / 2.0))
     );
+    const double rightSteeringTarget = std::atan(
+        this->wheelBase / (turningRadius + (this->kingpinWidth / 2.0))
+    );
+    const double phi = std::atan(this->wheelBase / turningRadius);
+
+    this->jointVelocities[FRONT_LEFT] = (
+        linearVelocity * (1.0 - (this->frontWheelTread * std::tan(phi)) / (2.0 * this->wheelBase))
+    ) / this->frontWheelRadius;
+
+    this->jointVelocities[REAR_LEFT] = (
+        linearVelocity * (1.0 - (this->rearWheelTread  * std::tan(phi)) / (2.0 * this->wheelBase))
+    ) / this->rearWheelRadius;
+
+    this->jointVelocities[FRONT_RIGHT] = (
+        linearVelocity * (1.0 + (this->frontWheelTread * std::tan(phi)) / (2.0 * this->wheelBase))
+    ) / this->frontWheelRadius;
+
+    this->jointVelocities[REAR_RIGHT] = (
+        linearVelocity * (1.0 + (this->rearWheelTread  * std::tan(phi)) / (2.0 * this->wheelBase))
+    ) / this->rearWheelRadius;
 
     // Compute the steering errors for the left and right steering joints,
-    // and apply a proportional control law to compute the joint velocity commands for steering.
-    const double steeringErrorLeft  = targetSteeringLeft  - steeringPositionLeft->Data()[0];
-    const double steeringErrorRight = targetSteeringRight - steeringPositionRight->Data()[0];
+    // and update the joint velocities for the steering joints using a proportional controller.
+    const auto leftSteeringPosition = _ecm.Component<components::JointPosition>(
+        this->joints[LEFT_STEERING]
+    );
 
-    this->jointVelocities[LEFT_STEERING]  = this->steeringPGain * steeringErrorLeft;
-    this->jointVelocities[RIGHT_STEERING] = this->steeringPGain * steeringErrorRight;
+    const auto rightSteeringPosition = _ecm.Component<components::JointPosition>(
+        this->joints[RIGHT_STEERING]
+    );
 
-    // Compute the wheel velocities for each wheel based on the target velocity and steering angle,
-    // using Ackermann steering geometry to ensure that the wheels turn at appropriate speeds
-    // to achieve the desired steering angle while maintaining the target speed.
-    const double frontOffset = this->frontWheelTread * tanSteering;
-    const double rearOffset  = this->rearWheelTread  * tanSteering;
-    const double wheelBase2  = 2.0 * this->wheelBase;
+    if (
+        !leftSteeringPosition  || leftSteeringPosition->Data().empty() ||
+        !rightSteeringPosition || rightSteeringPosition->Data().empty()
+    )
+    {
+        return;
+    }
 
-    this->jointVelocities[FRONT_LEFT] = 
-        velocity * (1.0 - frontOffset / wheelBase2) / this->frontWheelRadius;
+    const double leftSteeringError  = leftSteeringTarget  - leftSteeringPosition->Data()[0];
+    const double rightSteeringError = rightSteeringTarget - rightSteeringPosition->Data()[0];
 
-    this->jointVelocities[FRONT_RIGHT] = 
-        velocity * (1.0 + frontOffset / wheelBase2) / this->frontWheelRadius;
-
-    this->jointVelocities[REAR_LEFT] = 
-        velocity * (1.0 - rearOffset / wheelBase2) / this->rearWheelRadius;
-
-    this->jointVelocities[REAR_RIGHT] = 
-        velocity * (1.0 + rearOffset / wheelBase2) / this->rearWheelRadius;
+    this->jointVelocities[LEFT_STEERING]  = this->steeringPGain * leftSteeringError;
+    this->jointVelocities[RIGHT_STEERING] = this->steeringPGain * rightSteeringError;
 }
 
 /**
