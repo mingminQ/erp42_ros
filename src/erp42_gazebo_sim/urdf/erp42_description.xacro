@@ -65,7 +65,10 @@
                 name="gz::sim::systems::JointStatePublisher" 
                 filename="gz-sim-joint-state-publisher-system"
             >
-                
+
+                <!-- Topic name -->
+                <topic>joint_states</topic>
+
                 <!-- Update rate -->
                 <update_rate>100.0</update_rate>
 
