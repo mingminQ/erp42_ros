@@ -9,5 +9,5 @@
 # Joint state topic
 - ros_topic_name: "/joint_states"
   ros_type_name : "sensor_msgs/msg/JointState"
-  gz_topic_name : "/world/empty/model/erp42/joint_state"
+  gz_topic_name : "/joint_states"
   gz_type_name  : "gz.msgs.Model"
